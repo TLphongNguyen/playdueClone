@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserShield } from '@fortawesome/free-solid-svg-icons';
+import { faMoon, faPlus, faUserShield, faUserTie } from '@fortawesome/free-solid-svg-icons';
 // import img from '~/assets/img';
 import { HomeOutlined, TrophyOutlined, VideoCameraOutlined } from '@ant-design/icons';
+import { faBell } from '@fortawesome/free-regular-svg-icons';
 
 function Header() {
 	return (
@@ -18,33 +19,65 @@ function Header() {
 				<div className="flex">
 					<div className="mx-[10px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center">
 						<a className="block h-[45px] w-[45px] " href=" #">
-							<HomeOutlined className="text-[#f0564a] h-[100%]" style={{ fontSize: '24px' }} />
-						</a>
-					</div>
-					<div className="mx-[10px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center">
-						<a className="block h-[45px] w-[45px] " href=" #">
-							<VideoCameraOutlined className="h-[100%]" style={{ fontSize: '24px' }} />
-						</a>
-					</div>
-					<div className="mx-[10px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center">
-						<a className="block h-[45px] w-[45px] " href=" #">
-							<TrophyOutlined className="h-[100%]" style={{ fontSize: '24px' }} />
-						</a>
-					</div>
-				</div>
-				<div className="">
-					<div className="mx-[10px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center">
-						<a className=" h-[45px] w-[45px] flex " href=" #">
-							<FontAwesomeIcon
-								className="text-[24px] items-center text-center"
-								icon={faUserShield}
-								// style={{ fontSize: '24px' }}
+							<HomeOutlined
+								className="text-[#f0564a] h-[100%]  hover:text-[#f0564a]"
+								style={{ fontSize: '24px' }}
 							/>
 						</a>
 					</div>
-					<div className=""></div>
-					<div className=""></div>
-					<div className=""></div>
+					<div className="mx-[10px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center">
+						<a className="block h-[45px] w-[45px] " href=" #">
+							<VideoCameraOutlined
+								className="h-[100%]  hover:text-[#f0564a]"
+								style={{ fontSize: '24px' }}
+							/>
+						</a>
+					</div>
+					<div className="mx-[10px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center">
+						<a className="block h-[45px] w-[45px] " href=" #">
+							<TrophyOutlined className="h-[100%]  hover:text-[#f0564a]" style={{ fontSize: '24px' }} />
+						</a>
+					</div>
+				</div>
+				<div className="flex">
+					<div className="mx-[2px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center">
+						<a className=" h-[45px] w-[45px] flex " href=" #">
+							<FontAwesomeIcon
+								className="text-[20px] items-center text-center m-auto  hover:text-[#f0564a]"
+								icon={faUserShield}
+							/>
+						</a>
+					</div>
+					<div className="mx-[2px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center">
+						<a className=" h-[45px] w-[45px] flex " href=" #">
+							<FontAwesomeIcon
+								className="text-[22px] items-center text-center m-auto hover:text-[#f0564a]"
+								icon={faBell}
+							/>
+						</a>
+					</div>
+					<div className="mx-[2px] bg-[#e8e8e8] rounded-[25px] w-[62px] h-[45px] text-center px-[10px]">
+						<a className=" h-[45px] w-[100%] flex  hover:text-[#f0564a] items-center" href=" #">
+							<FontAwesomeIcon
+								className="text-[16px] items-center text-center m-auto mr-[3px]"
+								icon={faPlus}
+							/>
+							<span className="text-[16px]">0 đ</span>
+						</a>
+					</div>
+					<div className="mx-[2px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center">
+						<a className=" h-[45px] w-[45px] flex " href=" #">
+							<FontAwesomeIcon
+								className="text-[24px] items-center text-center m-auto hover:text-[#f0564a]"
+								icon={faUserTie}
+							/>
+						</a>
+					</div>
+					<div className="mx-[2px] border-l-1px border-solid border-[#ececec]  w-[45px] h-[45px] text-center">
+						<a className=" h-[45px] w-[45px] flex  hover:text-[#f0564a] items-center" href=" #">
+							<FontAwesomeIcon className="text-[24px] items-center text-center m-auto" icon={faMoon} />
+						</a>
+					</div>
 					<div className=""></div>
 				</div>
 			</div>
