@@ -5,7 +5,7 @@ function DefaultLayout({ children }) {
 	return (
 		<div className="w-[100%]">
 			<Header />
-			<div className="wrap-body flex">
+			<div className="wrap-body flex h-[93vh]">
 				<Sidebar />
 				<div className="wrap-content">{children}</div>
 			</div>

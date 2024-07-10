@@ -3,12 +3,7 @@
 @tailwind utilities;
 @import 'normalize.css';
 body {
-	font-family:
-		'Poppins',
-		Source Sans Pro,
-		Helvetica Neue,
-		Arial,
-		sans-serif;
+	font-family: 'Poppins', sans-serif;
 	line-height: 1.5;
 	text-rendering: optimizeSpeed;
 	color: var(--text-color);
