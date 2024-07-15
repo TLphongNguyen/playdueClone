@@ -7,7 +7,7 @@ function DefaultLayout({ children }) {
 			<Header />
 			<div className="wrap-body flex h-[93vh]">
 				<Sidebar />
-				<div className="wrap-content">{children}</div>
+				<div className="wrap-content container">{children}</div>
 			</div>
 		</div>
 	);

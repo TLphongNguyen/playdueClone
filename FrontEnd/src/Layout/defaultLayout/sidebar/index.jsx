@@ -62,7 +62,7 @@ function Sidebar() {
 					{games.map((game, index) => (
 						<li
 							key={index}
-							className={`py-2 px-[10px] cursor-pointer text-[13px] text-[#6c6c6c] font-[600]  hover:bg-[#f9e6e5] ${activeIndex === index ? 'bg-[#f0564a] text-[#fff] hover:bg-[#f0564a]' : ''}`}
+							className={`py-2 px-[10px] cursor-pointer text-[13px] text-[#6c6c6c] font-[600]  ${activeIndex === index ? 'bg-[#f0564a] text-[#fff] hover:bg-[#f0564a]' : ' hover:bg-[#f9e6e5]'}`}
 							onClick={() => setActiveIndex(index)}
 						>
 							<button className="items-center flex">
