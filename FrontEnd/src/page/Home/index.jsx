@@ -18,8 +18,8 @@ function Home() {
 						<FontAwesomeIcon className="m-auto" icon={faPlus} />
 					</div>
 				</div>
-				<div className="pt-[15px] pb-5px">
-					<span>Đăng story</span>
+				<div className="pt-[15px] pb-[5px] text-center">
+					<span className="text-[14px] text-[#000]">Đăng story</span>
 				</div>
 			</div>
 			<Stories />

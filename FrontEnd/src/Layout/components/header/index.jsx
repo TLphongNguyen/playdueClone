@@ -18,7 +18,7 @@ function Header() {
 						alt="anh logo"
 					/>
 				</div>
-				<div className="flex mr-[180px]">
+				<div className="flex">
 					<Tippy
 						content={
 							<span
