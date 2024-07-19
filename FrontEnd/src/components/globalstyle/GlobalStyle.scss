@@ -3,12 +3,16 @@
 @tailwind utilities;
 @import 'normalize.css';
 body {
-	font-family: 'Poppins', sans-serif;
 	line-height: 1.5;
 	text-rendering: optimizeSpeed;
-	color: var(--text-color);
 }
 * {
+	font-family:
+		Poppins,
+		Source Sans Pro,
+		Helvetica Neue,
+		Arial,
+		sans-serif !important;
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
@@ -32,4 +36,7 @@ a[href] {
 .container {
 	width: 1265px;
 	margin: 0 auto;
+}
+.ant-modal-content {
+	padding: 0 !important;
 }
