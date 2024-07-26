@@ -50,6 +50,9 @@ function Home() {
 				open={isModalOpen}
 				onCancel={handleCancel}
 				className="ant-modal-content"
+				closeIcon={null}
+				confirmLoading={true}
+				style={{ top: '30px' }}
 			>
 				<form className="h-[100%] flex" action="">
 					<div className="flex-1 mt-[35px] mr-[25px] mb-[35px] ml-[35px]">
