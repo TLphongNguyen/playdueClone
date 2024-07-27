@@ -48,7 +48,7 @@ function Story({ avt, storyUrl, view, name }) {
 				closeIcon={null}
 				style={{ top: '30px', borderRadius: '0px' }}
 			>
-				<ViewStory storyUrl={storyUrl} avt={avt} name={name} />
+				<ViewStory storyUrl={storyUrl} avt={avt} name={name} view={view} />
 			</Modal>
 		</div>
 	);

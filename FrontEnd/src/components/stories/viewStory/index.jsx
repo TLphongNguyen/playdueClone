@@ -2,8 +2,9 @@ import Comment from '~/components/comment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight, faGift, faHeart, faMessage, faShare } from '@fortawesome/free-solid-svg-icons';
 import { EyeOutlined } from '@ant-design/icons';
+import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 
-function ViewStory({ storyUrl, avt, name }) {
+function ViewStory({ storyUrl, avt, name, view }) {
 	return (
 		<div className="flex h-[892px]">
 			<div className="w-[65%] flex relative">
@@ -28,7 +29,7 @@ function ViewStory({ storyUrl, avt, name }) {
 					</button>
 				</div>
 			</div>
-			<div className="w-[35%] bg-[#eeeeee] py-[15px] px-[10px]">
+			<div className="w-[35%] bg-[#eeeeee] py-[15px] px-[10px] h-[100%]">
 				<div className="header-comment flex item-center justify-between">
 					<div className="text-center flex items-center">
 						<img
@@ -50,7 +51,7 @@ function ViewStory({ storyUrl, avt, name }) {
 				<div className="interact flex justify-around py-[15px]">
 					<div className=" text-[#636363] text-[15px] items-center">
 						<EyeOutlined className="mr-[10px] text-[16px]" />
-						45
+						{view}
 					</div>
 					<div className=" text-[#636363] text-[15px] items-center">
 						<FontAwesomeIcon icon={faMessage} className="mr-[10px] text-[16px]" />0
@@ -67,13 +68,19 @@ function ViewStory({ storyUrl, avt, name }) {
 						<span className="text-[14px] text-[#333] leading-[1.5]">day la hathtag</span>
 					</div>
 				</div>
-				<div className="py-[15px] ">
+				<div className="py-[15px] h-comment">
 					<Comment
 						name={'phong'}
 						avt="https://scontent.fhan5-10.fna.fbcdn.net/v/t39.30808-1/349365824_146127085118919_709175759027608189_n.jpg?stp=dst-jpg_p200x200&_nc_cat=111&ccb=1-7&_nc_sid=0ecb9b&_nc_ohc=PcIiLj4jvKMQ7kNvgEdu-t6&_nc_ht=scontent.fhan5-10.fna&oh=00_AYDE6qGtR6KsgsKUCT3k1juKb9loktNbVJBH6_WVgzq6ig&oe=66A98EA6"
 						time={4}
 						content={'xinh qua'}
 					/>
+				</div>
+				<div className="w-[100%] py-[10px] border-t-[1px] border-solid border-[#dcdcdc]">
+					<div className="flex px-4 py-2 h-10 border-[1px] border-solid border-[#e3e3e3] bg-[#fff] transition-[0.3s] ease-linear ">
+						<input placeholder="Comment.." className="h-[100%] w-[100%] focus:border-[#ccc]" type="text" />
+						<FontAwesomeIcon icon={faPaperPlane} className="text-[20px]" />
+					</div>
 				</div>
 			</div>
 		</div>
