@@ -93,7 +93,7 @@ function Stories() {
 	];
 
 	return (
-		<div className="wrap-content flex overflow-x-auto no-scrollbar">
+		<div className="wrap-content flex">
 			{fakeData.map((data) => (
 				<Story
 					key={data.id}

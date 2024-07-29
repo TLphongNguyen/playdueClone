@@ -34,7 +34,7 @@ function Story({ avt, storyUrl, view, name }) {
 					</div>
 				</div>
 				<div className="pt-[15px] pb-[5px] text-center flex items-center">
-					<img src={avt} alt="" className="w-[30px] h-[30px] rounded-[50%] p-[2px] mx-[2px]" />
+					<img src={avt} alt="" className="w-[30px] h-[30px] rounded-[50%] p-[2px] mx-[2px] object-cover" />
 					<span className="text-[14px] text-[#000] line-clamp-1">{name}</span>
 				</div>
 			</div>
