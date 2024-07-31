@@ -43,11 +43,13 @@ a[href] {
 .h-comment {
 	height: calc(100% - 215px);
 }
-.ant-select-selector {
+.ant-select-selector,
+.ant-input {
 	border-radius: 25px !important;
 }
 .ant-select-selector,
-.ant-select-item {
+.ant-select-item,
+.ant-input {
 	font-size: 11px !important;
 	line-height: 1.2 !important;
 	min-height: 0 !important;

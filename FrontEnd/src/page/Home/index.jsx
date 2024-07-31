@@ -2,8 +2,8 @@ import { useState } from 'react';
 import Stories from '~/components/stories';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Modal, Select, Button, Slider, Popover } from 'antd';
-import { PlayCircleOutlined } from '@ant-design/icons';
+import { Modal, Select, Button, Slider, Popover, Input } from 'antd';
+import { PlayCircleOutlined, SearchOutlined } from '@ant-design/icons';
 
 function Home() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -124,8 +124,8 @@ function Home() {
 				<Stories />
 			</div>
 			<div className="search mt-9">
-				<form action="">
-					<div className="">
+				<form action="" className="flex justify-between">
+					<div className="flex">
 						<Select
 							className="select"
 							defaultValue="Giới tính"
@@ -178,7 +178,31 @@ function Home() {
 						>
 							<Button>Khoảng giá</Button>
 						</Popover>
+						<Select
+							className="select"
+							defaultValue="Sống tại"
+							style={{ width: 160, height: 32 }}
+							onChange={handleChangeGender}
+							options={[
+								{ value: '', label: 'Việt Nam' },
+								{ value: 'Hưng Yên', label: 'Hưng Yên' },
+								{ value: 'Hà Nội', label: 'Hà Nội' },
+								{ value: 'Thái Bình', label: 'Thái Bình' },
+								{ value: 'Nam Định', label: 'Nam Định' },
+								{ value: 'Hòa Bình', label: 'Hòa Bình' },
+								{ value: 'Thanh Hóa', label: 'Thanh Hóa' },
+							]}
+						/>
+						<Input style={{ width: 160, height: 32 }} placeholder="Tên/Url Player" autoComplete="off" />
+						<Input style={{ width: 160, height: 32 }} placeholder="Tên game" autoComplete="off" />
 					</div>
+					<button
+						type="submit"
+						className="w-[100px] h-[32px] text-[11px] font-[600] rounded-[25px] bg-[#f2796e] text-[#fff7ef] hover:bg-[#f0564a] hover:text-[#fff]"
+					>
+						<SearchOutlined className="mr-[10px]" />
+						Tìm Kiếm
+					</button>
 				</form>
 			</div>
 		</div>
