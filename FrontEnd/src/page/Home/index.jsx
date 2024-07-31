@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import Stories from '~/components/stories';
+import Players from '~/components/players';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsRotate, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Modal, Select, Button, Slider, Popover, Input } from 'antd';
 import { PlayCircleOutlined, SearchOutlined } from '@ant-design/icons';
 
@@ -204,6 +206,16 @@ function Home() {
 						Tìm Kiếm
 					</button>
 				</form>
+			</div>
+			<div className="list-player">
+				<div className="refresh flex justify-between mt-[25px] mb-[15px]">
+					<h1 className="text-[#f0564a] text-[18px] font-[700]">VIP PLAYERS</h1>
+					<button className="w-[100px] h-[32px] text-[11px] font-[600] border-[1px] border-solid border-[#e9e9e9] rounded-[25px] bg-[#fff] text-[#f0564a] hover:bg-[#f3f3f3] hover:text-[#f0564a]">
+						Tìm Kiếm
+						<FontAwesomeIcon className="ml-[10px] text-[#333]" icon={faArrowsRotate} />
+					</button>
+				</div>
+				<Players />
 			</div>
 		</div>
 	);
