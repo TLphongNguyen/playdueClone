@@ -49,7 +49,56 @@ function Home() {
 			</div>
 		</div>
 	);
-
+	const data = [
+		{
+			name: 'Thỏ Mini 🐰',
+			avt: 'https://files.playerduo.net/production/images/b2c92a50-90ee-4a69-9bb0-750fa27f8017__6be71870-39d1-11ef-a76a-7b840fde9bfc__player_avatar.jpg',
+			price: '80000',
+			des: 'san sang choi game',
+			rate: '5',
+			quantity: '90',
+		},
+		{
+			name: '𝙈𝙨𝙪',
+			avt: 'https://files.playerduo.net/production/images/56b6d587-8058-4d27-a1fe-3924a4dbc4b4__e54042b0-4759-11ef-8bd0-31c0a9baf30a__player_avatar.jpg',
+			price: '80000',
+			des: 'Y tá thách đấu',
+			rate: '5',
+			quantity: '120',
+		},
+		{
+			name: '🌺 Tiểu Lươn 🍀',
+			avt: 'https://files.playerduo.net/production/images/9623b48d-0f8e-416a-bef9-dc4efefb6779__a7b36400-01fd-11ef-9524-4bb33b42dae7__player_avatar.jpg',
+			price: '80000',
+			des: 'Đến và Lấy cắp trái tym em đi ♥',
+			rate: '5',
+			quantity: '527',
+		},
+		{
+			name: 'Hanny',
+			avt: 'https://files.playerduo.net/production/images/3854718d-9f59-4fa6-bf01-f6312fdf5924__3b6826a0-4811-11ef-8bd0-31c0a9baf30a__player_avatar.jpg',
+			price: '80000',
+			des: 'vitamin cool ♡₍ᐢ. ̫ .⑅ᐢ₎',
+			rate: '5',
+			quantity: '90',
+		},
+		{
+			name: '𝙈𝙨𝙪',
+			avt: 'https://files.playerduo.net/production/images/56b6d587-8058-4d27-a1fe-3924a4dbc4b4__e54042b0-4759-11ef-8bd0-31c0a9baf30a__player_avatar.jpg',
+			price: '80000',
+			des: 'Y tá thách đấu',
+			rate: '5',
+			quantity: '120',
+		},
+		{
+			name: '🌺 Tiểu Lươn 🍀',
+			avt: 'https://files.playerduo.net/production/images/9623b48d-0f8e-416a-bef9-dc4efefb6779__a7b36400-01fd-11ef-9524-4bb33b42dae7__player_avatar.jpg',
+			price: '80000',
+			des: 'Đến và Lấy cắp trái tym em đi ♥',
+			rate: '5',
+			quantity: '527',
+		},
+	];
 	return (
 		<div className="wrap-content mt-[34px]">
 			<div className="flex overflow-x-auto no-scrollbar">
@@ -215,7 +264,7 @@ function Home() {
 						<FontAwesomeIcon className="ml-[10px] text-[#333]" icon={faArrowsRotate} />
 					</button>
 				</div>
-				<Players />
+				<Players data={data} />
 			</div>
 		</div>
 	);
