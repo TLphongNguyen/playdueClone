@@ -176,9 +176,9 @@ function Home() {
 			</div>
 			<div className="search mt-9">
 				<form action="" className="flex justify-between">
-					<div className="flex">
+					<div className="flex ml-2">
 						<Select
-							className="select"
+							className="select mx-1"
 							defaultValue="Giới tính"
 							style={{ width: 85, height: 32 }}
 							onChange={handleChangeGender}
@@ -189,7 +189,7 @@ function Home() {
 							]}
 						/>
 						<Select
-							className="select"
+							className="select mx-1"
 							defaultValue="Thể loại"
 							style={{ width: 100, height: 32 }}
 							onChange={handleChangeCategory}
@@ -202,7 +202,7 @@ function Home() {
 						/>
 						<Button
 							onClick={() => handleClickBtn('active')}
-							className={`p-2 rounded-[25px] border-[1px] border-solid border-[#e3e3e3] text-[11px] w-20  ${
+							className={`p-2 rounded-[25px] border-[1px] border-solid mx-1 border-[#e3e3e3] text-[11px] w-20  ${
 								activeButton === 'active'
 									? 'bg-[#f0564a] text-[#fff] hover:bg-[#f0564a]'
 									: 'hover:bg-[#f9e6e5]'
@@ -212,7 +212,7 @@ function Home() {
 						</Button>
 						<Button
 							onClick={() => handleClickBtn1('active')}
-							className={`p-2 rounded-[25px] border-[1px] border-solid border-[#e3e3e3] text-[11px] w-20 ${
+							className={`p-2 rounded-[25px] border-[1px] border-solid mx-1 border-[#e3e3e3] text-[11px] w-20 ${
 								activeButton1 === 'active'
 									? 'bg-[#f0564a] text-[#fff] hover:bg-[#f0564a]'
 									: 'hover:bg-[#f9e6e5]'
@@ -221,7 +221,7 @@ function Home() {
 							Online
 						</Button>
 						<Popover
-							className="rounded-[25px] text-[11px] w-[135px]"
+							className="rounded-[25px] mx-1 text-[11px] w-[135px]"
 							placement="bottom"
 							content={slider}
 							title="Khoảng giá"
@@ -230,7 +230,7 @@ function Home() {
 							<Button>Khoảng giá</Button>
 						</Popover>
 						<Select
-							className="select"
+							className="select mx-1"
 							defaultValue="Sống tại"
 							style={{ width: 160, height: 32 }}
 							onChange={handleChangeGender}
@@ -244,8 +244,18 @@ function Home() {
 								{ value: 'Thanh Hóa', label: 'Thanh Hóa' },
 							]}
 						/>
-						<Input style={{ width: 160, height: 32 }} placeholder="Tên/Url Player" autoComplete="off" />
-						<Input style={{ width: 160, height: 32 }} placeholder="Tên game" autoComplete="off" />
+						<Input
+							className="mx-1"
+							style={{ width: 160, height: 32 }}
+							placeholder="Tên/Url Player"
+							autoComplete="off"
+						/>
+						<Input
+							className="mx-1"
+							style={{ width: 160, height: 32 }}
+							placeholder="Tên game"
+							autoComplete="off"
+						/>
 					</div>
 					<button
 						type="submit"

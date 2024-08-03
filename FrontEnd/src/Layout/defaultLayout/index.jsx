@@ -4,10 +4,10 @@ import Sidebar from './sidebar';
 function DefaultLayout({ children }) {
 	return (
 		<div className="w-[100%]">
-			<Header />
+			<Header className="fixed" />
 			<div className="wrap-body flex h-[93vh]">
-				<Sidebar />
-				<div className="wrap-content container">{children}</div>
+				<Sidebar className="fixed" />
+				<div className="wrap-content container overflow-y-auto no-scrollbar">{children}</div>
 			</div>
 		</div>
 	);
