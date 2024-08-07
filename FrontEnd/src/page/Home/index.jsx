@@ -76,7 +76,7 @@ function Home() {
 		},
 		{
 			name: 'Hanny',
-			avt: 'https://files.playerduo.net/production/images/3854718d-9f59-4fa6-bf01-f6312fdf5924__3b6826a0-4811-11ef-8bd0-31c0a9baf30a__player_avatar.jpg',
+			avt: 'https://files.playerduo.net/production/images/3854718d-9f59-4fa6-bf01-f6312fdf5924__f9aec060-5144-11ef-9376-b533eb6f1b4c__player_avatar.jpg',
 			price: '80000',
 			des: 'vitamin cool ♡₍ᐢ. ̫ .⑅ᐢ₎',
 			rate: '5',
