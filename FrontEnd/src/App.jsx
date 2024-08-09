@@ -20,7 +20,7 @@ function App() {
 								key={index}
 								path={router.path}
 								element={
-									<Layout>
+									<Layout showSidebar={router.showSidebar}>
 										<Page />
 									</Layout>
 								}
