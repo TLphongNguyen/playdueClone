@@ -3,7 +3,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 function Player({ avt, price, name, des, rate, quantity }) {
 	return (
-		<div className="wrap-content px-2">
+		<div className="wrap-content w-[20%] px-2">
 			<div className="content mb-[45px] border-[1px] border-solid border-[#e6e5ea] rounded-[10px] cursor-pointer overflow-hidden h-[356px]">
 				<div className="avt w-[238px] h-[238px] relative">
 					<img className="w-[100%] h-[100%] object-cover" src={avt} alt="anh dai dien" />
