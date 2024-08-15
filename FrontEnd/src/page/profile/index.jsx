@@ -126,13 +126,121 @@ function Profile() {
 						<p className="text-[#354052] text-[14px] font-[400] leading-[1.6] mb-[10px]">
 							Xinh đẹp có thừa
 						</p>
-						<ul className="list-img flex">
+						<ul className="list-img flex my-[23px]">
 							{imgs.map((img, index) => (
 								<li key={index} className="mr-[5px]">
 									<Image className="object-cover" width={121} height={121} src={img.src} />
 								</li>
 							))}
 						</ul>
+						<div className="des">
+							<p className="text-[14px] text-[#354052] font-[400] leading-[1.6] mb-[10px]">
+								Tớ tên Bảo Hân. ٩(ˊᗜˋ*)و ♡
+							</p>
+							<p className="text-[14px] text-[#354052] font-[400] leading-[1.6] mb-[10px]">
+								Full champ aram, 5vs5 all lane
+							</p>
+							<p className="text-[14px] text-[#354052] font-[400] leading-[1.6] mb-[10px]">
+								Valorant silver, for fun thui
+							</p>
+							<p className="text-[14px] text-[#354052] font-[400] leading-[1.6] mb-[10px]">On cam</p>
+							<p className="text-[14px] text-[#354052] font-[400] leading-[1.6] mb-[10px]">
+								Mic nhà không ồn
+							</p>
+							<p className="text-[14px] text-[#354052] font-[400] leading-[1.6] mb-[10px]">
+								Yêu anh Phong
+							</p>
+						</div>
+						<hr className="my-5 border-t-[1px] border-solid border-[#eee]" />
+						<div className="top-donate">
+							<h2 className="text-[#354052] text-[24px] mt-[30px] font-[700] ">Top Donate Tháng</h2>
+							<ul className="list-donate mt-8">
+								<li className="flex mb-2">
+									<div className="w-[8.33333333%] text-[#354052] font-[700]">#1</div>
+									<div className="flex w-[58.33333333%] items-center cursor-pointer">
+										<img
+											className="w-[25px] h-[25px] rounded-[50%] object-cover mr-2"
+											src="https://files.playerduo.net/production/images/56bf2506-6fdf-4565-a0e7-ae6c30c1d67c__4e8b1c50-bee2-11ee-9524-4bb33b42dae7__page_avatar.jpg"
+											alt=""
+										/>
+										<span className="text-[13.5px] text-[#5f67f8]">_rlarlgus</span>
+									</div>
+									<div className="w-[33.33333333%] text-right">
+										<span className="text-[#354052] font-[600] ">750,000 đ</span>
+									</div>
+								</li>
+								<li className="flex mb-2">
+									<div className="w-[8.33333333%] text-[#354052] font-[700]">#2</div>
+									<div className="flex w-[58.33333333%] items-center cursor-pointer">
+										<img
+											className="w-[25px] h-[25px] rounded-[50%] object-cover mr-2"
+											src="https://files.playerduo.net/production/images/38799154-7eb3-4f42-aab8-f7851403ae7b__f9adefc0-4e54-11ef-9d0b-ad86dd3aa890__page_avatar.jpg"
+											alt=""
+										/>
+										<span className="text-[13.5px] text-[#5f67f8]">dmq</span>
+									</div>
+									<div className="w-[33.33333333%] text-right">
+										<span className="text-[#354052] font-[600] ">420,000 đ</span>
+									</div>
+								</li>
+								<li className="flex mb-2">
+									<div className="w-[8.33333333%] text-[#354052] font-[700]">#3</div>
+									<div className="flex w-[58.33333333%] items-center cursor-pointer">
+										<img
+											className="w-[25px] h-[25px] rounded-[50%] object-cover mr-2"
+											src="https://files.playerduo.net/production/images/e01bc820-5e7e-4518-adad-6b1f3b05091e__21002560-edb3-11ed-a657-a54d6be1d46a__page_avatar.jpg"
+											alt=""
+										/>
+										<span className="text-[13.5px] text-[#5f67f8]">Dev Nguyen</span>
+									</div>
+									<div className="w-[33.33333333%] text-right">
+										<span className="text-[#354052] font-[600] ">300,000 đ</span>
+									</div>
+								</li>
+								<li className="flex mb-2">
+									<div className="w-[8.33333333%] text-[#354052] font-[700]">#4</div>
+									<div className="flex w-[58.33333333%] items-center cursor-pointer">
+										<img
+											className="w-[25px] h-[25px] rounded-[50%] object-cover mr-2"
+											src="https://files.playerduo.net/production/images/df325fed-fc54-446d-a181-0773cf39ec78__6b163bd0-3cae-11ef-906c-b3d37e9ba1d3__page_avatar.jpg"
+											alt=""
+										/>
+										<span className="text-[13.5px] text-[#5f67f8]">band4band</span>
+									</div>
+									<div className="w-[33.33333333%] text-right">
+										<span className="text-[#354052] font-[600] ">300,000 đ</span>
+									</div>
+								</li>
+								<li className="flex mb-2">
+									<div className="w-[8.33333333%] text-[#354052] font-[700]">#5</div>
+									<div className="flex w-[58.33333333%] items-center cursor-pointer">
+										<img
+											className="w-[25px] h-[25px] rounded-[50%] object-cover mr-2"
+											src="https://files.playerduo.net/production/images/avatar9.png"
+											alt=""
+										/>
+										<span className="text-[13.5px] text-[#5f67f8]">Anh Yêu</span>
+									</div>
+									<div className="w-[33.33333333%] text-right">
+										<span className="text-[#354052] font-[600] ">140,000 đ</span>
+									</div>
+								</li>
+								<li className="flex mb-2">
+									<div className="w-[8.33333333%] text-[#354052] font-[700]">#6</div>
+									<div className="flex w-[58.33333333%] items-center cursor-pointer">
+										<img
+											className="w-[25px] h-[25px] rounded-[50%] object-cover mr-2"
+											src="https://scontent.fhan5-11.fna.fbcdn.net/v/t39.30808-1/454233584_2132161577184054_7389241553987889197_n.jpg?stp=dst-jpg_p200x200&_nc_cat=103&ccb=1-7&_nc_sid=0ecb9b&_nc_ohc=E_bsEexhIEAQ7kNvgHMHacK&_nc_ht=scontent.fhan5-11.fna&oh=00_AYDLsqE_K4eb6_X7Y4nRQRQ9JF8F9SjTRxLysmYBMurWOw&oe=66C32B8A"
+											alt=""
+										/>
+										<span className="text-[13.5px] text-[#5f67f8]">Phong Nguyen</span>
+									</div>
+									<div className="w-[33.33333333%] text-right">
+										<span className="text-[#354052] font-[600] ">50,000 đ</span>
+									</div>
+								</li>
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
