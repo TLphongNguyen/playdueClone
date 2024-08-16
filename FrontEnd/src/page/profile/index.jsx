@@ -1,10 +1,33 @@
+import { useState } from 'react';
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
-import { faPlay, faHeart, faCamera, faStar, faMessage } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faHeart, faCamera, faStar, faMessage, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Image } from 'antd';
+import { Image, Modal } from 'antd';
 
 import Rates from '~/components/rates';
 function Profile() {
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isModalOpenChat, setIsModalOpenChat] = useState(false);
+
+	const showModal = () => {
+		setIsModalOpen(true);
+	};
+	const showModalChat = () => {
+		setIsModalOpenChat(true);
+	};
+
+	const handleOk = () => {
+		setIsModalOpen(false);
+	};
+	const handleCancel = () => {
+		setIsModalOpen(false);
+	};
+	const handleOkChat = () => {
+		setIsModalOpenChat(false);
+	};
+	const handleCancelChat = () => {
+		setIsModalOpenChat(false);
+	};
 	const imgs = [
 		{
 			src: 'https://files.playerduo.net/production/images/3854718d-9f59-4fa6-bf01-f6312fdf5924__c4f67bb0-480c-11ef-8bd0-31c0a9baf30a__player_album.jpg',
@@ -264,14 +287,118 @@ function Profile() {
 						<button className="w-[100%] h-[54px] text-[16px] mt-[10px] px-[6px] bg-[#f0564a] text-[#fff] rounded-[10px] font-[700] uppercase">
 							Thuê
 						</button>
-						<button className="w-[100%] h-[54px] text-[16px] border-[1px] border-[#e2e6ea] border-solid text-[#354052] bg-[#fff] mt-[10px] px-[6px] rounded-[10px] font-[700] uppercase">
+						<button
+							onClick={showModal}
+							className="w-[100%] h-[54px] text-[16px] border-[1px] border-[#e2e6ea] border-solid text-[#354052] bg-[#fff] mt-[10px] px-[6px] rounded-[10px] font-[700] uppercase"
+						>
 							Donate
 						</button>
-						<button className="w-[100%] h-[54px] text-[16px] border-[1px] border-[#e2e6ea] border-solid text-[#354052] bg-[#fff] mt-[10px] px-[6px] rounded-[10px] font-[700] uppercase">
+						<button
+							onClick={showModalChat}
+							className="w-[100%] h-[54px] text-[16px] border-[1px] border-[#e2e6ea] border-solid text-[#354052] bg-[#fff] mt-[10px] px-[6px] rounded-[10px] font-[700] uppercase"
+						>
 							<FontAwesomeIcon className="mr-[5px]" icon={faMessage} />
 							chat
 						</button>
 					</div>
+					<Modal
+						width={'600px'}
+						height={'474px'}
+						footer={false}
+						title="Donate"
+						open={isModalOpen}
+						onOk={handleOk}
+						onCancel={handleCancel}
+					>
+						<div className="p-[15px]">
+							<div className="w-[100%] flex">
+								<span className="w-[40%] block text-[14px] text-[#354052] font-[600] p-[10px]">
+									Người nhận:
+								</span>
+								<span className="w-[60%] block text-[14px] text-[#354052] font-[600] p-[10px]">
+									Hanny
+								</span>
+							</div>
+							<div className="w-[100%] flex">
+								<span className="w-[40%] block text-[14px] text-[#354052] font-[600] p-[10px]">
+									Số dư hiện tại:
+								</span>
+								<button className="p-[10px] flex">
+									<span className="text-[#f0564a]">0đ</span>
+									<div className="bg-[#f0564a] text-[#fff] py-[1.5px] px-[6px] text-center rounded-[50%] ml-[10px]">
+										<FontAwesomeIcon className="" icon={faPlus} />
+									</div>
+								</button>
+							</div>
+							<div className="flex items-center">
+								<span className="block w-[40%] text-[14px] text-[#354052] font-[600] p-[10px]">
+									Số tiền muốn Donate :
+								</span>
+								<div className="p-[10px] w-[60%]">
+									<input
+										className="w-[100%] h-10 bg-[#fff] py-2 px-3 text-[#354052] border-[1px] border-[#e3e3e3] border-solid rounded-[4px]"
+										type="text"
+									/>
+								</div>
+							</div>
+							<div className="flex items-center">
+								<span className="block w-[40%] text-[14px] text-[#354052] font-[600] p-[10px]">
+									Tên hiển thị: :
+								</span>
+								<div className="p-[10px] w-[60%]">
+									<input
+										defaultValue={'Name'}
+										className="w-[100%] h-10 bg-[#fff] py-2 px-3 text-[#354052] border-[1px] border-[#e3e3e3] border-solid rounded-[4px]"
+										type="text"
+									/>
+								</div>
+							</div>
+							<div className="p-[10px]">
+								<textarea
+									className="h-[100px] w-[100%] py-2 px-3 border-[1px] border-[#e3e3e3] border-solid outline-none resize-none rounded-[4px] focus:border-[#333] transition-all"
+									placeholder="Message"
+									name=""
+									id=""
+								></textarea>
+							</div>
+						</div>
+						<div className="p-[15px] border-t-[1px] border-[#e3e3e3] border-solid text-right">
+							<button className="bg-[#f0564a] text-[#fff] text-[13px] font-[600] py-2 px-4 rounded-[4px]">
+								Donate
+							</button>
+							<button className="bg-[#fff] text-[13px] ml-[5px] text-[#354052] border-[1px] border-[#e3e3e3] border-solid  py-2 px-4 rounded-[4px]">
+								Đóng
+							</button>
+						</div>
+					</Modal>
+					<Modal
+						width={'600px'}
+						height={'474px'}
+						title="Gửi tin nhắn đầu tiên"
+						open={isModalOpenChat}
+						onOk={handleOkChat}
+						onCancel={handleCancelChat}
+						footer={false}
+					>
+						<div className="">
+							<div className="p-[25px]">
+								<textarea
+									className="h-[100px] w-[100%] py-2 px-3 border-[1px] border-[#e3e3e3] border-solid outline-none resize-none rounded-[4px] focus:border-[#333] transition-all"
+									placeholder="Message"
+									name=""
+									id=""
+								></textarea>
+							</div>
+							<div className="p-[15px] border-t-[1px] border-[#e3e3e3] border-solid text-right">
+								<button className="bg-[#f0564a] text-[#fff] text-[13px] font-[600] py-2 px-4 rounded-[4px]">
+									Gửi tin nhắn
+								</button>
+								<button className="bg-[#fff] text-[13px] ml-[5px] text-[#354052] border-[1px] border-[#e3e3e3] border-solid  py-2 px-4 rounded-[4px]">
+									Đóng
+								</button>
+							</div>
+						</div>
+					</Modal>
 				</div>
 			</div>
 		</div>

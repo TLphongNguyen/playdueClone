@@ -47,6 +47,17 @@ label {
 .h-comment {
 	height: calc(100% - 215px);
 }
+.ant-modal-title {
+	text-align: center;
+	padding: 15px;
+	border-bottom: 1px solid #e5e5e5;
+	font-size: 18px !important;
+	color: #354052 !important;
+	font-weight: 700;
+}
+.ant-modal-header {
+	margin-bottom: 0 !important;
+}
 .ant-select-selector,
 .ant-input {
 	border-radius: 25px !important;
