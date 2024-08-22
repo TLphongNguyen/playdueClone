@@ -8,9 +8,11 @@ import { faBell } from '@fortawesome/free-regular-svg-icons';
 
 import Login from '~/components/Login';
 import Register from '~/components/Register';
+import Rankings from '~/components/Rankings';
 
 function Header() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isModalOpenRanking, setIsModalOpenRanking] = useState(false);
 	const [isLogin, setIsLogin] = useState(true);
 	const showModal = () => {
 		setIsLogin(true);
@@ -21,6 +23,18 @@ function Header() {
 	};
 	const handleCancel = () => {
 		setIsModalOpen(false);
+	};
+
+	const showRankings = () => {
+		setIsModalOpenRanking(true);
+	};
+
+	const handleOkRankings = () => {
+		setIsModalOpenRanking(false);
+	};
+
+	const handleCancelRankings = () => {
+		setIsModalOpenRanking(false);
 	};
 	const toggleComponent = () => {
 		setIsLogin(!isLogin);
@@ -35,7 +49,7 @@ function Header() {
 						alt="anh logo"
 					/>
 				</div>
-				<div className="flex">
+				<div className="flex ml-[200px]">
 					<Tippy
 						content={
 							<span
@@ -94,11 +108,25 @@ function Header() {
 							</a>
 						</div>
 					</Tippy>
-					<div className="mx-[10px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center">
-						<a className="block h-[45px] w-[45px] " href=" #">
+					<div
+						onClick={showRankings}
+						className="mx-[10px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center"
+					>
+						<a className="block h-[45px] w-[45px] ">
 							<TrophyOutlined className="h-[100%]  hover:text-[#f0564a]" style={{ fontSize: '24px' }} />
 						</a>
 					</div>
+					<Modal
+						title="Bảng xếp hạng đại gia"
+						open={isModalOpenRanking}
+						onOk={handleOkRankings}
+						onCancel={handleCancelRankings}
+						width={'600px'}
+						height={'960px'}
+						footer={false}
+					>
+						<Rankings />
+					</Modal>
 				</div>
 				<div className="flex">
 					<Tippy
@@ -147,15 +175,15 @@ function Header() {
 							<span className="text-[16px]">0 đ</span>
 						</a>
 					</div>
-					{/* <div className="mx-[2px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center">
+					<div className="mx-[2px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center">
 						<a className=" h-[45px] w-[45px] flex " href=" #">
 							<FontAwesomeIcon
 								className="text-[24px] items-center text-center m-auto hover:text-[#f0564a]"
 								icon={faUserTie}
 							/>
 						</a>
-					</div> */}
-					<div className="mx-[2px] bg-[#e8e8e8] rounded-[25px] leading-[45px] w-[110px] h-[45px] text-center">
+					</div>
+					{/* <div className="mx-[2px] bg-[#e8e8e8] rounded-[25px] leading-[45px] w-[110px] h-[45px] text-center">
 						<button onClick={showModal} className="font-[600]">
 							Đăng nhập
 						</button>
@@ -174,7 +202,7 @@ function Header() {
 								<Register toggleComponent={toggleComponent} />
 							)}
 						</Modal>
-					</div>
+					</div> */}
 					<div className="mx-[2px] border-l-1px border-solid border-[#ececec]  w-[45px] h-[45px] text-center">
 						<a className=" h-[45px] w-[45px] flex  hover:text-[#f0564a] items-center" href=" #">
 							<FontAwesomeIcon className="text-[24px] items-center text-center m-auto" icon={faMoon} />
