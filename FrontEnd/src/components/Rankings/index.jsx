@@ -24,7 +24,7 @@ function Rankings() {
 							<img
 								src="https://files.playerduo.net/production/static-files/no1_top_list.png"
 								alt=""
-								className="absolute top-[-35px] r-[187px]"
+								className="absolute top-[-35px] right-[187px]"
 							/>
 							<span className="mt-[30px] text-[#f0564a] mb-[10px] text-[14px] leading-[25px] block font-[700]">
 								Hạ Lạ

@@ -9,6 +9,7 @@ import { faBell } from '@fortawesome/free-regular-svg-icons';
 import Login from '~/components/Login';
 import Register from '~/components/Register';
 import Rankings from '~/components/Rankings';
+import { Link } from 'react-router-dom';
 
 function Header() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -71,12 +72,12 @@ function Header() {
 						delay={[300, 0]}
 					>
 						<div className="mx-[10px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center">
-							<a className="block h-[45px] w-[45px]" href="#">
+							<Link to="/" className="block h-[45px] w-[45px]" href="#">
 								<HomeOutlined
 									className="text-[#f0564a] h-[100%] hover:text-[#f0564a]"
 									style={{ fontSize: '24px' }}
 								/>
-							</a>
+							</Link>
 						</div>
 					</Tippy>
 					<Tippy
@@ -100,12 +101,12 @@ function Header() {
 						delay={[300, 0]}
 					>
 						<div className="mx-[10px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center">
-							<a className="block h-[45px] w-[45px] " href=" #">
+							<Link to="/story" className="block h-[45px] w-[45px] " href=" #">
 								<VideoCameraOutlined
 									className="h-[100%]  hover:text-[#f0564a]"
 									style={{ fontSize: '24px' }}
 								/>
-							</a>
+							</Link>
 						</div>
 					</Tippy>
 					<div
