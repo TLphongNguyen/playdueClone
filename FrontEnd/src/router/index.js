@@ -9,7 +9,7 @@ import Player from '~/components/sidebar/players';
 
 const publicRouter = [
 	{ path: '/', components: Home, showSidebar: true, sidebar: Game },
-	{ path: '/maze', components: Maze, showSidebar: true },
+	{ path: '/maze', components: Maze, showSidebar: true, sidebar: Game },
 	{ path: '/profile', components: Profile, showSidebar: false },
 	{ path: '/story', components: Stories, showSidebar: true, sidebar: Player },
 ];
