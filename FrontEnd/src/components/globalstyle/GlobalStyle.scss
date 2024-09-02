@@ -69,3 +69,16 @@ label {
 	line-height: 1.2 !important;
 	min-height: 0 !important;
 }
+.ant-menu-light .ant-menu-submenu-selected > .ant-menu-submenu-title {
+	color: #354052 !important;
+}
+
+.ant-menu-light .ant-menu-item-selected,
+.ant-menu-light.ant-menu-inline .ant-menu-sub.ant-menu-inline {
+	color: #f0564a;
+	background-color: #fafafa;
+}
+.ant-menu-title-content {
+	font-weight: 600;
+	font-size: 14px;
+}

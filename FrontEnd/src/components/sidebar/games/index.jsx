@@ -52,7 +52,7 @@ function Game() {
 		},
 	];
 	return (
-		<div className="wrap-content">
+		<div className="wrap-content w-[224px] bg-[#eeeeee] h-[100%] pt-5">
 			<div className="pl-[14px] pb-[5px]">
 				<h3 className="text-[14px] mb-[10px] text-[#bcbcbc] font-[700]">Danh mục game</h3>
 			</div>

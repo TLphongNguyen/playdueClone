@@ -20,7 +20,7 @@ function Player() {
 		document.getElementById('input-story').click();
 	};
 	return (
-		<div className="wrap-content">
+		<div className="wrap-content w-[224px] bg-[#eeeeee] h-[100%] pt-5">
 			<div className="flex items-center px-[10px] pb-[20px] cursor-pointer" onClick={showModal}>
 				<div className="flex justify-center items-center w-[36px] h-[36px] bg-[#d9d9d9] mr-[5px] border-[1px] border-solid border-[#f0564a] rounded-[50%]">
 					<FontAwesomeIcon className="text-[18px] text-[#fff] font-[700]" icon={faPlus} />
