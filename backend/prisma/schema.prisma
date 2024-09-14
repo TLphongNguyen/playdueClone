@@ -1,0 +1,123 @@
+datasource db {
+  provider = "mysql"
+  url      = "mysql://root:28062003@localhost:3306/playerdue"
+}
+generator client {
+  provider = "prisma-client-js"
+}
+model AccountType {
+  accountTypeId Int    @id @default(autoincrement())
+  accountTypeName String
+  account       Account[]
+}
+model Account {
+  accountId     Int      @id @default(autoincrement())
+  username      String
+  password      String
+  accountTypeId Int
+  Salt          String
+  accountType   AccountType @relation(fields: [accountTypeId], references: [accountTypeId])
+  customers     Customer[]
+}
+model Customer {
+  customerId Int      @id @default(autoincrement())
+  accountId  Int      
+  fullName   String
+  nickname    String
+  avt        String
+  birthday   DateTime
+  email      String
+  address    String?
+  money      Int
+  status     Int
+  account    Account  @relation(fields: [accountId], references: [accountId])
+  detailCustomer DetailCustomer?
+  rents rent[]
+  comments commentStory[]
+  donates donate[]
+  story story[]
+  sentMessages    Message[]      @relation("SentMessages")
+  receivedMessages Message[]     @relation("ReceivedMessages")
+
+}
+model DetailCustomer {
+  detailCustomerId Int @id @default(autoincrement())
+  customerId Int       @unique
+  Abum String
+  Facebook String
+  youtube String
+  highlight String
+  price      Int
+  games      GamesOnCustomers[]
+  mic Boolean
+  cam Boolean
+  customer Customer @relation(fields: [customerId], references: [customerId])
+}
+model Games {
+  gameId Int @id @default(autoincrement())
+  gameName String
+  DetailCustomer  GamesOnCustomers[]
+}
+model GamesOnCustomers {
+  detailCustomerId Int
+  gameId     Int
+  DetailCustomer   DetailCustomer @relation(fields: [detailCustomerId], references: [detailCustomerId])
+  Game       Games    @relation(fields: [gameId], references: [gameId])
+
+  @@id([detailCustomerId, gameId])
+}
+model rent {
+  rentId Int @id @default(autoincrement())
+  customerId Int
+  date DateTime
+  hour Int
+  customers Customer @relation(fields: [customerId], references: [customerId])
+  rentDetails rentDetails?
+}
+model rentDetails {
+  rentDetailsId Int
+  rentId Int @unique
+  Rating Int
+  comment String
+  rents rent @relation(fields: [rentId], references: [rentId])
+}
+model story {
+  storyId Int @id @default(autoincrement())
+  customerId Int
+  urlStory String
+  caption String
+  hagtag String?
+  likes   Int
+  views Int
+  stautusStory Boolean
+  time DateTime
+  customers Customer @relation(fields: [customerId], references: [customerId])
+  commentStory commentStory[]
+}
+model commentStory {
+  commentStoryId Int @id @default(autoincrement())
+  storyId Int 
+  customerId Int 
+  content String
+  time DateTime
+  storys story @relation(fields: [storyId],references: [storyId])
+  customers Customer @relation(fields: [customerId], references: [customerId])
+}
+model donate {
+  donateId Int @id @default(autoincrement())
+  customerId Int
+  idDonateTo Int
+  des String
+  money Int
+  customers Customer @relation(fields: [customerId], references: [customerId])
+}
+model Message {
+  messageId  Int       @id @default(autoincrement())
+  content    String
+  sentAt     DateTime  @default(now())
+  readAt     DateTime?
+  senderId   Int
+  receiverId Int
+  sender     Customer  @relation("SentMessages", fields: [senderId], references: [customerId])
+  receiver   Customer  @relation("ReceivedMessages", fields: [receiverId], references: [customerId])
+}
