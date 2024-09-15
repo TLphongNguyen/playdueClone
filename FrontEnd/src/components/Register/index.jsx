@@ -40,7 +40,7 @@ function Register({ toggleComponent }) {
 	};
 
 	return (
-		<div className="wrap-content">
+		<div className="wrap-content bg-[#fff] rounded-[8px] shadow-[5px_5px_7px_0px_rgba(157, 157, 157, 1)]">
 			<div className="py-[10px] px-[30px] h-[100%]">
 				<div className="mt-[30px] mb-[50px] text-center">
 					<img
@@ -92,9 +92,15 @@ function Register({ toggleComponent }) {
 						onChange={onReCAPTCHAChange}
 					/>
 					{errors.recaptcha && <p className="text-red-500">Vui lòng xác minh rằng bạn không phải là robot</p>}
+					<button
+						type="submit"
+						className="h-[42px] w-[100%] rounded-[10px] mb-[7px] mt-[25px] px-[15px] bg-[#f0564a] text-[#fff] text-[15px] font-[600] hover:bg-[#ef4b3f]"
+					>
+						Đăng ký
+					</button>
 				</form>
 				<div className="flex justify-between items-center">
-					<span onClick={toggleComponent} className="mb-[15px] w-[100%] text-left block">
+					<span onClick={toggleComponent} className="mb-[15px] w-[100%] text-left block cursor-pointer">
 						<span className="text-[#1e1f24] hover:text-[#f0564a] underline">Đăng nhập tài khoản</span>
 					</span>
 					<span className="w-[100%] text-right block mb-[10px]">

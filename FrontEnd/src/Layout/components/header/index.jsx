@@ -15,36 +15,25 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
-import { Menu, Dropdown, Modal, Avatar, Button } from 'antd';
+import { Dropdown, Modal } from 'antd';
 import { HomeOutlined, TrophyOutlined, VideoCameraOutlined } from '@ant-design/icons';
-import Login from '~/components/Login';
-import Register from '~/components/Register';
+
 import Rankings from '~/components/Rankings';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { setUserInfo, logout } from '~/redux/userSlice';
+import { logout } from '~/redux/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
 	const userInfo = useSelector((state) => state.user.userInfo);
-	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isModalOpenRanking, setIsModalOpenRanking] = useState(false);
-	const [isLogin, setIsLogin] = useState(true);
+	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const handleLogout = () => {
 		dispatch(logout());
+		sessionStorage.removeItem('token');
+		navigate('/register');
 	};
-	const showModal = () => {
-		setIsLogin(true);
-		setIsModalOpen(true);
-	};
-	const handleOk = () => {
-		setIsModalOpen(false);
-	};
-	const handleCancel = () => {
-		setIsModalOpen(false);
-	};
-
 	const showRankings = () => {
 		setIsModalOpenRanking(true);
 	};
@@ -56,140 +45,123 @@ function Header() {
 	const handleCancelRankings = () => {
 		setIsModalOpenRanking(false);
 	};
-	const toggleComponent = () => {
-		setIsLogin(!isLogin);
-	};
-	useEffect(() => {
-		const fetchCustomer = async () => {
-			try {
-				const token = sessionStorage.getItem('token');
 
-				const response = await axios.get('http://localhost:3003/api/auth/customer', {
-					headers: {
-						authorization: token,
-					},
-				});
-				dispatch(setUserInfo(response.data));
-			} catch (error) {
-				console.error('Error fetching customer:', error);
-			}
-		};
-		fetchCustomer();
-	}, [dispatch]);
-	// const items = [
-	// 	{
-	// 		label: (
-	// 			<div className="flex items-center">
-	// 				<div className="w-[55px] h-[55px] mr-[10px]">
-	// 					<img className="w-[100%] h-[100%] rounded-[50%]" src={userInfo.avt} alt="" />
-	// 				</div>
-	// 				<div className="">
-	// 					<span className="block text-[16px] font-[600] leading-[1.1]">{userInfo.fullName}</span>
-	// 					<span className="block">{userInfo.email}</span>
-	// 					<span className="block text-[#90959c] text-[11px]">Xem trang player của bạn</span>
-	// 				</div>
-	// 			</div>
-	// 		),
-	// 		key: '01',
-	// 	},
-	// 	{
-	// 		type: 'divider',
-	// 	},
-	// 	{
-	// 		label: (
-	// 			<div className="flex items-center">
-	// 				<div className="w-[30px] h-[30px] rounded-[50%] bg-[#dcdcdc] pl-[3px] mr-[8px]">
-	// 					<span className="h-[100%] block">
-	// 						<FontAwesomeIcon icon={faMinus} className="py-[7px] mx-auto block" />
-	// 					</span>
-	// 				</div>
-	// 				<span className="text-[15px] font-[550] ">Rút tiền</span>
-	// 			</div>
-	// 		),
-	// 		key: '0',
-	// 	},
-	// 	{
-	// 		label: (
-	// 			<div className="flex items-center">
-	// 				<div className="w-[30px] h-[30px] rounded-[50%] bg-[#dcdcdc] pl-[3px] mr-[8px]">
-	// 					<span className="h-[100%] block">
-	// 						<FontAwesomeIcon icon={faCreditCard} className="py-[7px] mx-auto block" />
-	// 					</span>
-	// 				</div>
-	// 				<span className="text-[15px] font-[550] ">Mua thẻ</span>
-	// 			</div>
-	// 		),
-	// 		key: '1',
-	// 	},
-	// 	{
-	// 		label: (
-	// 			<div className="flex items-center">
-	// 				<div className="w-[30px] h-[30px] rounded-[50%] bg-[#dcdcdc] pl-[3px] mr-[8px]">
-	// 					<span className="h-[100%] block">
-	// 						<FontAwesomeIcon icon={faUserLock} className="py-[7px] mx-auto block" />
-	// 					</span>
-	// 				</div>
-	// 				<span className="text-[15px] font-[550] ">Tạo khóa bảo vệ</span>
-	// 			</div>
-	// 		),
-	// 		key: '2',
-	// 	},
-	// 	{
-	// 		label: (
-	// 			<div className="flex items-center">
-	// 				<div className="w-[30px] h-[30px] rounded-[50%] bg-[#dcdcdc] pl-[3px] mr-[8px]">
-	// 					<span className="h-[100%] block">
-	// 						<FontAwesomeIcon icon={faClock} className="py-[7px] mx-auto block" />
-	// 					</span>
-	// 				</div>
-	// 				<span className="text-[15px] font-[550] ">Lịch sử giao dịch</span>
-	// 			</div>
-	// 		),
-	// 		key: '3',
-	// 	},
-	// 	{
-	// 		label: (
-	// 			<div className="flex items-center">
-	// 				<div className="w-[30px] h-[30px] rounded-[50%] bg-[#dcdcdc] pl-[3px] mr-[8px]">
-	// 					<span className="h-[100%] block">
-	// 						<FontAwesomeIcon icon={faUserGroup} className="py-[7px] mx-auto block" />
-	// 					</span>
-	// 				</div>
-	// 				<span className="text-[15px] font-[550] ">Theo dõi Player</span>
-	// 			</div>
-	// 		),
-	// 		key: '4',
-	// 	},
-	// 	{
-	// 		label: (
-	// 			<div className="flex items-center">
-	// 				<div className="w-[30px] h-[30px] rounded-[50%] bg-[#dcdcdc] pl-[3px] mr-[8px]">
-	// 					<span className="h-[100%] block">
-	// 						<FontAwesomeIcon icon={faGears} className="py-[7px] mx-auto block" />
-	// 					</span>
-	// 				</div>
-	// 				<span className="text-[15px] font-[550] ">Cài đặt tài khoản</span>
-	// 			</div>
-	// 		),
-	// 		key: '5',
-	// 	},
-	// 	{
-	// 		label: (
-	// 			<div className="flex items-center">
-	// 				<div className="w-[30px] h-[30px] rounded-[50%] bg-[#dcdcdc] pl-[3px] mr-[8px]">
-	// 					<span className="h-[100%] block">
-	// 						<FontAwesomeIcon icon={faPowerOff} className="py-[7px] mx-auto block" />
-	// 					</span>
-	// 				</div>
-	// 				<span className="text-[15px] font-[550] ">Đăng xuất</span>
-	// 			</div>
-	// 		),
-	// 		key: '6',
-	// 	},
-	// 	{
-	// 		type: 'divider',
-	// 	},
-	// ];
+	const items = userInfo
+		? [
+				{
+					label: (
+						<div className="flex items-center">
+							<div className="w-[55px] h-[55px] mr-[10px]">
+								<img className="w-[100%] h-[100%] rounded-[50%]" src={userInfo.avt} alt="" />
+							</div>
+							<div className="">
+								<span className="block text-[16px] font-[600] leading-[1.1]">{userInfo.fullName}</span>
+								<span className="block">{userInfo.email}</span>
+								<span className="block text-[#90959c] text-[11px]">Xem trang player của bạn</span>
+							</div>
+						</div>
+					),
+					key: '01',
+				},
+				{
+					type: 'divider',
+				},
+				{
+					label: (
+						<div className="flex items-center">
+							<div className="w-[30px] h-[30px] rounded-[50%] bg-[#dcdcdc] pl-[3px] mr-[8px]">
+								<span className="h-[100%] block">
+									<FontAwesomeIcon icon={faMinus} className="py-[7px] mx-auto block" />
+								</span>
+							</div>
+							<span className="text-[15px] font-[550] ">Rút tiền</span>
+						</div>
+					),
+					key: '0',
+				},
+				{
+					label: (
+						<div className="flex items-center">
+							<div className="w-[30px] h-[30px] rounded-[50%] bg-[#dcdcdc] pl-[3px] mr-[8px]">
+								<span className="h-[100%] block">
+									<FontAwesomeIcon icon={faCreditCard} className="py-[7px] mx-auto block" />
+								</span>
+							</div>
+							<span className="text-[15px] font-[550] ">Mua thẻ</span>
+						</div>
+					),
+					key: '1',
+				},
+				{
+					label: (
+						<div className="flex items-center">
+							<div className="w-[30px] h-[30px] rounded-[50%] bg-[#dcdcdc] pl-[3px] mr-[8px]">
+								<span className="h-[100%] block">
+									<FontAwesomeIcon icon={faUserLock} className="py-[7px] mx-auto block" />
+								</span>
+							</div>
+							<span className="text-[15px] font-[550] ">Tạo khóa bảo vệ</span>
+						</div>
+					),
+					key: '2',
+				},
+				{
+					label: (
+						<div className="flex items-center">
+							<div className="w-[30px] h-[30px] rounded-[50%] bg-[#dcdcdc] pl-[3px] mr-[8px]">
+								<span className="h-[100%] block">
+									<FontAwesomeIcon icon={faClock} className="py-[7px] mx-auto block" />
+								</span>
+							</div>
+							<span className="text-[15px] font-[550] ">Lịch sử giao dịch</span>
+						</div>
+					),
+					key: '3',
+				},
+				{
+					label: (
+						<div className="flex items-center">
+							<div className="w-[30px] h-[30px] rounded-[50%] bg-[#dcdcdc] pl-[3px] mr-[8px]">
+								<span className="h-[100%] block">
+									<FontAwesomeIcon icon={faUserGroup} className="py-[7px] mx-auto block" />
+								</span>
+							</div>
+							<span className="text-[15px] font-[550] ">Theo dõi Player</span>
+						</div>
+					),
+					key: '4',
+				},
+				{
+					label: (
+						<Link to="/setting/inforplayer" className="flex items-center">
+							<div className="w-[30px] h-[30px] rounded-[50%] bg-[#dcdcdc] pl-[3px] mr-[8px]">
+								<span className="h-[100%] block">
+									<FontAwesomeIcon icon={faGears} className="py-[7px] mx-auto block" />
+								</span>
+							</div>
+							<span className="text-[15px] font-[550] ">Cài đặt tài khoản</span>
+						</Link>
+					),
+					key: '5',
+				},
+				{
+					label: (
+						<div onClick={handleLogout} className="flex items-center">
+							<div className="w-[30px] h-[30px] rounded-[50%] bg-[#dcdcdc] pl-[3px] mr-[8px]">
+								<span className="h-[100%] block">
+									<FontAwesomeIcon icon={faPowerOff} className="py-[7px] mx-auto block" />
+								</span>
+							</div>
+							<span className="text-[15px] font-[550] ">Đăng xuất</span>
+						</div>
+					),
+					key: '6',
+				},
+				{
+					type: 'divider',
+				},
+			]
+		: [];
 	return (
 		<div className="gwap-content h-[68px] py-[10px] px-[15px] border-b-[1px] border-solid border-[#dcdcdc]">
 			<div className="hearder-content flex justify-between">
@@ -326,7 +298,7 @@ function Header() {
 							<span className="text-[16px]">0 đ</span>
 						</a>
 					</div>
-					{/* {userInfo ? (
+					{userInfo ? (
 						<Dropdown
 							menu={{
 								items,
@@ -345,27 +317,13 @@ function Header() {
 							</a>
 						</Dropdown>
 					) : (
-						<div className="mx-[2px] bg-[#e8e8e8] rounded-[25px] leading-[45px] w-[110px] h-[45px] text-center">
-							<button onClick={showModal} className="font-[600]">
-								Đăng nhập
-							</button>
-							<Modal
-								width={'446px'}
-								height={'552px'}
-								open={isModalOpen}
-								onOk={handleOk}
-								onCancel={handleCancel}
-								footer={null}
-								closable={false}
-							>
-								{isLogin ? (
-									<Login toggleComponent={toggleComponent} />
-								) : (
-									<Register toggleComponent={toggleComponent} />
-								)}
-							</Modal>
-						</div>
-					)} */}
+						<Link
+							to="/register"
+							className="mx-[2px] bg-[#e8e8e8] rounded-[25px] leading-[45px] w-[110px] h-[45px] text-center"
+						>
+							<button className="font-[600]">Đăng nhập</button>
+						</Link>
+					)}
 					<div className="mx-[2px] border-l-1px border-solid border-[#ececec]  w-[45px] h-[45px] text-center">
 						<a className=" h-[45px] w-[45px] flex  hover:text-[#f0564a] items-center" href=" #">
 							<FontAwesomeIcon className="text-[24px] items-center text-center m-auto" icon={faMoon} />

@@ -5,6 +5,8 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const middleware = async (req, res, next) => {
 	const token = req.headers.authorization;
+	// console.log(token);
+
 	if (!token) {
 		next(new UnauthorizedException('Unauthorized', errorCode.UNAUTHORED));
 	}

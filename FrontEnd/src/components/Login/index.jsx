@@ -2,13 +2,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { setUserInfo } from '~/redux/userSlice';
+import { AUTH_URL } from '~/config';
+import { useDispatch } from 'react-redux';
+
 function Login({ toggleComponent }) {
+	const dispatch = useDispatch();
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
-
+	const navigate = useNavigate();
 	const onSubmit = async (data) => {
 		try {
 			const response = await axios.post('http://localhost:3003/api/auth/login', data, {
@@ -21,12 +28,29 @@ function Login({ toggleComponent }) {
 			// Lưu token vào local storage hoặc state của ứng dụng
 			sessionStorage.setItem('token', token);
 			console.log('Đăng nhập thành công:', response.data);
+			fetchCustomer();
+			navigate('/');
 		} catch (error) {
 			console.error('Lỗi khi đăng ký:', error.response ? error.response.data : error.message);
 		}
 	};
+	const fetchCustomer = async () => {
+		try {
+			const token = sessionStorage.getItem('token');
+			const response = await axios.get(`${AUTH_URL}/customer`, {
+				headers: {
+					authorization: token,
+				},
+			});
+
+			dispatch(setUserInfo(response.data));
+		} catch (error) {
+			console.error('Error fetching customer:', error);
+		}
+	};
+
 	return (
-		<div className="wrap-content">
+		<div className="wrap-content bg-[#fff] rounded-[8px] shadow-[1.95px_1.95px_2.6px_rgba(0,0,0,0.15)]">
 			<div className="py-[10px] px-[30px] h-[100%]">
 				<div className="mt-[30px] mb-[50px] text-center">
 					<img

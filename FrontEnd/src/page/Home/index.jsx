@@ -100,7 +100,7 @@ function Home() {
 		},
 	];
 	return (
-		<div className="wrap-content mt-[34px]">
+		<div className="wrap-content mt-[34px] container w-[100%]">
 			<div className="flex overflow-x-auto no-scrollbar">
 				<div
 					onClick={showModal}
