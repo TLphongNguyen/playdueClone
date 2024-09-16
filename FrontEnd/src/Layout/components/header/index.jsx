@@ -306,12 +306,16 @@ function Header() {
 							trigger={['click']}
 						>
 							<a onClick={(e) => e.preventDefault()}>
-								<div className="mx-[2px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center">
+								<div className="mx-[2px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center overflow-hidden">
 									<a className=" h-[45px] w-[45px] flex " href=" #">
-										<FontAwesomeIcon
-											className="text-[24px] items-center text-center m-auto hover:text-[#f0564a]"
-											icon={faUserTie}
-										/>
+										{userInfo.avt ? (
+											<img className="w-100%" src={userInfo.avt} alt="" />
+										) : (
+											<FontAwesomeIcon
+												className="text-[24px] items-center text-center m-auto hover:text-[#f0564a]"
+												icon={faUserTie}
+											/>
+										)}
 									</a>
 								</div>
 							</a>

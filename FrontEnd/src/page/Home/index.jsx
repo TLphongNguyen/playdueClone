@@ -178,9 +178,10 @@ function Home() {
 				<form action="" className="flex justify-between">
 					<div className="flex ml-2">
 						<Select
-							className="select mx-1"
+							size="small"
+							className="select mx-1 rounded-[25px] text-[11px] border-[1px] border-solid border-[#d9d9d9] overflow-hidden"
 							defaultValue="Giới tính"
-							style={{ width: 85, height: 32 }}
+							style={{ width: 85, height: 32, fontSize: 11 }}
 							onChange={handleChangeGender}
 							options={[
 								{ value: '', label: 'Giới tính' },
@@ -189,7 +190,7 @@ function Home() {
 							]}
 						/>
 						<Select
-							className="select mx-1"
+							className="select mx-1 rounded-[25px] text-[11px] border-[1px] border-solid border-[#d9d9d9] overflow-hidden"
 							defaultValue="Thể loại"
 							style={{ width: 100, height: 32 }}
 							onChange={handleChangeCategory}
@@ -230,7 +231,7 @@ function Home() {
 							<Button>Khoảng giá</Button>
 						</Popover>
 						<Select
-							className="select mx-1"
+							className="select mx-1 rounded-[25px] text-[11px] border-[1px] border-solid border-[#d9d9d9] overflow-hidden"
 							defaultValue="Sống tại"
 							style={{ width: 160, height: 32 }}
 							onChange={handleChangeGender}
@@ -245,13 +246,13 @@ function Home() {
 							]}
 						/>
 						<Input
-							className="mx-1"
+							className="mx-1 rounded-[25px] text-[11px]"
 							style={{ width: 160, height: 32 }}
 							placeholder="Tên/Url Player"
 							autoComplete="off"
 						/>
 						<Input
-							className="mx-1"
+							className="mx-1 rounded-[25px] text-[11px]"
 							style={{ width: 160, height: 32 }}
 							placeholder="Tên game"
 							autoComplete="off"

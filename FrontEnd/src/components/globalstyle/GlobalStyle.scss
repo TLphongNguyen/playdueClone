@@ -57,17 +57,17 @@ label {
 .ant-modal-header {
 	margin-bottom: 0 !important;
 }
-.ant-select-selector,
-.ant-input {
-	border-radius: 25px !important;
+
+.ant-select-selector {
+	border: none !important;
 }
-.ant-select-selector,
-.ant-select-item,
-.ant-input {
-	font-size: 11px !important;
-	line-height: 1.2 !important;
-	min-height: 0 !important;
-}
+// .ant-select-selector,
+// .ant-select-item,
+// .ant-input {
+// 	font-size: 11px !important;
+// 	line-height: 1.2 !important;
+// 	min-height: 0 !important;
+// }
 .ant-menu-light .ant-menu-submenu-selected > .ant-menu-submenu-title {
 	color: #354052 !important;
 }
