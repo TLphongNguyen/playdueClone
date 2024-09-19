@@ -17,8 +17,14 @@ const userSlice = createSlice({
 			state.userInfo = null;
 			state.isLoggedIn = false;
 		},
+		updateUserInfo: (state, action) => {
+			state.userInfo = {
+				...state.userInfo,
+				...action.payload, // Cập nhật các thông tin thay đổi
+			};
+		},
 	},
 });
 
-export const { setUserInfo, logout } = userSlice.actions;
+export const { setUserInfo, logout, updateUserInfo } = userSlice.actions;
 export default userSlice.reducer;

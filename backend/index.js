@@ -1,24 +1,23 @@
-const { PrismaClient } = require("@prisma/client");
-const express = require("express");
+const { PrismaClient } = require('@prisma/client');
+const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3003;
-const rootRouter = require("./src/routers");
-const cors = require("cors");
-const errorMiddleware = require("./src/middlewares/error");
-app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
+const rootRouter = require('./src/routers');
+const cors = require('cors');
+const errorMiddleware = require('./src/middlewares/error');
+app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
 // Khởi tạo PrismaClient
 const prismaClient = new PrismaClient({
-  log: ["query"],
+	log: ['query'],
 });
 app.use(express.json());
-// Sử dụng middleware cho router
-app.use("/api", rootRouter);
-process.on("SIGINT", async () => {
-  await prisma.$disconnect();
-  process.exit(0);
+app.use('/api', rootRouter);
+process.on('SIGINT', async () => {
+	await prisma.$disconnect();
+	process.exit(0);
 });
 app.use(errorMiddleware);
 app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
+	console.log(`Listening on port ${PORT}`);
 });
 module.exports = prismaClient;

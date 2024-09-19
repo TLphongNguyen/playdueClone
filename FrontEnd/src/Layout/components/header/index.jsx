@@ -20,7 +20,7 @@ import { HomeOutlined, TrophyOutlined, VideoCameraOutlined } from '@ant-design/i
 
 import Rankings from '~/components/Rankings';
 import { Link } from 'react-router-dom';
-import { logout } from '~/redux/userSlice';
+import { logout } from '~/redux/slice/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 

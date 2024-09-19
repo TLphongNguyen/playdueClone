@@ -28,6 +28,7 @@ model Customer {
   birthday   DateTime
   email      String
   address    String?
+  gender     String?
   money      Int
   status     Int
   account    Account  @relation(fields: [accountId], references: [accountId])

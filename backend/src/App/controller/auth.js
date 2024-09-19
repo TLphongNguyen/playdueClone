@@ -30,6 +30,7 @@ const signUp = async (req, res, next) => {
 				email: email,
 				address: null,
 				money: 0,
+				gender: null,
 				status: 1,
 				account: {
 					create: {
@@ -76,4 +77,24 @@ const signIn = async (req, res) => {
 const customer = async (req, res) => {
 	res.json(req.customer);
 };
-module.exports = { signUp, signIn, customer };
+const UpdateCutomer = async (req, res) => {
+	const data = req.body;
+	// console.log(data);
+	try {
+		const update = await prisma.customer.update({
+			where: { customerId: data.customerId },
+			data: {
+				fullName: data.fullName,
+				nickname: data.nickname,
+				avt: data.avt,
+				birthday: new Date(data.birthday),
+				address: data.address,
+				gender: data.gender,
+			},
+		});
+		res.json(update);
+	} catch (err) {
+		console.log(err);
+	}
+};
+module.exports = { signUp, signIn, customer, UpdateCutomer };

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { faFacebook } from '@fortawesome/free-brands-svg-icons';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { setUserInfo } from '~/redux/userSlice';
+import { setUserInfo } from '~/redux/slice/userSlice';
 import { AUTH_URL } from '~/config';
 import { useDispatch } from 'react-redux';
 
