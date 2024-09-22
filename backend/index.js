@@ -1,5 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = process.env.PORT || 3003;
 const rootRouter = require('./src/routers');
@@ -17,6 +18,7 @@ process.on('SIGINT', async () => {
 	process.exit(0);
 });
 app.use(errorMiddleware);
+app.use(cookieParser());
 app.listen(PORT, () => {
 	console.log(`Listening on port ${PORT}`);
 });

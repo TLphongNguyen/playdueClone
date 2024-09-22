@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Menu } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 import {
 	faUsers,
 	faSliders,
@@ -16,13 +17,14 @@ import {
 	faGear,
 } from '@fortawesome/free-solid-svg-icons';
 function Setting() {
+	const navigate = useNavigate();
 	const items = [
 		{
 			key: 'sub1',
 			label: 'TÀI KHOẢN',
 			children: [
 				{
-					key: '1',
+					key: 'inforplayer',
 					label: 'Thông tin cá nhân',
 					icon: <UserOutlined />,
 				},
@@ -46,7 +48,7 @@ function Setting() {
 							label: 'Email',
 						},
 						{
-							key: '22',
+							key: 'changepass',
 							label: 'Tài khoản và mật khẩu',
 						},
 						{
@@ -224,9 +226,14 @@ function Setting() {
 			],
 		},
 	];
+	const clickItem = (e) => {
+		const link = e.key;
+		navigate(`/setting/${link}`);
+	};
 	return (
 		<div className="wrap-content w-[476px] bg-[#fafafa] h-[100%] pt-5">
 			<Menu
+				onClick={clickItem}
 				style={{
 					backgroundColor: '#fafafa',
 				}}

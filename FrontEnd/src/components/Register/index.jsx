@@ -21,7 +21,6 @@ function Register({ toggleComponent }) {
 		});
 	};
 	const onSubmit = async (data) => {
-		console.log(data);
 		try {
 			const response = await axios.post(`${AUTH_URL}/register`, data, {
 				headers: {

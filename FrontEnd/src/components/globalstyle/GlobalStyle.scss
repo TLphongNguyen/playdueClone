@@ -88,3 +88,9 @@ label {
 .ant-radio-inner {
 	margin-right: 30px;
 }
+.ant-switch.ant-switch-checked {
+	background-color: #f0564a;
+}
+.ant-switch.ant-switch-checked:hover:not(.ant-switch-disabled) {
+	background-color: #f86359;
+}

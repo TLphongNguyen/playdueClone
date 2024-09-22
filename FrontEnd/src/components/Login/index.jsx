@@ -7,16 +7,26 @@ import { useNavigate } from 'react-router-dom';
 import { setUserInfo } from '~/redux/slice/userSlice';
 import { AUTH_URL } from '~/config';
 import { useDispatch } from 'react-redux';
+import LinearProgress from '@mui/material/LinearProgress';
+import { notification } from 'antd';
 
 function Login({ toggleComponent }) {
 	const dispatch = useDispatch();
+	const [loading, setLoading] = useState(false);
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
+	const openNotificationWithIcon = (type, message, description) => {
+		notification[type]({
+			message: message,
+			description: description,
+		});
+	};
 	const navigate = useNavigate();
 	const onSubmit = async (data) => {
+		setLoading(true);
 		try {
 			const response = await axios.post('http://localhost:3003/api/auth/login', data, {
 				headers: {
@@ -26,17 +36,20 @@ function Login({ toggleComponent }) {
 			const token = response.data;
 
 			// Lưu token vào local storage hoặc state của ứng dụng
-			sessionStorage.setItem('token', token);
-			console.log('Đăng nhập thành công:', response.data);
-			fetchCustomer();
+			localStorage.setItem('token', token);
+			openNotificationWithIcon('success', 'Success', 'Đăng nhập thành công');
+
+			await fetchCustomer(token);
 			navigate('/');
 		} catch (error) {
 			console.error('Lỗi khi đăng ký:', error.response ? error.response.data : error.message);
+			openNotificationWithIcon('error', 'Error', 'Đăng nhập thất bại, kiểm tra lại thông tin');
+		} finally {
+			setLoading(false);
 		}
 	};
-	const fetchCustomer = async () => {
+	const fetchCustomer = async (token) => {
 		try {
-			const token = sessionStorage.getItem('token');
 			const response = await axios.get(`${AUTH_URL}/customer`, {
 				headers: {
 					authorization: token,
@@ -66,7 +79,7 @@ function Login({ toggleComponent }) {
 						className="h-[42px] w-[100%] rounded-[10px] mb-[7px] mt-[15px] border-[1px] border-solid border-[#444] opacity-80 text-[#333] px-[15px]"
 						placeholder="Tên đăng nhập hoặc email"
 					/>
-					{errors.usernameOrEmail && <p className="text-red-500">This field is required</p>}
+					{errors.email && <p className="text-red-500">This field is required</p>}
 
 					<input
 						{...register('password', { required: true })}
@@ -102,6 +115,7 @@ function Login({ toggleComponent }) {
 					</span>
 				</span>
 			</div>
+			{loading && <LinearProgress />}
 		</div>
 	);
 }

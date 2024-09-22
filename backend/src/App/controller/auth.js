@@ -50,6 +50,7 @@ const signUp = async (req, res, next) => {
 };
 const signIn = async (req, res) => {
 	const { email, password } = req.body;
+
 	try {
 		const existingUser = await prisma.account.findFirst({ where: { username: email } });
 		if (!existingUser) {
@@ -63,10 +64,10 @@ const signIn = async (req, res) => {
 			expiresIn: '8h',
 		});
 		res.cookie('token', Token, {
-			httpOnly: true, // Ngăn JavaScript phía client truy cập vào cookie
-			secure: true, // Đảm bảo cookie chỉ được gửi qua HTTPS
-			maxAge: 8 * 60 * 60 * 1000, // Thời hạn 8 giờ (tính bằng mili giây)
-			sameSite: 'strict', // Bảo vệ chống lại CSRF
+			httpOnly: true,
+			secure: process.env.NODE_ENV === 'production',
+			maxAge: 8 * 60 * 60 * 1000,
+			sameSite: 'strict',
 		});
 		res.json(Token);
 	} catch (err) {
@@ -74,12 +75,43 @@ const signIn = async (req, res) => {
 		console.log(err.message);
 	}
 };
+const updatePassword = async (req, res) => {
+	const { email, password, accountId } = req.body;
+	console.log(req.body);
+
+	try {
+		// Tìm người dùng với email được cung cấp
+		const account = await prisma.account.findFirst({ where: { username: email } });
+		if (!account) {
+			return res.status(400).json({ error: 'User does not exist' }); // Thông báo người dùng không tồn tại
+		}
+
+		// Tạo salt và hash password
+		const Salt = await bcrypt.genSalt(10);
+		const hashPassword = await bcrypt.hash(password, Salt);
+
+		// Cập nhật password và salt cho người dùng
+		const updatedAccount = await prisma.account.update({
+			where: { accountId: accountId }, // Điều kiện tìm người dùng
+			data: {
+				password: hashPassword,
+				Salt: Salt, // Nếu cần lưu Salt riêng
+			},
+		});
+
+		// Trả về phản hồi thành công
+		res.json(updatedAccount);
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json({ error: 'Something went wrong, please try again later' }); // Trả về lỗi
+	}
+};
+
 const customer = async (req, res) => {
 	res.json(req.customer);
 };
 const UpdateCutomer = async (req, res) => {
 	const data = req.body;
-	// console.log(data);
 	try {
 		const update = await prisma.customer.update({
 			where: { customerId: data.customerId },
@@ -97,4 +129,4 @@ const UpdateCutomer = async (req, res) => {
 		console.log(err);
 	}
 };
-module.exports = { signUp, signIn, customer, UpdateCutomer };
+module.exports = { signUp, signIn, customer, UpdateCutomer, updatePassword };

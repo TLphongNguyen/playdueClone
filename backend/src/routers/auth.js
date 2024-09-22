@@ -1,5 +1,5 @@
 const express = require('express');
-const { signUp, signIn, customer, UpdateCutomer } = require('../App/controller/auth');
+const { signUp, signIn, customer, UpdateCutomer, updatePassword } = require('../App/controller/auth');
 const middleware = require('../middlewares/auth');
 
 const authRouters = express.Router();
@@ -9,3 +9,4 @@ authRouters.post('/register', signUp);
 authRouters.post('/login', signIn);
 authRouters.get('/customer', [middleware], customer);
 authRouters.post('/updateCustomer', UpdateCutomer);
+authRouters.post('/updatepassword', updatePassword);

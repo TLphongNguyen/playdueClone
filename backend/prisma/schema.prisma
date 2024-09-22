@@ -37,8 +37,19 @@ model Customer {
   comments commentStory[]
   donates donate[]
   story story[]
+  recharge recharge[]
   sentMessages    Message[]      @relation("SentMessages")
   receivedMessages Message[]     @relation("ReceivedMessages")
+
+}
+model recharge {
+  rechargeId Int @id @default(autoincrement())
+  customerId Int
+  banks String
+  numberBank Int
+  dateRecharge DateTime @default(now())
+  customer Customer @relation(fields: [customerId], references: [customerId])
+
 
 }
 model DetailCustomer {
@@ -70,7 +81,7 @@ model GamesOnCustomers {
 model rent {
   rentId Int @id @default(autoincrement())
   customerId Int
-  date DateTime
+  date DateTime @default(now())
   hour Int
   customers Customer @relation(fields: [customerId], references: [customerId])
   rentDetails rentDetails?
@@ -91,7 +102,7 @@ model story {
   likes   Int
   views Int
   stautusStory Boolean
-  time DateTime
+  time DateTime @default(now())
   customers Customer @relation(fields: [customerId], references: [customerId])
   commentStory commentStory[]
 }
@@ -100,7 +111,7 @@ model commentStory {
   storyId Int 
   customerId Int 
   content String
-  time DateTime
+  time DateTime @default(now())
   storys story @relation(fields: [storyId],references: [storyId])
   customers Customer @relation(fields: [customerId], references: [customerId])
 }

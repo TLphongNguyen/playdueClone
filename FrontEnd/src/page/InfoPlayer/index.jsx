@@ -7,6 +7,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import axios from 'axios';
 import { AUTH_URL } from '~/config';
 import { updateUserInfo } from '~/redux/slice/userSlice';
+import Button from '~/components/button';
 
 function InfoPlayer() {
 	const dispatch = useDispatch();
@@ -200,12 +201,13 @@ function InfoPlayer() {
 					</div>
 
 					<div className="border-t-[1px] border-solid border-[#eee] my-5"></div>
-					<button
+					<Button text={'Cập nhật'} />
+					{/* <button
 						type="submit"
 						className="h-[54px] bg-[#f0564a] leading-[50px] text-[19px] text-[#fff] w-[100%] my-[22px] rounded-[6px] hover:bg-[#a50000]"
 					>
 						Cập nhật
-					</button>
+					</button> */}
 				</form>
 			</div>
 		</div>

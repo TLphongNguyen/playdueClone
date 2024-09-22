@@ -31,7 +31,7 @@ function Header() {
 	const dispatch = useDispatch();
 	const handleLogout = () => {
 		dispatch(logout());
-		sessionStorage.removeItem('token');
+		localStorage.removeItem('token');
 		navigate('/register');
 	};
 	const showRankings = () => {
@@ -52,7 +52,11 @@ function Header() {
 					label: (
 						<div className="flex items-center">
 							<div className="w-[55px] h-[55px] mr-[10px]">
-								<img className="w-[100%] h-[100%] rounded-[50%]" src={userInfo.avt} alt="" />
+								<img
+									className="w-[100%] h-[100%] rounded-[50%] object-cover"
+									src={userInfo.avt}
+									alt=""
+								/>
 							</div>
 							<div className="">
 								<span className="block text-[16px] font-[600] leading-[1.1]">{userInfo.fullName}</span>
@@ -309,7 +313,7 @@ function Header() {
 								<div className="mx-[2px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center overflow-hidden">
 									<a className=" h-[45px] w-[45px] flex " href=" #">
 										{userInfo.avt ? (
-											<img className="w-100%" src={userInfo.avt} alt="" />
+											<img className="w-100% object-cover" src={userInfo.avt} alt="" />
 										) : (
 											<FontAwesomeIcon
 												className="text-[24px] items-center text-center m-auto hover:text-[#f0564a]"
