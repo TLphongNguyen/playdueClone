@@ -4,7 +4,7 @@ import { faChevronLeft, faChevronRight, faGift, faHeart, faMessage, faShare } fr
 import { EyeOutlined } from '@ant-design/icons';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 
-function ViewStory({ storyUrl, avt, name, view }) {
+function ViewStory({ videoRef, storyUrl, avt, name, view, time, caption, hastag }) {
 	return (
 		<div className="flex h-[892px]">
 			<div className="w-[65%] flex relative">
@@ -12,7 +12,15 @@ function ViewStory({ storyUrl, avt, name, view }) {
 					<FontAwesomeIcon icon={faChevronLeft} className="leading-[45px] text-center text-[20px]" />
 				</button>
 				<div className="h-[90%] mt-[5%] w-[452px] mx-auto">
-					<img src={storyUrl} alt="" className="w-[100%] h-[100%] object-cover" />
+					<video
+						ref={videoRef}
+						src={storyUrl}
+						alt=""
+						className="w-[100%] h-[100%] object-cover"
+						controls // Thêm controls nếu bạn muốn hiển thị các điều khiển video
+						loop // Thêm loop nếu bạn muốn video tự động lặp lại
+						// muted // Thêm muted nếu bạn không muốn video có âm thanh
+					/>
 				</div>
 				<button className="absolute w-[45px] h-[45px] bg-[#e3e3e3]  text-[#7e7e7e] rounded-[50%] right-[140px] top-[50%] hover:text-[#fff]	hover:bg-[#ed6056]">
 					<FontAwesomeIcon icon={faChevronRight} className="leading-[45px] text-center text-[20px]" />
@@ -39,7 +47,7 @@ function ViewStory({ storyUrl, avt, name, view }) {
 						/>
 						<div className="">
 							<span className="text-[14px] text-[#5f67f8] font-[600] block leading-5">{name}</span>
-							<span className="text-[12px] text-[#999] ">hom qua</span>
+							<span className="text-[12px] text-[#999] ">{time}</span>
 						</div>
 					</div>
 					<div className="">
@@ -62,10 +70,10 @@ function ViewStory({ storyUrl, avt, name, view }) {
 				</div>
 				<div className="caption pb-[5px] border-b-[1px] border-solid border-[#dcdcdc]">
 					<div className="mb-[10px]">
-						<span className="text-[14px] text-[#333] leading-[1.5]">day la caption</span>
+						<span className="text-[14px] text-[#333] leading-[1.5]">{caption}</span>
 					</div>
 					<div className="mb-[10px]">
-						<span className="text-[14px] text-[#333] leading-[1.5]">day la hathtag</span>
+						<span className="text-[14px] text-[#333] leading-[1.5]">{hastag}</span>
 					</div>
 				</div>
 				<div className="py-[15px] h-comment">

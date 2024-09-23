@@ -38,6 +38,7 @@ model Customer {
   donates donate[]
   story story[]
   recharge recharge[]
+  reactionStory reactionStory[] 
   sentMessages    Message[]      @relation("SentMessages")
   receivedMessages Message[]     @relation("ReceivedMessages")
 
@@ -99,12 +100,28 @@ model story {
   urlStory String
   caption String
   hagtag String?
-  likes   Int
-  views Int
+  likes         Int            @default(0)
+  views         Int            @default(0)
   stautusStory Boolean
   time DateTime @default(now())
   customers Customer @relation(fields: [customerId], references: [customerId])
   commentStory commentStory[]
+  reactionStory reactionStory[] 
+  @@map("story")
+}
+enum ReactionType {
+  LIKE
+  VIEW
+}
+model reactionStory {
+  ReactionId    Int       @id @default(autoincrement())
+  storyId       Int
+  customerId    Int
+  type          ReactionType // Sử dụng enum để lưu loại tương tác
+  time          DateTime     @default(now())
+  story         story        @relation(fields: [storyId], references: [storyId])
+  customer      Customer     @relation(fields: [customerId], references: [customerId])
+  @@unique([storyId, customerId, type]) // Đảm bảo mỗi người dùng chỉ có một loại tương tác cho một câu chuyện
 }
 model commentStory {
   commentStoryId Int @id @default(autoincrement())

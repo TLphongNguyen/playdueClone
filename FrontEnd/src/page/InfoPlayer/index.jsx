@@ -44,11 +44,7 @@ function InfoPlayer() {
 
 		if (img) {
 			const imageFile = img;
-			// console.log(imageFile);
-
 			const storageRef = ref(storage, `avatar/${imageFile.name}`);
-			// console.log(storageRef);
-
 			const snapshot = await uploadBytes(storageRef, imageFile);
 			imageUrl = await getDownloadURL(snapshot.ref);
 		}

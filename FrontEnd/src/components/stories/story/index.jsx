@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import ViewStory from '../viewStory';
 import { EyeOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
 
-function Story({ avt, storyUrl, view, name }) {
+function Story({ avt, storyUrl, view, name, time, caption, hastag }) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const videoRef = useRef(null); // Tạo ref cho video
 	const showModal = () => {
+		if (videoRef.current) {
+			videoRef.current.play(); // Phát video khi modal mở
+		}
 		setIsModalOpen(true);
 	};
 
@@ -14,6 +18,9 @@ function Story({ avt, storyUrl, view, name }) {
 	};
 
 	const handleCancel = () => {
+		if (videoRef.current) {
+			videoRef.current.pause(); // Dừng video khi modal đóng
+		}
 		setIsModalOpen(false);
 	};
 	return (
@@ -48,7 +55,16 @@ function Story({ avt, storyUrl, view, name }) {
 				closeIcon={null}
 				style={{ top: '30px', borderRadius: '0px' }}
 			>
-				<ViewStory storyUrl={storyUrl} avt={avt} name={name} view={view} />
+				<ViewStory
+					videoRef={videoRef}
+					storyUrl={storyUrl}
+					avt={avt}
+					name={name}
+					view={view}
+					hastag={hastag}
+					time={time}
+					caption={caption}
+				/>
 			</Modal>
 		</div>
 	);
