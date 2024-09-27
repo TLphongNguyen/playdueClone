@@ -7,7 +7,6 @@ const createStories = async (req, res) => {
 	console.log(data);
 
 	try {
-		const idCutomer = data.customerId;
 		const newStory = await prisma.story.create({
 			data: {
 				customerId: data.customerId, // Đảm bảo customerId được cung cấp
@@ -39,4 +38,105 @@ const getStory = async (req, res) => {
 		res.status(500).json({ error: 'Đã xảy ra lỗi khi lấy câu chuyện.' });
 	}
 };
-module.exports = { createStories, getStory };
+const incrementStoryView = async (req, res) => {
+	const { storyId } = req.body;
+
+	try {
+		const updatedStory = await prisma.story.update({
+			where: { storyId: storyId },
+			data: { views: { increment: 1 } },
+		});
+		res.json(updatedStory);
+	} catch (error) {
+		console.log(error);
+
+		// res.status(500).json({ error: 'Lỗi khi tăng lượt xem.' });
+	}
+};
+const checkliked = async (req, res) => {
+	const { storyId, customerId } = req.body;
+	// console.log(req.body);
+
+	try {
+		const existingReaction = await prisma.reactionStory.findUnique({
+			where: {
+				storyId_customerId_type: {
+					storyId,
+					customerId,
+					type: 'LIKE',
+				},
+			},
+		});
+		if (existingReaction) {
+			res.json({ isLiked: true });
+		} else {
+			res.json({ isLiked: false });
+		}
+	} catch (error) {
+		console.log(error);
+	}
+};
+const incrementStoryLike = async (req, res) => {
+	const { storyId, customerId } = req.body;
+	console.log(req.body);
+
+	try {
+		await prisma.reactionStory.create({
+			data: {
+				type: 'LIKE',
+				story: {
+					connect: {
+						storyId: storyId,
+					},
+				},
+				customer: {
+					connect: {
+						customerId: customerId,
+					},
+				},
+			},
+		});
+		const updatedStory = await prisma.story.update({
+			where: { storyId: storyId },
+			data: {
+				likes: {
+					increment: 1,
+				},
+			},
+		});
+
+		res.json(updatedStory);
+	} catch (error) {
+		console.log(error);
+	}
+};
+const decrementStoryLike = async (req, res) => {
+	const { storyId, customerId } = req.body;
+
+	try {
+		await prisma.reactionStory.delete({
+			where: {
+				storyId_customerId_type: {
+					type: 'LIKE',
+					storyId: storyId,
+					customerId: customerId,
+				},
+			},
+		});
+		const updatedStory = await prisma.story.update({
+			where: { storyId: storyId },
+			data: {
+				likes: {
+					decrement: 1,
+				},
+			},
+		});
+
+		res.json(updatedStory);
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ error: 'Có lỗi xảy ra khi giảm lượt like.' });
+	}
+};
+
+module.exports = { createStories, getStory, incrementStoryView, incrementStoryLike, decrementStoryLike, checkliked };

@@ -1,33 +1,81 @@
 import Comment from '~/components/comment';
+import React, { useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight, faGift, faHeart, faMessage, faShare } from '@fortawesome/free-solid-svg-icons';
 import { EyeOutlined } from '@ant-design/icons';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
+import { formatDate } from '~/sevices/fomatDate';
+import axios from 'axios';
+import { SERVICE_URL } from '~/config';
+import { useSelector } from 'react-redux';
 
-function ViewStory({ videoRef, storyUrl, avt, name, view, time, caption, hastag }) {
+function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked }) {
+	const videoRef = useRef(null);
+	const [likeCount, setLikeCount] = useState(currentStory.likes || 0);
+	const [like, setLike] = useState(isLiked);
+	const userInfo = useSelector((state) => state.user.userInfo);
+
+	const handleLike = async (storyId) => {
+		try {
+			if (like === false) {
+				// Tăng số lượt thích trên backend
+				await axios.post(`${SERVICE_URL}/likeStory`, { storyId, customerId: userInfo.customerId });
+
+				// Cập nhật trạng thái giao diện
+				setLike(true);
+				setLikeCount(likeCount + 1);
+			} else {
+				// Nếu đã "like" thì giảm số lượt thích
+				await axios.post(`${SERVICE_URL}/unlikeStory`, { storyId, customerId: userInfo.customerId });
+
+				// Cập nhật trạng thái giao diện
+				setLike(false);
+				setLikeCount(likeCount - 1);
+			}
+		} catch (error) {
+			console.error('Lỗi khi thả tim:', error);
+		}
+	};
+
 	return (
 		<div className="flex h-[892px]">
 			<div className="w-[65%] flex relative">
-				<button className="absolute w-[45px] h-[45px] bg-[#e3e3e3] text-[#7e7e7e] rounded-[50%] left-[140px] top-[50%] hover:text-[#fff] hover:bg-[#ed6056] ">
+				<button
+					onClick={handlePrev}
+					className="absolute w-[45px] h-[45px] bg-[#e3e3e3] text-[#7e7e7e] rounded-[50%] left-[140px] top-[50%] hover:text-[#fff] hover:bg-[#ed6056] "
+				>
 					<FontAwesomeIcon icon={faChevronLeft} className="leading-[45px] text-center text-[20px]" />
 				</button>
 				<div className="h-[90%] mt-[5%] w-[452px] mx-auto">
 					<video
-						ref={videoRef}
-						src={storyUrl}
+						ref={videoRefs}
+						src={currentStory.urlStory}
 						alt=""
 						className="w-[100%] h-[100%] object-cover"
-						controls // Thêm controls nếu bạn muốn hiển thị các điều khiển video
-						loop // Thêm loop nếu bạn muốn video tự động lặp lại
-						// muted // Thêm muted nếu bạn không muốn video có âm thanh
+						controls
+						loop
+						// onTimeUpdate={handleTimeUpdate}
 					/>
 				</div>
-				<button className="absolute w-[45px] h-[45px] bg-[#e3e3e3]  text-[#7e7e7e] rounded-[50%] right-[140px] top-[50%] hover:text-[#fff]	hover:bg-[#ed6056]">
+				<button
+					onClick={handleNext}
+					className="absolute w-[45px] h-[45px] bg-[#e3e3e3]  text-[#7e7e7e] rounded-[50%] right-[140px] top-[50%] hover:text-[#fff]	hover:bg-[#ed6056]"
+				>
 					<FontAwesomeIcon icon={faChevronRight} className="leading-[45px] text-center text-[20px]" />
 				</button>
 				<div className="absolute right-[140px] bottom-[46px] ">
-					<button className="block w-[45px] h-[45px] bg-[#e3e3e3]  text-[#696969] rounded-[50%] mb-[12px] hover:text-[#333]	">
-						<FontAwesomeIcon icon={faHeart} className="leading-[45px] text-center text-[20px]" />
+					<button
+						onClick={() => handleLike(currentStory.storyId)}
+						className="block w-[45px] h-[45px] bg-[#e3e3e3]  text-[#696969] rounded-[50%] mb-[12px] hover:text-[#333]	"
+					>
+						<FontAwesomeIcon
+							icon={faHeart}
+							className={
+								like
+									? 'leading-[45px] text-center text-[20px]  text-red-600 '
+									: 'leading-[45px] text-center text-[20px]'
+							}
+						/>
 					</button>
 					<button className="block w-[45px] h-[45px] bg-[#e3e3e3]  text-[#696969] rounded-[50%] mb-[12px] hover:text-[#333]	">
 						<FontAwesomeIcon icon={faGift} className="leading-[45px] text-center text-[20px]" />
@@ -41,13 +89,15 @@ function ViewStory({ videoRef, storyUrl, avt, name, view, time, caption, hastag 
 				<div className="header-comment flex item-center justify-between">
 					<div className="text-center flex items-center">
 						<img
-							src={avt}
+							src={currentStory.customers.avt}
 							alt=""
 							className="w-[42px] h-[42px] rounded-[50%] p-[2px] mr-[10px] mx-[2px] object-cover"
 						/>
 						<div className="">
-							<span className="text-[14px] text-[#5f67f8] font-[600] block leading-5">{name}</span>
-							<span className="text-[12px] text-[#999] ">{time}</span>
+							<span className="text-[14px] text-[#5f67f8] font-[600] block leading-5">
+								{currentStory.customers.fullName}
+							</span>
+							<span className="text-[12px] text-[#999] ">{formatDate(currentStory.time)}</span>
 						</div>
 					</div>
 					<div className="">
@@ -59,21 +109,22 @@ function ViewStory({ videoRef, storyUrl, avt, name, view, time, caption, hastag 
 				<div className="interact flex justify-around py-[15px]">
 					<div className=" text-[#636363] text-[15px] items-center">
 						<EyeOutlined className="mr-[10px] text-[16px]" />
-						{view}
+						{currentStory.views}
 					</div>
 					<div className=" text-[#636363] text-[15px] items-center">
 						<FontAwesomeIcon icon={faMessage} className="mr-[10px] text-[16px]" />0
 					</div>
 					<div className=" text-[#636363] text-[15px] items-center">
-						<FontAwesomeIcon icon={faHeart} className="mr-[10px] text-[16px]" />0
+						<FontAwesomeIcon icon={faHeart} className="mr-[10px] text-[16px]" />
+						{currentStory.likes}
 					</div>
 				</div>
 				<div className="caption pb-[5px] border-b-[1px] border-solid border-[#dcdcdc]">
 					<div className="mb-[10px]">
-						<span className="text-[14px] text-[#333] leading-[1.5]">{caption}</span>
+						<span className="text-[14px] text-[#333] leading-[1.5]">{currentStory.caption}</span>
 					</div>
 					<div className="mb-[10px]">
-						<span className="text-[14px] text-[#333] leading-[1.5]">{hastag}</span>
+						<span className="text-[14px] text-[#333] leading-[1.5]">{currentStory.hastag}</span>
 					</div>
 				</div>
 				<div className="py-[15px] h-comment">
