@@ -138,5 +138,56 @@ const decrementStoryLike = async (req, res) => {
 		res.status(500).json({ error: 'Có lỗi xảy ra khi giảm lượt like.' });
 	}
 };
+const createComment = async (req, res) => {
+	const data = req.body;
+	console.log(data);
 
-module.exports = { createStories, getStory, incrementStoryView, incrementStoryLike, decrementStoryLike, checkliked };
+	try {
+		const datacomment = await prisma.commentStory.create({
+			data: {
+				content: data.contentComment,
+				storys: {
+					connect: {
+						storyId: data.storyId,
+					},
+				},
+				customers: {
+					connect: {
+						customerId: data.customerId,
+					},
+				},
+			},
+		});
+		res.json(datacomment);
+	} catch (error) {
+		console.log(error);
+	}
+};
+const getCommentStory = async (req, res) => {
+	const { storyId } = req.params;
+	try {
+		const dataComment = await prisma.commentStory.findMany({
+			where: { storyId: parseInt(storyId) },
+			include: {
+				customers: true,
+			},
+		});
+		if (!dataComment.length) {
+			return res.status(404).json({ message: 'No comments found for this story.' });
+		}
+		res.json(dataComment);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+module.exports = {
+	createStories,
+	getStory,
+	incrementStoryView,
+	incrementStoryLike,
+	decrementStoryLike,
+	checkliked,
+	createComment,
+	getCommentStory,
+};

@@ -135,6 +135,7 @@ function Story({ avt, storyUrl, view, name, time, caption, hastag, stories, inde
 					handlePrev={handlePrev}
 					currentStory={currentStory}
 					isLiked={isLiked}
+					storyId={currentStoryIndex}
 				/>
 			</Modal>
 		</div>

@@ -7,6 +7,8 @@ const {
 	incrementStoryLike,
 	decrementStoryLike,
 	checkliked,
+	createComment,
+	getCommentStory,
 } = require('../App/controller/story');
 module.exports = serviceRouters;
 
@@ -16,3 +18,5 @@ serviceRouters.post('/updateViewCount', incrementStoryView);
 serviceRouters.post('/likeStory', incrementStoryLike);
 serviceRouters.post('/unlikeStory', decrementStoryLike);
 serviceRouters.post('/checkLikeStatus', checkliked);
+serviceRouters.post('/createComment', createComment);
+serviceRouters.get('/getdataComment/:storyId', getCommentStory);

@@ -1,6 +1,6 @@
 function Comment({ name, time, content, avt }) {
 	return (
-		<div className="flex">
+		<div className="flex mb-4">
 			<div className="">
 				<img
 					className="w-[42px] h-[42px] rounded-[50%] p-[2px] mr-[10px] mx-[2px] object-cover cursor-pointer"

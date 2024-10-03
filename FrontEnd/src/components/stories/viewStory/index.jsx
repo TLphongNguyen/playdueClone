@@ -1,20 +1,33 @@
 import Comment from '~/components/comment';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight, faGift, faHeart, faMessage, faShare } from '@fortawesome/free-solid-svg-icons';
 import { EyeOutlined } from '@ant-design/icons';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 import { formatDate } from '~/sevices/fomatDate';
 import axios from 'axios';
-import { SERVICE_URL } from '~/config';
+import { SERVICE_URL, SOCKET_URL } from '~/config';
 import { useSelector } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import Picker from '@emoji-mart/react'; // Import Emoji Picker
+import data from '@emoji-mart/data'; // Import Emoji data
+import io from 'socket.io-client';
+const socket = io(SOCKET_URL);
 
-function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked }) {
+function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, storyId }) {
 	const videoRef = useRef(null);
 	const [likeCount, setLikeCount] = useState(currentStory.likes || 0);
 	const [like, setLike] = useState(isLiked);
 	const userInfo = useSelector((state) => state.user.userInfo);
-
+	const [dataComment, setDataComment] = useState([]);
+	const [showPicker, setShowPicker] = useState(false);
+	const [inputValue, setInputValue] = useState('');
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+	} = useForm();
 	const handleLike = async (storyId) => {
 		try {
 			if (like === false) {
@@ -36,7 +49,48 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked })
 			console.error('Lỗi khi thả tim:', error);
 		}
 	};
+	const handleSelectEmoji = (emoji) => {
+		setInputValue(inputValue + emoji.native); // Thêm emoji vào input
+		setShowPicker(false); // Ẩn emoji picker sau khi chọn emoji
+	};
+	const fetchData = async () => {
+		try {
+			const response = await axios.get(`${SERVICE_URL}/getdataComment/${storyId}`);
+			setDataComment(response.data);
+		} catch (error) {
+			console.log(error);
+		}
+		// fetchData();
+	};
+	useEffect(() => {
+		setDataComment([]);
+		fetchData();
 
+		socket.emit('registerUser', dataComment.customers.customerId);
+
+		// Lắng nghe sự kiện 'commentReceived'
+		socket.on('commentReceived', (newComment) => {
+			setDataComment((prevComments) => [...prevComments, newComment]);
+		});
+
+		return () => {
+			socket.off('commentReceived'); // Xóa listener khi component unmount
+		};
+	}, [storyId]);
+
+	const onSubmit = async (data) => {
+		const customerId = userInfo.customerId;
+		const formartData = { contentComment: inputValue, storyId: storyId, customerId: customerId };
+		try {
+			const response = await axios.post(`${SERVICE_URL}/createComment`, formartData, {
+				headers: { 'Content-Type': 'application/json' },
+			});
+			setInputValue('');
+			fetchData();
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	return (
 		<div className="flex h-[892px]">
 			<div className="w-[65%] flex relative">
@@ -128,18 +182,48 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked })
 					</div>
 				</div>
 				<div className="py-[15px] h-comment">
-					<Comment
-						name={'phong'}
-						avt="https://scontent.fhan5-10.fna.fbcdn.net/v/t39.30808-1/349365824_146127085118919_709175759027608189_n.jpg?stp=dst-jpg_p200x200&_nc_cat=111&ccb=1-7&_nc_sid=0ecb9b&_nc_ohc=PcIiLj4jvKMQ7kNvgEdu-t6&_nc_ht=scontent.fhan5-10.fna&oh=00_AYDE6qGtR6KsgsKUCT3k1juKb9loktNbVJBH6_WVgzq6ig&oe=66A98EA6"
-						time={4}
-						content={'xinh qua'}
-					/>
+					{dataComment ? (
+						dataComment.map((comment, index) => (
+							<Comment
+								key={index}
+								name={comment.customers.fullName}
+								avt={comment.customers.avt}
+								time={formatDate(comment?.time)}
+								content={comment.content}
+							/>
+						))
+					) : (
+						<div className="">chưa có bình luận nào</div>
+					)}
 				</div>
 				<div className="w-[100%] py-[10px] border-t-[1px] border-solid border-[#dcdcdc]">
-					<div className="flex px-4 py-2 h-10 border-[1px] border-solid border-[#e3e3e3] bg-[#fff] transition-[0.3s] ease-linear ">
-						<input placeholder="Comment.." className="h-[100%] w-[100%] focus:border-[#ccc]" type="text" />
-						<FontAwesomeIcon icon={faPaperPlane} className="text-[20px]" />
-					</div>
+					<form
+						onSubmit={handleSubmit(onSubmit)}
+						className="flex px-4 py-2 h-10 border-[1px] border-solid border-[#e3e3e3] bg-[#fff] transition-[0.3s] ease-linear "
+					>
+						<input
+							{...register('contentComment')}
+							value={inputValue} // Liên kết state inputValue với input
+							onChange={(e) => setInputValue(e.target.value)} // Cập nhật inputValue khi người dùng nhập
+							placeholder="Comment.."
+							className="h-[100%] w-[100%] focus:border-[#ccc]"
+							type="text"
+						/>
+						{/* Nút hiển thị Emoji Picker */}
+						<button type="button" onClick={() => setShowPicker(!showPicker)} className="mr-2">
+							😀
+						</button>
+						<button type="submit">
+							<FontAwesomeIcon icon={faPaperPlane} className="text-[20px]" />
+						</button>
+					</form>
+
+					{/* Emoji Picker */}
+					{showPicker && (
+						<div style={{ position: 'absolute', bottom: '60px', right: '40px' }}>
+							<Picker data={data} onEmojiSelect={handleSelectEmoji} />
+						</div>
+					)}
 				</div>
 			</div>
 		</div>
