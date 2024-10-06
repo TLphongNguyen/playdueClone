@@ -145,7 +145,7 @@ const createComment = async (req, res) => {
 	try {
 		const datacomment = await prisma.commentStory.create({
 			data: {
-				content: data.contentComment,
+				content: data.content,
 				storys: {
 					connect: {
 						storyId: data.storyId,

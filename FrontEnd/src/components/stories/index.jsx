@@ -6,8 +6,13 @@ import { formatDate } from '~/sevices/fomatDate';
 function Stories() {
 	const [dataStory, setDataStory] = useState([]);
 	const fetchDataStory = async () => {
-		const response = await axios.get(`${SERVICE_URL}/getstory`);
-		setDataStory(response.data);
+		try {
+			const response = await axios.get(`${SERVICE_URL}/getstory`);
+			setDataStory(response.data);
+			// fetchDataStory();
+		} catch (e) {
+			console.log(e);
+		}
 	};
 	useEffect(() => {
 		fetchDataStory();

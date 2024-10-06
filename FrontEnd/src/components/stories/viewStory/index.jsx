@@ -9,13 +9,12 @@ import axios from 'axios';
 import { SERVICE_URL, SOCKET_URL } from '~/config';
 import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import Picker from '@emoji-mart/react'; // Import Emoji Picker
-import data from '@emoji-mart/data'; // Import Emoji data
+import Picker from '@emoji-mart/react';
+import data from '@emoji-mart/data';
 import io from 'socket.io-client';
 const socket = io(SOCKET_URL);
 
 function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, storyId }) {
-	const videoRef = useRef(null);
 	const [likeCount, setLikeCount] = useState(currentStory.likes || 0);
 	const [like, setLike] = useState(isLiked);
 	const userInfo = useSelector((state) => state.user.userInfo);
@@ -56,37 +55,52 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, s
 	const fetchData = async () => {
 		try {
 			const response = await axios.get(`${SERVICE_URL}/getdataComment/${storyId}`);
-			setDataComment(response.data);
+			const datacomment = response.data;
+			const combinedComments = datacomment.map((comment) => {
+				return {
+					...comment,
+					...comment.customers,
+				};
+			});
+			setDataComment(combinedComments);
 		} catch (error) {
 			console.log(error);
 		}
-		// fetchData();
 	};
+
 	useEffect(() => {
 		setDataComment([]);
 		fetchData();
 
-		socket.emit('registerUser', dataComment.customers.customerId);
-
-		// Lắng nghe sự kiện 'commentReceived'
 		socket.on('commentReceived', (newComment) => {
 			setDataComment((prevComments) => [...prevComments, newComment]);
 		});
 
 		return () => {
-			socket.off('commentReceived'); // Xóa listener khi component unmount
+			socket.off('commentReceived');
 		};
 	}, [storyId]);
 
 	const onSubmit = async (data) => {
 		const customerId = userInfo.customerId;
-		const formartData = { contentComment: inputValue, storyId: storyId, customerId: customerId };
+		const fullName = userInfo.fullName;
+		const avt = userInfo.avt;
+		const ownerId = currentStory?.customers?.customerId;
+		const formartData = {
+			content: inputValue,
+			storyId: storyId,
+			customerId: customerId,
+			ownerId: ownerId,
+			fullName,
+			avt,
+			time: new Date(),
+		};
 		try {
 			const response = await axios.post(`${SERVICE_URL}/createComment`, formartData, {
 				headers: { 'Content-Type': 'application/json' },
 			});
 			setInputValue('');
-			fetchData();
+			socket.emit('newComment', formartData);
 		} catch (error) {
 			console.log(error);
 		}
@@ -108,7 +122,6 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, s
 						className="w-[100%] h-[100%] object-cover"
 						controls
 						loop
-						// onTimeUpdate={handleTimeUpdate}
 					/>
 				</div>
 				<button
@@ -178,16 +191,16 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, s
 						<span className="text-[14px] text-[#333] leading-[1.5]">{currentStory.caption}</span>
 					</div>
 					<div className="mb-[10px]">
-						<span className="text-[14px] text-[#333] leading-[1.5]">{currentStory.hastag}</span>
+						<span className="text-[14px] text-[#333] leading-[1.5]">{currentStory.hagtag}</span>
 					</div>
 				</div>
-				<div className="py-[15px] h-comment">
+				<div className="py-[15px] h-comment overflow-scroll">
 					{dataComment ? (
 						dataComment.map((comment, index) => (
 							<Comment
 								key={index}
-								name={comment.customers.fullName}
-								avt={comment.customers.avt}
+								name={comment.fullName}
+								avt={comment.avt}
 								time={formatDate(comment?.time)}
 								content={comment.content}
 							/>

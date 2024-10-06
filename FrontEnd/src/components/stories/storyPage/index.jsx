@@ -91,6 +91,8 @@ function StoryPage({ avt, storyUrl, view, name, time, caption, hastag, stories, 
 	};
 
 	const currentStory = stories[currentStoryIndex];
+	// console.log(currentStory);
+
 	return (
 		<div className="">
 			<div className="w-[196px] h-[310px]" onClick={showModal}>
@@ -136,6 +138,7 @@ function StoryPage({ avt, storyUrl, view, name, time, caption, hastag, stories, 
 					handlePrev={handlePrev}
 					currentStory={currentStory}
 					isLiked={isLiked}
+					storyId={currentStoryIndex}
 				/>
 			</Modal>
 		</div>

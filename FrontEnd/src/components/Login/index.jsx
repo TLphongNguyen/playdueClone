@@ -9,10 +9,16 @@ import { AUTH_URL } from '~/config';
 import { useDispatch } from 'react-redux';
 import LinearProgress from '@mui/material/LinearProgress';
 import { notification } from 'antd';
+import { SOCKET_URL } from '~/config';
+
+import io from 'socket.io-client';
+const socket = io(SOCKET_URL);
 
 function Login({ toggleComponent }) {
 	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(false);
+	// const userInfo = useSelector((state) => state.user.userInfo);
+
 	const {
 		register,
 		handleSubmit,
@@ -38,8 +44,10 @@ function Login({ toggleComponent }) {
 			// Lưu token vào local storage hoặc state của ứng dụng
 			localStorage.setItem('token', token);
 			openNotificationWithIcon('success', 'Success', 'Đăng nhập thành công');
+			const userInfo = await fetchCustomer(token);
+			console.log(userInfo);
 
-			await fetchCustomer(token);
+			socket.emit('registerUser', userInfo.customerId);
 			navigate('/');
 		} catch (error) {
 			console.error('Lỗi khi đăng ký:', error.response ? error.response.data : error.message);
@@ -57,6 +65,7 @@ function Login({ toggleComponent }) {
 			});
 
 			dispatch(setUserInfo(response.data));
+			return response.data;
 		} catch (error) {
 			console.error('Error fetching customer:', error);
 		}
