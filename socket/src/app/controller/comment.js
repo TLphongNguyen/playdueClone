@@ -25,7 +25,6 @@ const comment = (io) => {
 
     socket.on("disconnect", () => {
       //   console.log("User disconnected");
-      // Xóa socket khi người dùng ngắt kết nối
       for (const userId in userSockets) {
         if (userSockets[userId] === socket.id) {
           delete userSockets[userId];

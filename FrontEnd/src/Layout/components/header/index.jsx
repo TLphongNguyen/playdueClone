@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
 	faMoon,
@@ -15,10 +15,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
-import { Dropdown, Modal } from 'antd';
+import { Dropdown, Modal, Badge } from 'antd';
 import { HomeOutlined, TrophyOutlined, VideoCameraOutlined } from '@ant-design/icons';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 import Rankings from '~/components/Rankings';
+import Notification from '~/components/notification';
 import { Link } from 'react-router-dom';
 import { logout } from '~/redux/slice/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
@@ -27,6 +30,24 @@ import { useNavigate } from 'react-router-dom';
 function Header() {
 	const userInfo = useSelector((state) => state.user.userInfo);
 	const [isModalOpenRanking, setIsModalOpenRanking] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
+	const ref = useRef(null);
+
+	const openNotification = () => {
+		setIsOpen((prev) => !prev);
+	};
+
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (ref.current && !ref.current.contains(event.target)) {
+				setIsOpen(false);
+			}
+		};
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, []);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const handleLogout = () => {
@@ -45,7 +66,6 @@ function Header() {
 	const handleCancelRankings = () => {
 		setIsModalOpenRanking(false);
 	};
-
 	const items = userInfo
 		? [
 				{
@@ -166,6 +186,7 @@ function Header() {
 				},
 			]
 		: [];
+
 	return (
 		<div className="gwap-content h-[68px] py-[10px] px-[15px] border-b-[1px] border-solid border-[#dcdcdc]">
 			<div className="hearder-content flex justify-between">
@@ -285,13 +306,14 @@ function Header() {
 							</a>
 						</div>
 					</Tippy>
-					<div className="mx-[2px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center">
-						<a className=" h-[45px] w-[45px] flex " href=" #">
+					<div className="mx-[2px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center relative">
+						<Badge onClick={openNotification} count={1} className=" h-[45px] w-[45px] flex ">
 							<FontAwesomeIcon
 								className="text-[22px] items-center text-center m-auto hover:text-[#f0564a]"
 								icon={faBell}
 							/>
-						</a>
+						</Badge>
+						{isOpen && <Notification />}
 					</div>
 					<div className="mx-[2px] bg-[#e8e8e8] rounded-[25px] w-[62px] h-[45px] text-center px-[10px]">
 						<a className=" h-[45px] w-[100%] flex  hover:text-[#f0564a] items-center" href=" #">

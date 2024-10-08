@@ -153,3 +153,17 @@ model Message {
   sender     Customer  @relation("SentMessages", fields: [senderId], references: [customerId])
   receiver   Customer  @relation("ReceivedMessages", fields: [receiverId], references: [customerId])
 }
+model Notification {
+  notificationId Int @id @default(autoincrement())
+  customerId Int
+  typeId Int
+  content String
+  time DateTime @default(now())
+  status Int @default(1)
+  TypeNotification TypeNotification @relation(fields: [typeId], references: [typeId])
+}
+model TypeNotification {
+  typeId Int @id @default(autoincrement())
+  nameNotification String
+  notification Notification[]
+}

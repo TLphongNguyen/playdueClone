@@ -179,7 +179,8 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, s
 						{currentStory.views}
 					</div>
 					<div className=" text-[#636363] text-[15px] items-center">
-						<FontAwesomeIcon icon={faMessage} className="mr-[10px] text-[16px]" />0
+						<FontAwesomeIcon icon={faMessage} className="mr-[10px] text-[16px]" />
+						{dataComment?.length}
 					</div>
 					<div className=" text-[#636363] text-[15px] items-center">
 						<FontAwesomeIcon icon={faHeart} className="mr-[10px] text-[16px]" />
@@ -203,6 +204,8 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, s
 								avt={comment.avt}
 								time={formatDate(comment?.time)}
 								content={comment.content}
+								customerId={comment.customerId}
+								tacgia={currentStory.customers.customerId}
 							/>
 						))
 					) : (
@@ -222,7 +225,6 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, s
 							className="h-[100%] w-[100%] focus:border-[#ccc]"
 							type="text"
 						/>
-						{/* Nút hiển thị Emoji Picker */}
 						<button type="button" onClick={() => setShowPicker(!showPicker)} className="mr-2">
 							😀
 						</button>
@@ -230,8 +232,6 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, s
 							<FontAwesomeIcon icon={faPaperPlane} className="text-[20px]" />
 						</button>
 					</form>
-
-					{/* Emoji Picker */}
 					{showPicker && (
 						<div style={{ position: 'absolute', bottom: '60px', right: '40px' }}>
 							<Picker data={data} onEmojiSelect={handleSelectEmoji} />

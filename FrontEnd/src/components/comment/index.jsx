@@ -1,4 +1,4 @@
-function Comment({ name, time, content, avt }) {
+function Comment({ name, time, content, avt, customerId, tacgia }) {
 	return (
 		<div className="flex mb-4">
 			<div className="">
@@ -9,7 +9,12 @@ function Comment({ name, time, content, avt }) {
 				/>
 			</div>
 			<div className="">
-				<span className="text-3 text-[#000] font-[600] cursor-pointer">{name}</span>
+				<span className="text-3 text-[#000] font-[600] cursor-pointer mr-3">{name}</span>
+				{customerId == tacgia ? (
+					<span className="text-[#ef574c] text-[12px]">tác giả</span>
+				) : (
+					<div className=""></div>
+				)}
 				<div className="text-[11px] text-[#808080]">
 					<span className="time mr-2">{time} Gio truoc</span>
 					<span className="cursor-pointer text-[#808080] hover:text-[#000]">Trả lời</span>
