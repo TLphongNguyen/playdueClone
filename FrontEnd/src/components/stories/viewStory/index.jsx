@@ -24,7 +24,6 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, s
 	const {
 		register,
 		handleSubmit,
-		reset,
 		formState: { errors },
 	} = useForm();
 	const handleLike = async (storyId) => {
@@ -101,8 +100,23 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, s
 			});
 			setInputValue('');
 			socket.emit('newComment', formartData);
+			const notificationData = {
+				ownerId: ownerId,
+				customerId: customerId,
+				avt,
+				content: `${fullName} đã bình luận về story của bạn.`,
+				typeId: 1,
+				time: new Date(),
+			};
+			if (ownerId !== customerId) {
+				const notificationResponse = await axios.post(`${SERVICE_URL}/createNotification`, notificationData, {
+					headers: { 'Content-Type': 'application/json' },
+				});
+				socket.emit('newNotification', notificationData, ownerId);
+				console.log(notificationResponse.data);
+			}
 		} catch (error) {
-			console.log(error);
+			console.error('Error creating notification:', error.response?.data || error.message);
 		}
 	};
 	return (

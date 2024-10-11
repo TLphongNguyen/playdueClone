@@ -10,6 +10,7 @@ const {
 	createComment,
 	getCommentStory,
 } = require('../App/controller/story');
+const { CreateNotification, getNotification } = require('../App/controller/notification');
 module.exports = serviceRouters;
 
 serviceRouters.post('/createstories', createStories);
@@ -20,3 +21,7 @@ serviceRouters.post('/unlikeStory', decrementStoryLike);
 serviceRouters.post('/checkLikeStatus', checkliked);
 serviceRouters.post('/createComment', createComment);
 serviceRouters.get('/getdataComment/:storyId', getCommentStory);
+
+//notifications
+serviceRouters.post('/createNotification', CreateNotification);
+serviceRouters.get('/getNotification/:ownerId/:typeId', getNotification);

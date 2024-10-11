@@ -8,12 +8,9 @@ import { AUTH_URL } from '~/config';
 
 function DefaultLayout({ children, showSidebar = true, sidebar }) {
 	const dispatch = useDispatch();
-
 	useEffect(() => {
-		// Lấy token từ localStorage khi ứng dụng khởi chạy
 		const token = localStorage.getItem('token');
 		if (token) {
-			// Gọi API để lấy lại thông tin người dùng và cập nhật vào Redux
 			const fetchCustomer = async () => {
 				try {
 					const response = await axios.get(`${AUTH_URL}/customer`, {
@@ -21,19 +18,16 @@ function DefaultLayout({ children, showSidebar = true, sidebar }) {
 							authorization: token,
 						},
 					});
-
-					// Cập nhật thông tin người dùng vào Redux
 					dispatch(setUserInfo(response.data));
 				} catch (error) {
 					console.error('Error fetching customer:', error);
-					// Nếu có lỗi, có thể muốn xoá token hoặc điều hướng lại đến trang đăng nhập
 					localStorage.removeItem('token');
 				}
 			};
 
 			fetchCustomer();
 		}
-	}, [dispatch]); // Chỉ chạy một lần khi ứng dụng khởi chạy
+	}, [dispatch]);
 	const SideBarItem = sidebar;
 	return (
 		<div className="w-[100%]">

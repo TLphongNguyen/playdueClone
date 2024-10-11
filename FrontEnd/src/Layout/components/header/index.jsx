@@ -26,7 +26,10 @@ import { Link } from 'react-router-dom';
 import { logout } from '~/redux/slice/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
+import { SOCKET_URL, SERVICE_URL } from '~/config';
+import io from 'socket.io-client';
+const socket = io(SOCKET_URL);
 function Header() {
 	const userInfo = useSelector((state) => state.user.userInfo);
 	const [isModalOpenRanking, setIsModalOpenRanking] = useState(false);
@@ -186,7 +189,38 @@ function Header() {
 				},
 			]
 		: [];
+	//notifications
 
+	const [data, setData] = useState([]);
+	const onChange = (key) => {
+		fetchdata(key);
+	};
+	const fetchdata = async (id) => {
+		const ownerId = userInfo.customerId;
+		try {
+			const response = await axios.get(`${SERVICE_URL}/getNotification/${ownerId}/${id}`);
+			const data = response.data;
+			const formartData = data.map((item) => {
+				return {
+					...item,
+					...item.customers,
+				};
+			});
+			setData(formartData);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+	// console.log(data);
+	useEffect(() => {
+		fetchdata(1);
+		socket.on('notifyOwner', (newNotification) => {
+			setData((prevNotification) => [...prevNotification, newNotification]);
+		});
+		return () => {
+			socket.off('notifyOwner');
+		};
+	}, []);
 	return (
 		<div className="gwap-content h-[68px] py-[10px] px-[15px] border-b-[1px] border-solid border-[#dcdcdc]">
 			<div className="hearder-content flex justify-between">
@@ -307,13 +341,13 @@ function Header() {
 						</div>
 					</Tippy>
 					<div className="mx-[2px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center relative">
-						<Badge onClick={openNotification} count={1} className=" h-[45px] w-[45px] flex ">
+						<Badge onClick={openNotification} count={data.length} className=" h-[45px] w-[45px] flex ">
 							<FontAwesomeIcon
 								className="text-[22px] items-center text-center m-auto hover:text-[#f0564a]"
 								icon={faBell}
 							/>
 						</Badge>
-						{isOpen && <Notification />}
+						{isOpen && <Notification onChange={onChange} data={data} />}
 					</div>
 					<div className="mx-[2px] bg-[#e8e8e8] rounded-[25px] w-[62px] h-[45px] text-center px-[10px]">
 						<a className=" h-[45px] w-[100%] flex  hover:text-[#f0564a] items-center" href=" #">
@@ -335,7 +369,7 @@ function Header() {
 								<div className="mx-[2px] bg-[#e8e8e8] rounded-[50%] w-[45px] h-[45px] text-center overflow-hidden">
 									<a className=" h-[45px] w-[45px] flex " href=" #">
 										{userInfo.avt ? (
-											<img className="w-100% object-cover" src={userInfo.avt} alt="" />
+											<img className="w-[100%] object-cover" src={userInfo.avt} alt="" />
 										) : (
 											<FontAwesomeIcon
 												className="text-[24px] items-center text-center m-auto hover:text-[#f0564a]"

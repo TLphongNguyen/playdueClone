@@ -37,7 +37,7 @@ const signUp = async (req, res, next) => {
 						username: email,
 						password: hashPassword,
 						Salt: Salt,
-						accountTypeId: parseInt(3),
+						accountTypeId: parseInt(1),
 					},
 				},
 			},

@@ -14,6 +14,9 @@ const middleware = async (req, res, next) => {
 		const payload = jwt.verify(token, 'abcxyz');
 		const account = await prisma.customer.findFirst({
 			where: { accountId: payload.customerId },
+			include: {
+				account: true,
+			},
 		});
 		req.customer = account;
 		next();

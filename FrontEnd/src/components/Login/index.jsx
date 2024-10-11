@@ -48,7 +48,10 @@ function Login({ toggleComponent }) {
 			console.log(userInfo);
 
 			socket.emit('registerUser', userInfo.customerId);
-			navigate('/');
+			if (userInfo.account.accountTypeId !== 1) {
+				navigate('/');
+			}
+			navigate('/admin/home');
 		} catch (error) {
 			console.error('Lỗi khi đăng ký:', error.response ? error.response.data : error.message);
 			openNotificationWithIcon('error', 'Error', 'Đăng nhập thất bại, kiểm tra lại thông tin');

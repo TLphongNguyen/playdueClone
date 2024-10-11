@@ -39,6 +39,7 @@ model Customer {
   story story[]
   recharge recharge[]
   reactionStory reactionStory[] 
+  notification Notification[]
   sentMessages    Message[]      @relation("SentMessages")
   receivedMessages Message[]     @relation("ReceivedMessages")
 
@@ -156,11 +157,13 @@ model Message {
 model Notification {
   notificationId Int @id @default(autoincrement())
   customerId Int
+  ownerId Int
   typeId Int
   content String
   time DateTime @default(now())
   status Int @default(1)
   TypeNotification TypeNotification @relation(fields: [typeId], references: [typeId])
+  customers Customer @relation(fields: [customerId], references: [customerId])
 }
 model TypeNotification {
   typeId Int @id @default(autoincrement())

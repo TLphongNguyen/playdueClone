@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { publicRouter, privateRouter } from './router';
 import DefaultLayout from './Layout/defaultLayout';
+import AdminLayout from './Layout/adminLayout';
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
@@ -9,7 +10,6 @@ function App() {
 		<Router>
 			<div className="app">
 				<Routes>
-					{/* Public routes */}
 					{publicRouter.map((router, index) => {
 						const Page = router.components;
 						let Layout = DefaultLayout;
@@ -28,11 +28,11 @@ function App() {
 							/>
 						);
 					})}
-
-					{/* Private routes */}
 					{privateRouter.map((router, index) => {
 						const Page = router.components;
-						let Layout = DefaultLayout;
+						const typeLayout = router.layout;
+
+						let Layout = typeLayout === 'admin' ? AdminLayout : DefaultLayout;
 						if (router.layout === null) {
 							Layout = Fragment;
 						}
@@ -41,7 +41,7 @@ function App() {
 								key={index}
 								path={router.path}
 								element={
-									<PrivateRoute>
+									<PrivateRoute allowedTypes={router.allowedTypes}>
 										<Layout showSidebar={router.showSidebar} sidebar={router.sidebar}>
 											<Page />
 										</Layout>

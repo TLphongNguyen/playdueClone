@@ -110,7 +110,7 @@ function Home() {
 	const data = [
 		{
 			name: 'Thỏ Mini 🐰',
-			avt: 'https://files.playerduo.net/production/images/b2c92a50-90ee-4a69-9bb0-750fa27f8017__6be71870-39d1-11ef-a76a-7b840fde9bfc__player_avatar.jpg',
+			avt: 'https://files.playerduo.net/production/images/c4ff9637-6084-40be-9a16-e66ca1289678__2017cc60-67ca-11ef-9376-b533eb6f1b4c__player_avatar.jpg',
 			price: '80000',
 			des: 'san sang choi game',
 			rate: '5',
@@ -118,7 +118,7 @@ function Home() {
 		},
 		{
 			name: '𝙈𝙨𝙪',
-			avt: 'https://files.playerduo.net/production/images/56b6d587-8058-4d27-a1fe-3924a4dbc4b4__e54042b0-4759-11ef-8bd0-31c0a9baf30a__player_avatar.jpg',
+			avt: 'https://files.playerduo.net/production/images/6687fab6-208e-43f4-adc0-1a73fcfe7720__29be9b80-84d6-11ef-9376-b533eb6f1b4c__player_avatar.jpg',
 			price: '80000',
 			des: 'Y tá thách đấu',
 			rate: '5',

@@ -9,6 +9,7 @@ function Stories() {
 		try {
 			const response = await axios.get(`${SERVICE_URL}/getstory`);
 			setDataStory(response.data);
+			return response.data;
 			// fetchDataStory();
 		} catch (e) {
 			console.log(e);
