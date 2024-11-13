@@ -23,8 +23,6 @@ const comment = (io) => {
       io.emit("commentReceived", comment);
     });
     socket.on("newNotification", (notification, toUser) => {
-      // io.emit("notifyOwner", notification);
-
       const recipientSockets = userSockets[toUser];
       if (recipientSockets) {
         recipientSockets.forEach((socketId) => {
@@ -36,7 +34,6 @@ const comment = (io) => {
       }
     });
     socket.on("disconnect", () => {
-      //   console.log("User disconnected");
       for (const userId in userSockets) {
         if (userSockets[userId] === socket.id) {
           delete userSockets[userId];

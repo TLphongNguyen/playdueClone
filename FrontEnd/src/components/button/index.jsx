@@ -1,4 +1,4 @@
-function Button({ text }) {
+function ButtonComponent({ text }) {
 	return (
 		<button
 			type="submit"
@@ -9,4 +9,4 @@ function Button({ text }) {
 	);
 }
 
-export default Button;
+export default ButtonComponent;

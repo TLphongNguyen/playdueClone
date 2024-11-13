@@ -42,6 +42,7 @@ model Customer {
   notification Notification[]
   sentMessages    Message[]      @relation("SentMessages")
   receivedMessages Message[]     @relation("ReceivedMessages")
+  followers follower[]
 
 }
 model recharge {
@@ -58,9 +59,8 @@ model recharge {
 model DetailCustomer {
   detailCustomerId Int @id @default(autoincrement())
   customerId Int       @unique
-  Abum String
+  Abum String @db.Text
   Facebook String?
-  youtube String?
   highlight String?
   price      Int
   games      GamesOnCustomers[]
@@ -73,6 +73,7 @@ model DetailCustomer {
 model Games {
   gameId Int @id @default(autoincrement())
   gameName String
+  gameImg String @db.VarChar(500)
   DetailCustomer  GamesOnCustomers[]
 }
 model GamesOnCustomers {
@@ -169,4 +170,12 @@ model TypeNotification {
   typeId Int @id @default(autoincrement())
   nameNotification String
   notification Notification[]
+}
+model follower {
+  followingID Int @id @default(autoincrement())
+  customerId Int
+  followerId Int
+  time DateTime @default(now())
+  customers Customer @relation(fields: [customerId], references: [customerId])
+
 }

@@ -10,14 +10,13 @@ function Stories() {
 			const response = await axios.get(`${SERVICE_URL}/getstory`);
 			setDataStory(response.data);
 			return response.data;
-			// fetchDataStory();
 		} catch (e) {
 			console.log(e);
 		}
 	};
 	useEffect(() => {
 		fetchDataStory();
-	}, [dataStory]);
+	}, []);
 	return (
 		<div className="wrap-content flex">
 			{dataStory.map((data, index) => (

@@ -39,7 +39,7 @@ function Header() {
 	const openNotification = () => {
 		setIsOpen((prev) => !prev);
 	};
-
+	const id = userInfo?.account.accountTypeId;
 	useEffect(() => {
 		const handleClickOutside = (event) => {
 			if (ref.current && !ref.current.contains(event.target)) {
@@ -166,11 +166,28 @@ function Header() {
 									<FontAwesomeIcon icon={faGears} className="py-[7px] mx-auto block" />
 								</span>
 							</div>
-							<span className="text-[15px] font-[550] ">Cài đặt tài khoản</span>
+							<span className="text-[15px] font-[550]">Cài đặt tài khoản</span>
 						</Link>
 					),
 					key: '5',
 				},
+				...(id === 1
+					? [
+							{
+								label: (
+									<Link to="/admin/home" className="flex items-center">
+										<div className="w-[30px] h-[30px] rounded-[50%] bg-[#dcdcdc] pl-[3px] mr-[8px]">
+											<span className="h-[100%] block">
+												<FontAwesomeIcon icon={faGears} className="py-[7px] mx-auto block" />
+											</span>
+										</div>
+										<span className="text-[15px] font-[550]">Cài đặt Hệ thống</span>
+									</Link>
+								),
+								key: '7',
+							},
+						]
+					: []),
 				{
 					label: (
 						<div onClick={handleLogout} className="flex items-center">

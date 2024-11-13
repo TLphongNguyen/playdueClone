@@ -46,10 +46,11 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, s
 		} catch (error) {
 			console.error('Lỗi khi thả tim:', error);
 		}
+		console.log('chitiet', like);
 	};
 	const handleSelectEmoji = (emoji) => {
-		setInputValue(inputValue + emoji.native); // Thêm emoji vào input
-		setShowPicker(false); // Ẩn emoji picker sau khi chọn emoji
+		setInputValue(inputValue + emoji.native);
+		setShowPicker(false);
 	};
 	const fetchData = async () => {
 		try {
@@ -66,7 +67,6 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, s
 			console.log(error);
 		}
 	};
-
 	useEffect(() => {
 		setDataComment([]);
 		fetchData();
@@ -149,14 +149,14 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, s
 						onClick={() => handleLike(currentStory.storyId)}
 						className="block w-[45px] h-[45px] bg-[#e3e3e3]  text-[#696969] rounded-[50%] mb-[12px] hover:text-[#333]	"
 					>
-						<FontAwesomeIcon
-							icon={faHeart}
-							className={
-								like
-									? 'leading-[45px] text-center text-[20px]  text-red-600 '
-									: 'leading-[45px] text-center text-[20px]'
-							}
-						/>
+						{like ? (
+							<FontAwesomeIcon
+								icon={faHeart}
+								className={'leading-[45px] text-center text-[20px]  text-red-600 '}
+							/>
+						) : (
+							<FontAwesomeIcon icon={faHeart} className={'leading-[45px] text-center text-[20px]'} />
+						)}
 					</button>
 					<button className="block w-[45px] h-[45px] bg-[#e3e3e3]  text-[#696969] rounded-[50%] mb-[12px] hover:text-[#333]	">
 						<FontAwesomeIcon icon={faGift} className="leading-[45px] text-center text-[20px]" />

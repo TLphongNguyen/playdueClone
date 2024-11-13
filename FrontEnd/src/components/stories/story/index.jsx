@@ -23,15 +23,16 @@ function Story({ avt, storyUrl, view, name, time, caption, hastag, stories, inde
 				videoRef.current.play();
 			};
 		}
-		const currentStoryId = stories[index].storyId; // Lấy storyId của story hiện tại
+		const currentStoryId = stories[index].storyId;
 		increaseViewCount(currentStoryId);
-		checkIfLiked(currentStoryId);
+		const likedStatus = await checkIfLiked(currentStoryId);
+		setIsLiked(likedStatus);
 	};
 	const checkIfLiked = async (storyId) => {
 		const customerId = userInfo.customerId;
 		try {
 			const response = await axios.post(`${SERVICE_URL}/checkLikeStatus`, { storyId, customerId });
-			setIsLiked(response.data.isLiked); // Cập nhật trạng thái like
+			return response.data.isLiked;
 		} catch (error) {
 			console.error('Lỗi khi kiểm tra trạng thái thích:', error);
 		}
@@ -60,12 +61,13 @@ function Story({ avt, storyUrl, view, name, time, caption, hastag, stories, inde
 		}
 		setIsModalOpen(false);
 	};
-	const handlePrev = () => {
+	const handlePrev = async () => {
 		const prevIndex = (currentStoryIndex - 1 + stories.length) % stories.length;
 		setCurrentStoryIndex(prevIndex);
 		const prevStoryId = stories[prevIndex].storyId; // Lấy storyId của story trước đó
 		increaseViewCount(prevStoryId);
-		checkIfLiked(prevStoryId);
+		const likedStatus = await checkIfLiked(prevStoryId);
+		setIsLiked(likedStatus);
 		if (videoRef.current) {
 			videoRef.current.currentTime = 0;
 			videoRef.current.src = stories[prevIndex].urlStory; // Cập nhật nguồn video
@@ -73,13 +75,15 @@ function Story({ avt, storyUrl, view, name, time, caption, hastag, stories, inde
 				videoRef.current.play();
 			};
 		}
+		// console.log('story', isLiked);
 	};
-	const handleNext = () => {
+	const handleNext = async () => {
 		const nextIndex = (currentStoryIndex + 1) % stories.length;
 		setCurrentStoryIndex(nextIndex);
 		const nextStoryId = stories[nextIndex].storyId; // Lấy storyId của story tiếp theo
 		increaseViewCount(nextStoryId);
-		checkIfLiked(nextStoryId);
+		const likedStatus = await checkIfLiked(nextStoryId);
+		setIsLiked(likedStatus);
 		if (videoRef.current) {
 			videoRef.current.currentTime = 0;
 			videoRef.current.src = stories[nextIndex].urlStory; // Cập nhật nguồn video
@@ -87,6 +91,7 @@ function Story({ avt, storyUrl, view, name, time, caption, hastag, stories, inde
 				videoRef.current.play();
 			};
 		}
+		// console.log('story', isLiked);
 	};
 
 	const currentStory = stories[currentStoryIndex];

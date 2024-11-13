@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Stories from '~/components/stories';
 import Players from '~/components/players';
@@ -18,6 +18,7 @@ function Home() {
 	const [activeButton1, setActiveButton1] = useState(null);
 	const userInfo = useSelector((state) => state.user.userInfo);
 	const [videoFile, setVideoFile] = useState(null);
+	const [listPlayer, setListPlayer] = useState([]);
 	const {
 		register,
 		handleSubmit,
@@ -107,56 +108,29 @@ function Home() {
 			</div>
 		</div>
 	);
-	const data = [
-		{
-			name: 'Thỏ Mini 🐰',
-			avt: 'https://files.playerduo.net/production/images/c4ff9637-6084-40be-9a16-e66ca1289678__2017cc60-67ca-11ef-9376-b533eb6f1b4c__player_avatar.jpg',
-			price: '80000',
-			des: 'san sang choi game',
-			rate: '5',
-			quantity: '90',
-		},
-		{
-			name: '𝙈𝙨𝙪',
-			avt: 'https://files.playerduo.net/production/images/6687fab6-208e-43f4-adc0-1a73fcfe7720__29be9b80-84d6-11ef-9376-b533eb6f1b4c__player_avatar.jpg',
-			price: '80000',
-			des: 'Y tá thách đấu',
-			rate: '5',
-			quantity: '120',
-		},
-		{
-			name: '🌺 Tiểu Lươn 🍀',
-			avt: 'https://files.playerduo.net/production/images/9623b48d-0f8e-416a-bef9-dc4efefb6779__a7b36400-01fd-11ef-9524-4bb33b42dae7__player_avatar.jpg',
-			price: '80000',
-			des: 'Đến và Lấy cắp trái tym em đi ♥',
-			rate: '5',
-			quantity: '527',
-		},
-		{
-			name: 'Hanny',
-			avt: 'https://files.playerduo.net/production/images/3854718d-9f59-4fa6-bf01-f6312fdf5924__f9aec060-5144-11ef-9376-b533eb6f1b4c__player_avatar.jpg',
-			price: '80000',
-			des: 'vitamin cool ♡₍ᐢ. ̫ .⑅ᐢ₎',
-			rate: '5',
-			quantity: '90',
-		},
-		{
-			name: '𝙈𝙨𝙪',
-			avt: 'https://files.playerduo.net/production/images/56b6d587-8058-4d27-a1fe-3924a4dbc4b4__e54042b0-4759-11ef-8bd0-31c0a9baf30a__player_avatar.jpg',
-			price: '80000',
-			des: 'Y tá thách đấu',
-			rate: '5',
-			quantity: '120',
-		},
-		{
-			name: '🌺 Tiểu Lươn 🍀',
-			avt: 'https://files.playerduo.net/production/images/9623b48d-0f8e-416a-bef9-dc4efefb6779__a7b36400-01fd-11ef-9524-4bb33b42dae7__player_avatar.jpg',
-			price: '80000',
-			des: 'Đến và Lấy cắp trái tym em đi ♥',
-			rate: '5',
-			quantity: '527',
-		},
-	];
+
+	const fetchData = async () => {
+		try {
+			const response = await axios.get(`${SERVICE_URL}/getallplayer`, {
+				headers: { 'Content-Type': 'application/json' },
+			});
+			// setListPlayer(response.data);
+			const dataplayer = response.data;
+			const formartData = dataplayer.map((data) => {
+				return {
+					...data,
+					...data.detailCustomer,
+					...data.detailCustomer.games,
+				};
+			});
+			setListPlayer(formartData);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+	useEffect(() => {
+		fetchData();
+	}, []);
 	return (
 		<div className="wrap-content mt-[34px] container w-[100%]">
 			<div className="flex overflow-x-auto no-scrollbar">
@@ -349,7 +323,7 @@ function Home() {
 						<FontAwesomeIcon className="ml-[10px] text-[#333]" icon={faArrowsRotate} />
 					</button>
 				</div>
-				<Players data={data} />
+				<Players data={listPlayer} />
 			</div>
 		</div>
 	);

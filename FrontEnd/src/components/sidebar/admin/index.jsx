@@ -45,15 +45,13 @@ function Admin() {
 						/>
 					}
 				>
-					<ListItem className="p-0" selected={open === 1}>
-						<AccordionHeader onClick={() => handleOpen(1)} className="border-b-0 p-3">
-							<ListItemPrefix className="mr-[10px]">
-								<PresentationChartBarIcon className="h-5 w-5 text-[#dee4ee]" />
-							</ListItemPrefix>
-							<Typography color="blue-gray" className="mr-auto font-normal text-[#dee4ee]">
-								Dashboard
-							</Typography>
-						</AccordionHeader>
+					<ListItem className="p-3" selected={open === 1}>
+						<ListItemPrefix className="mr-[10px]">
+							<PresentationChartBarIcon className="h-5 w-5 text-[#dee4ee]" />
+						</ListItemPrefix>
+						<Link to="/admin/home" color="blue-gray" className="mr-auto font-normal text-[#dee4ee]">
+							Dashboard
+						</Link>
 					</ListItem>
 				</Accordion>
 				<Accordion
@@ -71,15 +69,15 @@ function Admin() {
 								<ShoppingBagIcon className="h-5 w-5" />
 							</ListItemPrefix>
 							<Typography color="blue-gray" className="mr-auto font-normal">
-								Quản lí chức năng
+								Quản lí tác vụ
 							</Typography>
 						</AccordionHeader>
 					</ListItem>
 					<AccordionBody className="py-1">
 						<List className="p-0 block text-[#dee4ee] pl-[20px]">
 							<ListItem>
-								<Link Link to="/admin/category" className="flex items-center">
-									Category
+								<Link Link to="/admin/games" className="flex items-center">
+									Games
 								</Link>
 							</ListItem>
 							<ListItem>
@@ -106,15 +104,17 @@ function Admin() {
 					</AccordionBody>
 				</Accordion>
 				<hr className="my-2 border-blue-gray-50" />
-				<ListItem className="text-[#dee4ee]">
-					<ListItemPrefix className="mr-[10px]">
-						<InboxIcon className="h-5 w-5" />
-					</ListItemPrefix>
-					Inbox
-					<ListItemSuffix>
-						<Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
-					</ListItemSuffix>
-				</ListItem>
+				<Link to="/admin/chatbox">
+					<ListItem className="text-[#dee4ee]">
+						<ListItemPrefix className="mr-[10px]">
+							<InboxIcon className="h-5 w-5" />
+						</ListItemPrefix>
+						Inbox
+						<ListItemSuffix>
+							<Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
+						</ListItemSuffix>
+					</ListItem>
+				</Link>
 				<ListItem className="text-[#dee4ee]">
 					<ListItemPrefix className="mr-[10px]">
 						<UserCircleIcon className="h-5 w-5" />

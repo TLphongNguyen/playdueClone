@@ -6,11 +6,12 @@ function Players({ data }) {
 				<Player
 					key={index}
 					avt={item.avt}
-					name={item.name}
+					name={item.fullName}
 					price={item.price}
-					des={item.des}
+					des={item.description}
 					rate={item.rate}
 					quantity={item.quantity}
+					customerId={item.customerId}
 				/>
 			))}
 		</div>

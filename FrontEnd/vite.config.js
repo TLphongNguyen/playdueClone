@@ -11,10 +11,15 @@ export default defineConfig({
 	},
 	server: {
 		proxy: {
-			'/api': {
+			'/api/firebase': {
 				target: 'https://firebasestorage.googleapis.com',
 				changeOrigin: true,
-				rewrite: (path) => path.replace(/^\/api/, ''),
+				rewrite: (path) => path.replace(/^\/api\/firebase/, ''),
+			},
+			'/api/mockapi': {
+				target: 'https://660d2bd96ddfa2943b33731c.mockapi.io',
+				changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/api\/mockapi/, ''),
 			},
 		},
 	},

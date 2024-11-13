@@ -13,10 +13,19 @@ import Setting from '~/components/sidebar/setting';
 import Admin from '~/components/sidebar/admin';
 //admin component
 import HomeAdmin from '~/page/HomeAdmin';
+import Games from '~/page/HomeAdmin/game';
+import ChatRoomAdmin from '~/page/HomeAdmin/chat';
 const publicRouter = [
 	{ path: '/', components: Home, showSidebar: true, sidebar: Game },
 	{ path: '/register', components: Registers, showSidebar: false },
 	{ path: '/login', components: Registers, showSidebar: false },
+	{
+		path: '/profile',
+		components: Profile,
+		showSidebar: false,
+
+		layout: 'default',
+	},
 ];
 const privateRouter = [
 	{ path: '/maze', components: Maze, showSidebar: true, sidebar: Game },
@@ -24,7 +33,7 @@ const privateRouter = [
 		path: '/profile',
 		components: Profile,
 		showSidebar: false,
-		allowedTypes: [2, 3],
+		allowedTypes: [1, 2, 3],
 		layout: 'default',
 	},
 	{
@@ -32,7 +41,7 @@ const privateRouter = [
 		components: Stories,
 		showSidebar: true,
 		sidebar: Player,
-		allowedTypes: [2, 3],
+		allowedTypes: [1, 2, 3],
 		layout: 'default',
 	},
 	{
@@ -40,7 +49,7 @@ const privateRouter = [
 		components: InfoPlayer,
 		showSidebar: true,
 		sidebar: Setting,
-		allowedTypes: [2, 3],
+		allowedTypes: [1, 2, 3],
 		layout: 'default',
 	},
 	{
@@ -51,9 +60,27 @@ const privateRouter = [
 		allowedTypes: [2, 3],
 		layout: 'default',
 	},
+
+	//admin routes
 	{
 		path: '/admin/home',
 		components: HomeAdmin,
+		showSidebar: true,
+		sidebar: Admin,
+		allowedTypes: [1],
+		layout: 'admin',
+	},
+	{
+		path: '/admin/games',
+		components: Games,
+		showSidebar: true,
+		sidebar: Admin,
+		allowedTypes: [1],
+		layout: 'admin',
+	},
+	{
+		path: '/admin/chatbox',
+		components: ChatRoomAdmin,
 		showSidebar: true,
 		sidebar: Admin,
 		allowedTypes: [1],

@@ -1,13 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
-import { faPlay, faHeart, faCamera, faStar, faMessage, faPlus } from '@fortawesome/free-solid-svg-icons';
+import {
+	faPlay,
+	faHeart,
+	faCamera,
+	faStar,
+	faMessage,
+	faPlus,
+	faHeartCircleMinus,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Image, Modal } from 'antd';
-
+import axios from 'axios';
+import { SERVICE_URL } from '~/config';
 import Rates from '~/components/rates';
+import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
+function useQuery() {
+	return new URLSearchParams(useLocation().search);
+}
 function Profile() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isModalOpenChat, setIsModalOpenChat] = useState(false);
+	const [listPlayer, setListPlayer] = useState([]);
+	const [dataImg, setDataImg] = useState([]);
+	const [statusFollow, setStatusFollow] = useState(false);
+	const userInfo = useSelector((state) => state.user.userInfo);
 
 	const showModal = () => {
 		setIsModalOpen(true);
@@ -28,32 +47,65 @@ function Profile() {
 	const handleCancelChat = () => {
 		setIsModalOpenChat(false);
 	};
-	const imgs = [
-		{
-			src: 'https://files.playerduo.net/production/images/3854718d-9f59-4fa6-bf01-f6312fdf5924__c4f67bb0-480c-11ef-8bd0-31c0a9baf30a__player_album.jpg',
-		},
-		{
-			src: 'https://files.playerduo.net/production/images/3854718d-9f59-4fa6-bf01-f6312fdf5924__bb8e0930-480c-11ef-8bd0-31c0a9baf30a__player_album.jpg',
-		},
-		{
-			src: 'https://files.playerduo.net/production/images/3854718d-9f59-4fa6-bf01-f6312fdf5924__92c3fe00-3fc5-11ef-906c-b3d37e9ba1d3__player_album.jpg',
-		},
-		{
-			src: 'https://files.playerduo.net/production/images/3854718d-9f59-4fa6-bf01-f6312fdf5924__87b5c940-34d9-11ef-a76a-7b840fde9bfc__player_album.jpg',
-		},
-		{
-			src: 'https://files.playerduo.net/production/images/3854718d-9f59-4fa6-bf01-f6312fdf5924__233220c0-1f05-11ef-9524-4bb33b42dae7__player_album.jpg',
-		},
-	];
+	const query = useQuery();
+	const id = query.get('id');
+	const fetchdata = async () => {
+		try {
+			const response = await axios.get(`${SERVICE_URL}/getplayerbyId/${id}`);
+			const dataplayer = response.data;
+			const formartData = {
+				...dataplayer,
+				...dataplayer.detailCustomer,
+				...dataplayer.detailCustomer.games,
+			};
+			setListPlayer(formartData);
+			setDataImg(JSON.parse(formartData.Abum)); //
+		} catch (error) {
+			console.error('Error fetching customer:', error);
+		}
+	};
+	const checkFollower = async () => {
+		const data = {
+			customerId: id,
+			followerId: userInfo.customerId,
+		};
+		console.log(data);
+
+		try {
+			const response = await axios.post(`${SERVICE_URL}/checkfollow`, data, {
+				headers: { 'Content-Type': 'application/json' },
+			});
+			setStatusFollow(response.data.status);
+			console.log(statusFollow);
+
+			return response.data.status;
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	const handleFollow = async () => {
+		const data = {
+			customerId: id,
+			followerId: userInfo.customerId,
+		};
+		try {
+			const response = await axios.post(`${SERVICE_URL}/handlefollow`, data, {
+				headers: { 'Content-Type': 'application/json' },
+			});
+			setStatusFollow(!statusFollow);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	useEffect(() => {
+		fetchdata();
+		checkFollower();
+	}, []);
 	return (
-		<div className="wrap-content flex">
+		<div className="wrap-content flex container">
 			<div className="info-left w-[25%] pr-[30px] pt-[30px]">
 				<div className="avt-player relative">
-					<img
-						src="https://files.playerduo.net/production/images/3854718d-9f59-4fa6-bf01-f6312fdf5924__f9aec060-5144-11ef-9376-b533eb6f1b4c__player_avatar.jpg"
-						alt="avt player"
-						className="rounded-[8px] mx-auto"
-					/>
+					<img src={listPlayer?.avt} alt="avt player" className="rounded-[8px] mx-auto" />
 					<div className="sound-icon w-[30px] h-[30px] rounded-[50%] bg-[#f0564a] text-center leading-[30px] absolute bottom-4 left-[15px]">
 						<FontAwesomeIcon className="text-[#fff]" icon={faPlay} />
 					</div>
@@ -61,12 +113,17 @@ function Profile() {
 				<div className="status mt-5 text-center">
 					<p className="text-[#27ae60] text-[18px] h-[23px] font-[700]">Đang sẵn sàng</p>
 				</div>
-				<a
-					href=""
-					className="block w-[32px] h-[32px] bg-[#4267ae] rounded-[50%] text-center leading-8 text-[#fff] mx-auto mt-5"
-				>
-					<FontAwesomeIcon icon={faFacebookF} />
-				</a>
+				{listPlayer.Facebook ? (
+					<a
+						href={listPlayer.Facebook}
+						className="block w-[32px] h-[32px] bg-[#4267ae] rounded-[50%] text-center leading-8 text-[#fff] mx-auto mt-5"
+					>
+						<FontAwesomeIcon icon={faFacebookF} />
+					</a>
+				) : (
+					<div className=""></div>
+				)}
+
 				<div className="date text-center mt-5">
 					<span className="text-[#9298a1] mr-[5px] text-[12px] font-[400] uppercase">Ngày tham gia:</span>
 					<span className="text-[#354052] text-[12px]">26/4/2020</span>
@@ -74,10 +131,17 @@ function Profile() {
 			</div>
 			<div className="info-center w-[50%] flex-1 pt-[30px]">
 				<div className="name flex justify-between">
-					<h2 className="text-[#354052] text-[28px] font-[700]">Hanny</h2>
-					<button className="text-[#fff] max-h-[29px] text-[14px] font-[700] bg-[#f0564a] border-[1px] border-solid border-[#f0564a] rounded-[20px] pt-[5px] px-[10px] pb-[2px] ">
-						<FontAwesomeIcon className="mr-1" icon={faHeart} />
-						Theo dõi
+					<h2 className="text-[#354052] text-[28px] font-[700]">{listPlayer.fullName}</h2>
+					<button
+						onClick={handleFollow}
+						className="text-[#fff] max-h-[29px] text-[14px] font-[700] bg-[#f0564a] border-[1px] border-solid border-[#f0564a] rounded-[20px] pt-[5px] px-[10px] pb-[2px] "
+					>
+						{statusFollow ? (
+							<FontAwesomeIcon className="mr-1" icon={faHeart} />
+						) : (
+							<FontAwesomeIcon className="mr-1" icon={faHeartCircleMinus} />
+						)}
+						{statusFollow ? 'theo dõi' : 'hủy theo dõi'}
 					</button>
 				</div>
 				<div className="info flex justify-between mt-[30px]">
@@ -146,31 +210,18 @@ function Profile() {
 					<h2 className="text-[#354052] text-[24px] mt-[30px] font-[700] ">Thông tin</h2>
 					<div className="content mt-[15px]">
 						<p className="text-[#354052] text-[14px] font-[400] leading-[1.6] mb-[10px]">
-							Xinh đẹp có thừa
+							{listPlayer.info}
 						</p>
 						<ul className="list-img flex my-[23px]">
-							{imgs.map((img, index) => (
+							{dataImg.map((img, index) => (
 								<li key={index} className="mr-[5px]">
-									<Image className="object-cover" width={121} height={121} src={img.src} />
+									<Image className="object-cover" width={121} height={121} src={img} />
 								</li>
 							))}
 						</ul>
 						<div className="des">
 							<p className="text-[14px] text-[#354052] font-[400] leading-[1.6] mb-[10px]">
-								Tớ tên Bảo Hân. ٩(ˊᗜˋ*)و ♡
-							</p>
-							<p className="text-[14px] text-[#354052] font-[400] leading-[1.6] mb-[10px]">
-								Full champ aram, 5vs5 all lane
-							</p>
-							<p className="text-[14px] text-[#354052] font-[400] leading-[1.6] mb-[10px]">
-								Valorant silver, for fun thui
-							</p>
-							<p className="text-[14px] text-[#354052] font-[400] leading-[1.6] mb-[10px]">On cam</p>
-							<p className="text-[14px] text-[#354052] font-[400] leading-[1.6] mb-[10px]">
-								Mic nhà không ồn
-							</p>
-							<p className="text-[14px] text-[#354052] font-[400] leading-[1.6] mb-[10px]">
-								Yêu anh Phong
+								{listPlayer.description}
 							</p>
 						</div>
 					</div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { DatePicker, Radio, Drawer } from 'antd';
 import { useForm, Controller } from 'react-hook-form';
@@ -6,26 +6,27 @@ import { storage } from '~/config/firebaseConfig';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AUTH_URL } from '~/config';
+import { AUTH_URL, SERVICE_URL } from '~/config';
 import { updateUserInfo } from '~/redux/slice/userSlice';
 import Button from '~/components/button';
 import DetailPlayer from '~/components/detailPlayer';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import dayjs from 'dayjs';
 
 function InfoPlayer() {
 	const dispatch = useDispatch();
 	const userInfo = useSelector((state) => state.user.userInfo || '');
 	const [imageSrc, setImageSrc] = useState(userInfo.avt);
 	const [img, setImg] = useState('');
-	const [birthday, setBirthday] = useState('');
-	const [gender, setGender] = useState('');
+	const [birthday, setBirthday] = useState(userInfo.birthday);
+	const [gender, setGender] = useState(userInfo.gender ? userInfo.gender : '');
+	const [data, setData] = useState([]);
 	const { register, handleSubmit, control } = useForm({
 		defaultValues: {
 			fullName: userInfo.fullName,
 			nickname: userInfo.nickname,
 			birthday: userInfo.birthday,
 			address: userInfo.address,
-			gender: userInfo.gender || 'Nam',
 		},
 	});
 	const handleImageChange = (event) => {
@@ -48,6 +49,18 @@ function InfoPlayer() {
 	const onClose = () => {
 		setOpen(false);
 	};
+	const fetchdata = async () => {
+		try {
+			const response = await axios.get(`${SERVICE_URL}/getGames`);
+			setData(response.data);
+			return response;
+		} catch (err) {
+			console.log(err);
+		}
+	};
+	useEffect(() => {
+		fetchdata();
+	}, [data]);
 	const onSubmit = async (data) => {
 		let imageUrl = '';
 
@@ -77,6 +90,8 @@ function InfoPlayer() {
 		}
 	};
 	const onChangeDate = (date, dateString) => {
+		console.log(dateString);
+
 		setBirthday(dateString);
 	};
 	const onChange = (e) => {
@@ -176,6 +191,7 @@ function InfoPlayer() {
 							<Controller
 								control={control}
 								name="birthday"
+								defaultValue={dayjs('2015/01/01', 'YYYY-MM-DD')}
 								render={({ field }) => (
 									<DatePicker
 										className="h-[54px] px-[15px] border-[1px] border-[#e6eaee] border-solid text-[15px] text-[#333] w-[100%] mb-[7px] rounded-[5px]"
@@ -225,12 +241,6 @@ function InfoPlayer() {
 
 						<div className="border-t-[1px] border-solid border-[#eee] my-5"></div>
 						<Button text={'Cập nhật'} />
-						{/* <button
-						type="submit"
-						className="h-[54px] bg-[#f0564a] leading-[50px] text-[19px] text-[#fff] w-[100%] my-[22px] rounded-[6px] hover:bg-[#a50000]"
-					>
-						Cập nhật
-					</button> */}
 					</form>
 				</div>
 				<div className="w-[50%] mt-5 px-10">
@@ -239,7 +249,7 @@ function InfoPlayer() {
 						<FontAwesomeIcon className="ml-[8px]" icon={faPenToSquare} />
 					</button>
 					<Drawer width={'50%'} title="Basic Drawer" onClose={onClose} open={open}>
-						<DetailPlayer />
+						<DetailPlayer data={data} close={onClose} />
 					</Drawer>
 				</div>
 			</div>

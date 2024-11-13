@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Tabs } from 'antd';
 function Notification({ data, onChange }) {
-	console.log(data);
+	// console.log(data);
 
 	const items = [
 		{

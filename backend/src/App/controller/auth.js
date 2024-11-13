@@ -1,9 +1,9 @@
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const generateRandomString = require('../../utils');
-const prisma = new PrismaClient();
 const randomSuffix = generateRandomString(3); // Độ dài của phần ngẫu nhiên
 const fullName = `User${randomSuffix}`;
 
@@ -129,4 +129,37 @@ const UpdateCutomer = async (req, res) => {
 		console.log(err);
 	}
 };
-module.exports = { signUp, signIn, customer, UpdateCutomer, updatePassword };
+const CreateCutomerDetail = async (req, res) => {
+	const data = req.body;
+	console.log(data);
+
+	try {
+		const response = await prisma.detailCustomer.create({
+			data: {
+				Facebook: data.linkfacebook,
+				highlight: data.linkhighlight,
+				info: data.title,
+				description: data.describe,
+				mic: false,
+				cam: false,
+				Abum: data.img,
+				price: 0,
+				games: {
+					// Sử dụng "games" thay vì "gamesOnCustomers"
+					create: data.games.map((gameId) => ({
+						Game: {
+							connect: { gameId },
+						},
+					})),
+				},
+				customer: {
+					connect: { customerId: data.customerId },
+				},
+			},
+		});
+		res.json(response);
+	} catch (err) {
+		console.log(err);
+	}
+};
+module.exports = { signUp, signIn, customer, UpdateCutomer, updatePassword, CreateCutomerDetail };

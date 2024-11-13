@@ -40,17 +40,16 @@ function Login({ toggleComponent }) {
 				},
 			});
 			const token = response.data;
-
-			// Lưu token vào local storage hoặc state của ứng dụng
 			localStorage.setItem('token', token);
 			openNotificationWithIcon('success', 'Success', 'Đăng nhập thành công');
 			const userInfo = await fetchCustomer(token);
-			console.log(userInfo);
+			// console.log(userInfo);
 
 			socket.emit('registerUser', userInfo.customerId);
 			if (userInfo.account.accountTypeId !== 1) {
 				navigate('/');
 			}
+
 			navigate('/admin/home');
 		} catch (error) {
 			console.error('Lỗi khi đăng ký:', error.response ? error.response.data : error.message);
@@ -91,7 +90,7 @@ function Login({ toggleComponent }) {
 						className="h-[42px] w-[100%] rounded-[10px] mb-[7px] mt-[15px] border-[1px] border-solid border-[#444] opacity-80 text-[#333] px-[15px]"
 						placeholder="Tên đăng nhập hoặc email"
 					/>
-					{errors.email && <p className="text-red-500">This field is required</p>}
+					{errors.email && <p className="text-red-500">vui lòng nhập email</p>}
 
 					<input
 						{...register('password', { required: true })}

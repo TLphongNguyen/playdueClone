@@ -55,8 +55,6 @@ const incrementStoryView = async (req, res) => {
 };
 const checkliked = async (req, res) => {
 	const { storyId, customerId } = req.body;
-	// console.log(req.body);
-
 	try {
 		const existingReaction = await prisma.reactionStory.findUnique({
 			where: {
@@ -79,33 +77,42 @@ const checkliked = async (req, res) => {
 const incrementStoryLike = async (req, res) => {
 	const { storyId, customerId } = req.body;
 	console.log(req.body);
-
 	try {
-		await prisma.reactionStory.create({
-			data: {
-				type: 'LIKE',
-				story: {
-					connect: {
-						storyId: storyId,
-					},
-				},
-				customer: {
-					connect: {
-						customerId: customerId,
-					},
+		const existingReaction = await prisma.reactionStory.findUnique({
+			where: {
+				storyId_customerId_type: {
+					storyId: storyId,
+					customerId: customerId,
+					type: 'LIKE',
 				},
 			},
 		});
-		const updatedStory = await prisma.story.update({
-			where: { storyId: storyId },
-			data: {
-				likes: {
-					increment: 1,
+		if (!existingReaction) {
+			await prisma.reactionStory.create({
+				data: {
+					type: 'LIKE',
+					story: {
+						connect: {
+							storyId: storyId,
+						},
+					},
+					customer: {
+						connect: {
+							customerId: customerId,
+						},
+					},
 				},
-			},
-		});
-
-		res.json(updatedStory);
+			});
+			const updatedStory = await prisma.story.update({
+				where: { storyId: storyId },
+				data: {
+					likes: {
+						increment: 1,
+					},
+				},
+			});
+			res.json(updatedStory);
+		}
 	} catch (error) {
 		console.log(error);
 	}
