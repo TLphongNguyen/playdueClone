@@ -3,7 +3,10 @@ import Story from './story';
 import axios from 'axios';
 import { SERVICE_URL } from '~/config';
 import { formatDate } from '~/sevices/fomatDate';
+import { useSelector, useDispatch } from 'react-redux';
+
 function Stories() {
+	const dispatch = useDispatch();
 	const [dataStory, setDataStory] = useState([]);
 	const fetchDataStory = async () => {
 		try {

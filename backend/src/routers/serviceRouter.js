@@ -13,6 +13,7 @@ const {
 const { CreateNotification, getNotification } = require('../App/controller/notification');
 const { createGames, getGames, updateGames } = require('../App/controller/games');
 const { GetPlayer, GetPlayerById, checkFollower, followers } = require('../App/controller/profile');
+const { ChatAll, chatDefault, getDataMessage } = require('../App/controller/message');
 module.exports = serviceRouters;
 
 serviceRouters.post('/createstories', createStories);
@@ -26,7 +27,7 @@ serviceRouters.get('/getdataComment/:storyId', getCommentStory);
 
 //notifications
 serviceRouters.post('/createNotification', CreateNotification);
-serviceRouters.get('/getNotification/:ownerId/:typeId', getNotification);
+serviceRouters.get('/getNotification/:ownerId', getNotification);
 
 //games
 serviceRouters.post('/creategame', createGames);
@@ -38,3 +39,8 @@ serviceRouters.get('/getallplayer', GetPlayer);
 serviceRouters.get('/getplayerbyId/:id', GetPlayerById);
 serviceRouters.post('/checkfollow', checkFollower);
 serviceRouters.post('/handlefollow', followers);
+
+//messages
+serviceRouters.post('/chatall', ChatAll);
+serviceRouters.post('/chatwith', chatDefault);
+serviceRouters.get('/getchatall', getDataMessage);

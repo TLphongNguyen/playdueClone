@@ -40,8 +40,8 @@ model Customer {
   recharge recharge[]
   reactionStory reactionStory[] 
   notification Notification[]
-  sentMessages    Message[]      @relation("SentMessages")
-  receivedMessages Message[]     @relation("ReceivedMessages")
+  SentMessages     Message[]        @relation("SentMessages")
+  ReceivedMessages MessageReceiver[]
   followers follower[]
 
 }
@@ -146,15 +146,30 @@ model donate {
   customers Customer @relation(fields: [customerId], references: [customerId])
 }
 model Message {
-  messageId  Int       @id @default(autoincrement())
-  content    String
-  sentAt     DateTime  @default(now())
-  readAt     DateTime?
-  senderId   Int
-  receiverId Int
-  sender     Customer  @relation("SentMessages", fields: [senderId], references: [customerId])
-  receiver   Customer  @relation("ReceivedMessages", fields: [receiverId], references: [customerId])
+  messageId   Int       @id @default(autoincrement())
+  content     String
+  sentAt      DateTime  @default(now())
+  readAt      DateTime?
+  senderId    Int
+  sender      Customer  @relation("SentMessages", fields: [senderId], references: [customerId])
+  chatType    ChatType  // Loại chat: PRIVATE (chat riêng) hoặc WORLD (chat thế giới)
+  MessageReceiver MessageReceiver[] // Dùng khi chat riêng
 }
+enum ChatType {
+  PRIVATE 
+  WORLD   
+}
+model MessageReceiver {
+  id         Int       @id @default(autoincrement())
+  messageId  Int
+  receiverId Int
+  readAt     DateTime?
+  message    Message   @relation(fields: [messageId], references: [messageId])
+  receiver   Customer  @relation(fields: [receiverId], references: [customerId])
+
+  @@unique([messageId, receiverId]) // Đảm bảo không trùng lặp
+}
+
 model Notification {
   notificationId Int @id @default(autoincrement())
   customerId Int

@@ -1,6 +1,5 @@
 import Home from '../page/Home';
 import Profile from '../page/profile';
-import Maze from '~/page/Maze';
 import Stories from '~/page/Stories';
 import InfoPlayer from '~/page/InfoPlayer';
 import Registers from '~/page/Register';
@@ -28,7 +27,6 @@ const publicRouter = [
 	},
 ];
 const privateRouter = [
-	{ path: '/maze', components: Maze, showSidebar: true, sidebar: Game },
 	{
 		path: '/profile',
 		components: Profile,

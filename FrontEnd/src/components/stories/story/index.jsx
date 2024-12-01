@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, lazy } from 'react';
 import ViewStory from '../viewStory';
 import { EyeOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
@@ -80,13 +80,13 @@ function Story({ avt, storyUrl, view, name, time, caption, hastag, stories, inde
 	const handleNext = async () => {
 		const nextIndex = (currentStoryIndex + 1) % stories.length;
 		setCurrentStoryIndex(nextIndex);
-		const nextStoryId = stories[nextIndex].storyId; // Lấy storyId của story tiếp theo
+		const nextStoryId = stories[nextIndex].storyId;
 		increaseViewCount(nextStoryId);
 		const likedStatus = await checkIfLiked(nextStoryId);
 		setIsLiked(likedStatus);
 		if (videoRef.current) {
 			videoRef.current.currentTime = 0;
-			videoRef.current.src = stories[nextIndex].urlStory; // Cập nhật nguồn video
+			videoRef.current.src = stories[nextIndex].urlStory;
 			videoRef.current.onloadeddata = () => {
 				videoRef.current.play();
 			};
@@ -103,6 +103,7 @@ function Story({ avt, storyUrl, view, name, time, caption, hastag, stories, inde
 			>
 				<div className="relative h-[190px] m-[3px] w-[130px]">
 					<video
+						onLoad={lazy}
 						src={storyUrl}
 						alt=""
 						className="w-[220px] h-[100%] object-cover top-0 absolute rounded-t-[15px]"

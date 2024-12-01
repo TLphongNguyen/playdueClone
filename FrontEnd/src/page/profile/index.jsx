@@ -10,7 +10,7 @@ import {
 	faHeartCircleMinus,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Image, Modal } from 'antd';
+import { Image, Modal, message } from 'antd';
 import axios from 'axios';
 import { SERVICE_URL } from '~/config';
 import Rates from '~/components/rates';
@@ -27,6 +27,9 @@ function Profile() {
 	const [dataImg, setDataImg] = useState([]);
 	const [statusFollow, setStatusFollow] = useState(false);
 	const userInfo = useSelector((state) => state.user.userInfo);
+	const [isActionLocked, setIsActionLocked] = useState(false);
+	const [messageApi, contextHolder] = message.useMessage();
+	const [showWarning, setShowWarning] = useState(false);
 
 	const showModal = () => {
 		setIsModalOpen(true);
@@ -84,23 +87,63 @@ function Profile() {
 		}
 	};
 	const handleFollow = async () => {
+		const time = 60000;
+		const minis = time / 1000;
+		if (isActionLocked) {
+			alert(`vui lòng đợi ${minis} giây để thao tác`);
+			return;
+		}
+
+		const fullName = userInfo.fullName;
+		const customerId = userInfo.customerId;
+		const avt = userInfo.avt;
 		const data = {
 			customerId: id,
-			followerId: userInfo.customerId,
+			followerId: customerId,
 		};
+
 		try {
 			const response = await axios.post(`${SERVICE_URL}/handlefollow`, data, {
 				headers: { 'Content-Type': 'application/json' },
 			});
+
 			setStatusFollow(!statusFollow);
+			setIsActionLocked(true);
+
+			const notificationData = {
+				ownerId: id,
+				customerId: customerId,
+				avt,
+				content: `${fullName} đã bắt đầu theo dõi bạn.`,
+				typeId: 4,
+				time: new Date(),
+			};
+
+			if (statusFollow === true) {
+				const notificationResponse = await axios.post(`${SERVICE_URL}/createNotification`, notificationData, {
+					headers: { 'Content-Type': 'application/json' },
+				});
+				socket.emit('notificationFollow', notificationData, id);
+			}
 		} catch (error) {
 			console.log(error);
+
+			setIsActionLocked(false);
+		} finally {
+			setTimeout(() => {
+				setIsActionLocked(false);
+			}, time);
 		}
 	};
+
 	useEffect(() => {
 		fetchdata();
 		checkFollower();
-	}, []);
+		if (showWarning) {
+			messageApi.warning('vui lòng chờ để tiếp tục thao tác');
+			setShowWarning(false); // Reset trạng thái sau khi hiển thị
+		}
+	}, [showWarning]);
 	return (
 		<div className="wrap-content flex container">
 			<div className="info-left w-[25%] pr-[30px] pt-[30px]">

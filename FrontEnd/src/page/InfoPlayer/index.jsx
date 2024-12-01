@@ -10,6 +10,9 @@ import { AUTH_URL, SERVICE_URL } from '~/config';
 import { updateUserInfo } from '~/redux/slice/userSlice';
 import Button from '~/components/button';
 import DetailPlayer from '~/components/detailPlayer';
+import Loading from '~/components/loading';
+import GoongMap from '~/components/goongmap';
+
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import dayjs from 'dayjs';
 
@@ -21,6 +24,7 @@ function InfoPlayer() {
 	const [birthday, setBirthday] = useState(userInfo.birthday);
 	const [gender, setGender] = useState(userInfo.gender ? userInfo.gender : '');
 	const [data, setData] = useState([]);
+	const [loading, setLoading] = useState(false);
 	const { register, handleSubmit, control } = useForm({
 		defaultValues: {
 			fullName: userInfo.fullName,
@@ -62,6 +66,7 @@ function InfoPlayer() {
 		fetchdata();
 	}, [data]);
 	const onSubmit = async (data) => {
+		setLoading(true);
 		let imageUrl = '';
 
 		if (img) {
@@ -87,6 +92,8 @@ function InfoPlayer() {
 			console.log('Response:', response.data);
 		} catch (err) {
 			console.log(err);
+		} finally {
+			setLoading(false);
 		}
 	};
 	const onChangeDate = (date, dateString) => {
@@ -124,124 +131,129 @@ function InfoPlayer() {
 			</div>
 			<div className="flex">
 				<div className="w-[50%]">
-					<form onSubmit={handleSubmit(onSubmit)} className="">
-						<div className="">
-							<h1 className="text-[24px] mt-5 mb-[30px] ">Thông tin cá nhân</h1>
-							<div className="flex items-center my-[30px]">
-								{imageSrc ? (
-									<img
-										className="w-[96px] h-[96px] rounded-[50%] object-cover"
-										src={imageSrc}
-										alt=""
-									/>
-								) : (
-									<div className="text-[14px] w-[96px] h-[96px] rounded-[50%] flex items-center mt-7 ml-2">
-										<p>chọn ảnh đại diện của bạn</p>
+					{loading ? (
+						<Loading />
+					) : (
+						<form onSubmit={handleSubmit(onSubmit)} className="">
+							<div className="">
+								<h1 className="text-[24px] mt-5 mb-[30px] ">Thông tin cá nhân</h1>
+								<div className="flex items-center my-[30px]">
+									{imageSrc ? (
+										<img
+											className="w-[96px] h-[96px] rounded-[50%] object-cover"
+											src={imageSrc}
+											alt=""
+										/>
+									) : (
+										<div className="text-[14px] w-[96px] h-[96px] rounded-[50%] flex items-center mt-7 ml-2">
+											<p>chọn ảnh đại diện của bạn</p>
+										</div>
+									)}
+									<div onClick={handleClick} className="ml-[30px] cursor-pointer select-none">
+										<span className="text-[16px] text-[#f0564a] font-[600]">Thay đổi</span>
+										<p className="text-[13px] text-[#90959c]">JPG, GIF or PNG, 5 MB. </p>
+										<input
+											type="file"
+											name=""
+											id="inputimg"
+											accept="image/png, image/jpeg, image/gif"
+											onChange={handleImageChange}
+											hidden
+										/>
 									</div>
-								)}
-								<div onClick={handleClick} className="ml-[30px] cursor-pointer select-none">
-									<span className="text-[16px] text-[#f0564a] font-[600]">Thay đổi</span>
-									<p className="text-[13px] text-[#90959c]">JPG, GIF or PNG, 5 MB. </p>
-									<input
-										type="file"
-										name=""
-										id="inputimg"
-										accept="image/png, image/jpeg, image/gif"
-										onChange={handleImageChange}
-										hidden
-									/>
 								</div>
 							</div>
-						</div>
-						<div className="mb-[22px]">
-							<label
-								className="text-[#90959c] text-[15px] font-[550] uppercase mb-[10px]"
-								htmlFor="fullName"
-							>
-								Họ và tên
-							</label>
-							<input
-								{...register('fullName')}
-								className="h-[54px] px-[15px] border-[1px] border-[#e6eaee] border-solid text-[15px] text-[#333] w-[100%] mb-[7px] rounded-[5px]"
-								type="text"
-							/>
-						</div>
+							<div className="mb-[22px]">
+								<label
+									className="text-[#90959c] text-[15px] font-[550] uppercase mb-[10px]"
+									htmlFor="fullName"
+								>
+									Họ và tên
+								</label>
+								<input
+									{...register('fullName')}
+									className="h-[54px] px-[15px] border-[1px] border-[#e6eaee] border-solid text-[15px] text-[#333] w-[100%] mb-[7px] rounded-[5px]"
+									type="text"
+								/>
+							</div>
 
-						<div className="mb-[22px]">
-							<label
-								className="text-[#90959c] text-[15px] font-[550] uppercase mb-[10px]"
-								htmlFor="nickname"
-							>
-								Biệt danh
-							</label>
-							<input
-								{...register('nickname')}
-								className="h-[54px] px-[15px] border-[1px] border-[#e6eaee] border-solid text-[15px] text-[#333] w-[100%] mb-[7px] rounded-[5px]"
-								type="text"
-							/>
-						</div>
+							<div className="mb-[22px]">
+								<label
+									className="text-[#90959c] text-[15px] font-[550] uppercase mb-[10px]"
+									htmlFor="nickname"
+								>
+									Biệt danh
+								</label>
+								<input
+									{...register('nickname')}
+									className="h-[54px] px-[15px] border-[1px] border-[#e6eaee] border-solid text-[15px] text-[#333] w-[100%] mb-[7px] rounded-[5px]"
+									type="text"
+								/>
+							</div>
 
-						<div className="mb-[22px]">
-							<label
-								className="text-[#90959c] text-[15px] font-[550] uppercase mb-[10px]"
-								htmlFor="birthday"
-							>
-								Ngày sinh
-							</label>
-							<Controller
-								control={control}
-								name="birthday"
-								defaultValue={dayjs('2015/01/01', 'YYYY-MM-DD')}
-								render={({ field }) => (
-									<DatePicker
-										className="h-[54px] px-[15px] border-[1px] border-[#e6eaee] border-solid text-[15px] text-[#333] w-[100%] mb-[7px] rounded-[5px]"
-										onChange={onChangeDate}
-									/>
-								)}
-							/>
-						</div>
+							<div className="mb-[22px]">
+								<label
+									className="text-[#90959c] text-[15px] font-[550] uppercase mb-[10px]"
+									htmlFor="birthday"
+								>
+									Ngày sinh
+								</label>
+								<Controller
+									control={control}
+									name="birthday"
+									defaultValue={dayjs('2015/01/01', 'YYYY-MM-DD')}
+									render={({ field }) => (
+										<DatePicker
+											className="h-[54px] px-[15px] border-[1px] border-[#e6eaee] border-solid text-[15px] text-[#333] w-[100%] mb-[7px] rounded-[5px]"
+											onChange={onChangeDate}
+										/>
+									)}
+								/>
+							</div>
 
-						<div className="mb-[22px]">
-							<label
-								className="text-[#90959c] text-[15px] font-[550] uppercase mb-[10px]"
-								htmlFor="address"
-							>
-								Địa chỉ
-							</label>
-							<input
-								{...register('address')}
-								className="h-[54px] px-[15px] border-[1px] border-[#e6eaee] border-solid text-[15px] text-[#333] w-[100%] mb-[7px] rounded-[5px]"
-								type="text"
-							/>
-						</div>
+							<div className="mb-[22px]">
+								<label
+									className="text-[#90959c] text-[15px] font-[550] uppercase mb-[10px]"
+									htmlFor="address"
+								>
+									Địa chỉ
+								</label>
+								<input
+									{...register('address')}
+									className="h-[54px] px-[15px] border-[1px] border-[#e6eaee] border-solid text-[15px] text-[#333] w-[100%] mb-[7px] rounded-[5px]"
+									type="text"
+								/>
+								{/* <GoongMap /> */}
+							</div>
 
-						<div className="mb-[22px]">
-							<label
-								className="text-[#90959c] text-[15px] font-[550] uppercase mb-[10px]"
-								htmlFor="gender"
-							>
-								Giới tính
-							</label>
-							<Controller
-								control={control}
-								name="gender"
-								render={({ field }) => (
-									<Radio.Group
-										{...field}
-										className="flex w-[100%] justify-around h-[54px] items-center text-[16px] text-[#354052]"
-										onChange={onChange}
-										value={gender}
-									>
-										<Radio value="Nam">Nam</Radio>
-										<Radio value="Nữ">Nữ</Radio>
-									</Radio.Group>
-								)}
-							/>
-						</div>
+							<div className="mb-[22px]">
+								<label
+									className="text-[#90959c] text-[15px] font-[550] uppercase mb-[10px]"
+									htmlFor="gender"
+								>
+									Giới tính
+								</label>
+								<Controller
+									control={control}
+									name="gender"
+									render={({ field }) => (
+										<Radio.Group
+											{...field}
+											className="flex w-[100%] justify-around h-[54px] items-center text-[16px] text-[#354052]"
+											onChange={onChange}
+											value={gender}
+										>
+											<Radio value="Nam">Nam</Radio>
+											<Radio value="Nữ">Nữ</Radio>
+										</Radio.Group>
+									)}
+								/>
+							</div>
 
-						<div className="border-t-[1px] border-solid border-[#eee] my-5"></div>
-						<Button text={'Cập nhật'} />
-					</form>
+							<div className="border-t-[1px] border-solid border-[#eee] my-5"></div>
+							<Button text={'Cập nhật'} />
+						</form>
+					)}
 				</div>
 				<div className="w-[50%] mt-5 px-10">
 					<button className="px-4 py-3 bg-[#f0564a] text-[#fff] rounded-[4px]" onClick={showDrawer}>

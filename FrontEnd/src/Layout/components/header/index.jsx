@@ -34,23 +34,13 @@ function Header() {
 	const userInfo = useSelector((state) => state.user.userInfo);
 	const [isModalOpenRanking, setIsModalOpenRanking] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const ref = useRef(null);
 
 	const openNotification = () => {
 		setIsOpen((prev) => !prev);
 	};
 	const id = userInfo?.account.accountTypeId;
-	useEffect(() => {
-		const handleClickOutside = (event) => {
-			if (ref.current && !ref.current.contains(event.target)) {
-				setIsOpen(false);
-			}
-		};
-		document.addEventListener('mousedown', handleClickOutside);
-		return () => {
-			document.removeEventListener('mousedown', handleClickOutside);
-		};
-	}, []);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const handleLogout = () => {
@@ -212,10 +202,10 @@ function Header() {
 	const onChange = (key) => {
 		fetchdata(key);
 	};
-	const fetchdata = async (id) => {
+	const fetchdata = async () => {
 		const ownerId = userInfo.customerId;
 		try {
-			const response = await axios.get(`${SERVICE_URL}/getNotification/${ownerId}/${id}`);
+			const response = await axios.get(`${SERVICE_URL}/getNotification/${ownerId}`);
 			const data = response.data;
 			const formartData = data.map((item) => {
 				return {
@@ -223,12 +213,14 @@ function Header() {
 					...item.customers,
 				};
 			});
-			setData(formartData);
+
+			const reversedData = formartData.reverse();
+
+			setData(reversedData);
 		} catch (err) {
 			console.log(err);
 		}
 	};
-	// console.log(data);
 	useEffect(() => {
 		fetchdata(1);
 		socket.on('notifyOwner', (newNotification) => {

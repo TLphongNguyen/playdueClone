@@ -70,7 +70,8 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, s
 	useEffect(() => {
 		setDataComment([]);
 		fetchData();
-
+	}, [storyId]);
+	useEffect(() => {
 		socket.on('commentReceived', (newComment) => {
 			setDataComment((prevComments) => [...prevComments, newComment]);
 		});
@@ -78,7 +79,7 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, s
 		return () => {
 			socket.off('commentReceived');
 		};
-	}, [storyId]);
+	});
 
 	const onSubmit = async (data) => {
 		const customerId = userInfo.customerId;
@@ -223,7 +224,7 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, s
 							/>
 						))
 					) : (
-						<div className="">chưa có bình luận nào</div>
+						<p className="">chưa có bình luận nào</p>
 					)}
 				</div>
 				<div className="w-[100%] py-[10px] border-t-[1px] border-solid border-[#dcdcdc]">
@@ -233,8 +234,8 @@ function ViewStory({ videoRefs, handleNext, handlePrev, currentStory, isLiked, s
 					>
 						<input
 							{...register('contentComment')}
-							value={inputValue} // Liên kết state inputValue với input
-							onChange={(e) => setInputValue(e.target.value)} // Cập nhật inputValue khi người dùng nhập
+							value={inputValue}
+							onChange={(e) => setInputValue(e.target.value)}
 							placeholder="Comment.."
 							className="h-[100%] w-[100%] focus:border-[#ccc]"
 							type="text"

@@ -20,7 +20,7 @@ const userSlice = createSlice({
 		updateUserInfo: (state, action) => {
 			state.userInfo = {
 				...state.userInfo,
-				...action.payload, // Cập nhật các thông tin thay đổi
+				...action.payload,
 			};
 		},
 	},

@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Tabs } from 'antd';
 function Notification({ data, onChange }) {
-	// console.log(data);
-
 	const items = [
 		{
 			key: '1',
-			label: 'Chính',
+			label: 'Thông báo',
 			children: (
-				<ul className="overflow-y-scroll">
+				<ul className="">
 					{data?.map((item) => (
 						<div className="px-5 py-2 mb-3 cursor-pointer">
 							<div className="flex items-center">
@@ -27,17 +25,9 @@ function Notification({ data, onChange }) {
 				</ul>
 			),
 		},
-		{
-			key: '2',
-			label: 'Khác',
-			children: 'Content of Tab Pane 2',
-		},
 	];
 	return (
 		<div className="absolute w-[500px] h-[468px] z-10 right-1 bg-[#fff] rounded-[4px] box-shadow overflow-y-scroll">
-			<div className="px-2 pt-2 border-b-[1px] border-solid border-[#dcdcdc]">
-				<h2 className="text-[18px] text-[#000] mb-2 text-center">Thông báo</h2>
-			</div>
 			<Tabs defaultActiveKey="1" items={items} onChange={onChange} />
 		</div>
 	);

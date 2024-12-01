@@ -9,6 +9,8 @@ import { SERVICE_URL } from '~/config';
 
 import Input from '~/components/input';
 import ButtonComponent from '~/components/button';
+import Loading from '~/components/loading';
+
 function Games() {
 	const [open, setOpen] = useState(false);
 	const [previewOpen, setPreviewOpen] = useState(false);
@@ -17,6 +19,7 @@ function Games() {
 	const [data, setData] = useState([]);
 	const [typeEdit, setTypeEdit] = useState(false);
 	const [gameId, setGameId] = useState(0);
+	const [loading, setLoading] = useState(false);
 	const {
 		control,
 		handleSubmit,
@@ -95,19 +98,22 @@ function Games() {
 	};
 	const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
 	const fetchdata = async () => {
+		setLoading(true);
 		try {
 			const response = await axios.get(`${SERVICE_URL}/getGames`);
 			setData(response.data);
 			return response;
 		} catch (err) {
 			console.log(err);
+		} finally {
+			setLoading(false);
 		}
 	};
 	useEffect(() => {
 		fetchdata();
 	}, [data]);
 	const onSubmit = async (data) => {
-		console.log(data);
+		setLoading(true);
 
 		let imageUrl = '';
 		const img = fileList[0]?.originFileObj;
@@ -136,6 +142,8 @@ function Games() {
 				setFileList([]);
 			} catch (err) {
 				console.log(err);
+			} finally {
+				setLoading(false);
 			}
 		} else {
 			try {
@@ -149,6 +157,8 @@ function Games() {
 				setFileList([]);
 			} catch (err) {
 				console.log(err);
+			} finally {
+				setLoading(false);
 			}
 		}
 	};

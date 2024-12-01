@@ -8,7 +8,7 @@ const CreateNotification = async (req, res) => {
 		const dataNotification = await prisma.notification.create({
 			data: {
 				content: data.content,
-				ownerId: data.ownerId,
+				ownerId: parseInt(data.ownerId),
 				TypeNotification: {
 					connect: {
 						typeId: data.typeId,
@@ -27,11 +27,10 @@ const CreateNotification = async (req, res) => {
 	}
 };
 const getNotification = async (req, res) => {
-	const { typeId, ownerId } = req.params;
+	const { ownerId } = req.params;
 	try {
 		const response = await prisma.notification.findMany({
 			where: {
-				typeId: parseInt(typeId),
 				ownerId: parseInt(ownerId),
 			},
 			include: {

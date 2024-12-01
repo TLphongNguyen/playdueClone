@@ -30,7 +30,7 @@ function DefaultLayout({ children, showSidebar = true, sidebar }) {
 	}, [dispatch]);
 	const SideBarItem = sidebar;
 	return (
-		<div className="w-[100%]">
+		<div className="w-[100%] no-scrollbar ">
 			<Header className="fixed" />
 			<div className="wrap-body flex h-[93vh]">
 				{showSidebar && <Sidebar content={<SideBarItem />} className="fixed" />}
