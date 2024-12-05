@@ -9,6 +9,7 @@ import { PlayCircleOutlined, CloseOutlined } from '@ant-design/icons';
 import { Modal } from 'antd';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import { SERVICE_URL } from '~/config';
 
 function HomeStory() {
 	const {

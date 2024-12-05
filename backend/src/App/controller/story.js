@@ -28,7 +28,7 @@ const getStory = async (req, res) => {
 				stautusStory: true,
 			},
 			include: {
-				customers: true, // Bao gồm thông tin khách hàng
+				customers: true,
 			},
 		});
 

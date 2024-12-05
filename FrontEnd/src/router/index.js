@@ -10,6 +10,7 @@ import Game from '~/components/sidebar/games';
 import Player from '~/components/sidebar/players';
 import Setting from '~/components/sidebar/setting';
 import Admin from '~/components/sidebar/admin';
+import PayLoad from '~/page/payload';
 //admin component
 import HomeAdmin from '~/page/HomeAdmin';
 import Games from '~/page/HomeAdmin/game';
@@ -53,6 +54,14 @@ const privateRouter = [
 	{
 		path: '/setting/changepass',
 		components: ChangePass,
+		showSidebar: true,
+		sidebar: Setting,
+		allowedTypes: [2, 3],
+		layout: 'default',
+	},
+	{
+		path: '/setting/payload',
+		components: PayLoad,
 		showSidebar: true,
 		sidebar: Setting,
 		allowedTypes: [2, 3],

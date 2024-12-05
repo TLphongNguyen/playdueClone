@@ -13,7 +13,8 @@ const {
 const { CreateNotification, getNotification } = require('../App/controller/notification');
 const { createGames, getGames, updateGames } = require('../App/controller/games');
 const { GetPlayer, GetPlayerById, checkFollower, followers } = require('../App/controller/profile');
-const { ChatAll, chatDefault, getDataMessage } = require('../App/controller/message');
+const { ChatAll, chatDefault, getDataMessage, getchatUser, getPrivateChat } = require('../App/controller/message');
+const { createRecharge, getSumAmount } = require('../App/controller/recharge');
 module.exports = serviceRouters;
 
 serviceRouters.post('/createstories', createStories);
@@ -44,3 +45,8 @@ serviceRouters.post('/handlefollow', followers);
 serviceRouters.post('/chatall', ChatAll);
 serviceRouters.post('/chatwith', chatDefault);
 serviceRouters.get('/getchatall', getDataMessage);
+serviceRouters.get('/getchatby/:id', getchatUser);
+serviceRouters.get('/getprivatechat', getPrivateChat);
+//recharge
+serviceRouters.post('/recharge', createRecharge);
+serviceRouters.get('/getsumrecharge/:id', getSumAmount);

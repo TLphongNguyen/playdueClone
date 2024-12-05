@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { formatPrice } from '~/sevices/formatPrice';
 
 function Player({ avt, price, name, des, rate, quantity, customerId }) {
 	return (
@@ -9,7 +10,7 @@ function Player({ avt, price, name, des, rate, quantity, customerId }) {
 				<div className="avt w-[238px] h-[238px] relative">
 					<img className="w-[100%] h-[100%] object-cover" src={avt} alt="anh dai dien" />
 					<div className="price absolute right-[5px] bottom-[10px] bg-[#f0564a] rounded-[14px] text-[#fff] text-[13px] pt-[6px] px-[10px] py-1">
-						{price} đ/h
+						{formatPrice(price)}/h
 					</div>
 				</div>
 				<div className="py-[15px] px-2">

@@ -152,8 +152,8 @@ model Message {
   readAt      DateTime?
   senderId    Int
   sender      Customer  @relation("SentMessages", fields: [senderId], references: [customerId])
-  chatType    ChatType  // Loại chat: PRIVATE (chat riêng) hoặc WORLD (chat thế giới)
-  MessageReceiver MessageReceiver[] // Dùng khi chat riêng
+  chatType    ChatType  
+  MessageReceiver MessageReceiver[]
 }
 enum ChatType {
   PRIVATE 

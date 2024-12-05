@@ -5,9 +5,10 @@ const message = (io) => {
   io.on("connection", (socket) => {
     handleLogin(socket, io);
     socket.on("sendMessage", (message) => {
-      console.log(message);
-
       io.emit("receiveMessage", message);
+    });
+    socket.on("sendMessagePrivate", (message) => {
+      io.emit("receiveMessagePrivate", message);
     });
   });
 };

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons';
+import Donate from '~/components/profile/donate';
 import {
 	faPlay,
 	faHeart,
@@ -16,6 +17,10 @@ import { SERVICE_URL } from '~/config';
 import Rates from '~/components/rates';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import CreateChat from '~/components/profile/CreateChat';
+import RentModal from '~/components/profile/Rent';
+import { formatPrice } from '~/sevices/formatPrice';
+import IconChat from '~/components/message/iconchat';
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
@@ -23,6 +28,7 @@ function useQuery() {
 function Profile() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isModalOpenChat, setIsModalOpenChat] = useState(false);
+	const [isModalRent, setIsModalRent] = useState(false);
 	const [listPlayer, setListPlayer] = useState([]);
 	const [dataImg, setDataImg] = useState([]);
 	const [statusFollow, setStatusFollow] = useState(false);
@@ -37,6 +43,9 @@ function Profile() {
 	const showModalChat = () => {
 		setIsModalOpenChat(true);
 	};
+	const showModalRent = () => {
+		setIsModalRent(true);
+	};
 
 	const handleOk = () => {
 		setIsModalOpen(false);
@@ -44,12 +53,19 @@ function Profile() {
 	const handleCancel = () => {
 		setIsModalOpen(false);
 	};
+	const handleOkRent = () => {
+		setIsModalRent(false);
+	};
+	const handleCancelRent = () => {
+		setIsModalRent(false);
+	};
 	const handleOkChat = () => {
 		setIsModalOpenChat(false);
 	};
 	const handleCancelChat = () => {
 		setIsModalOpenChat(false);
 	};
+
 	const query = useQuery();
 	const id = query.get('id');
 	const fetchdata = async () => {
@@ -269,7 +285,7 @@ function Profile() {
 						</div>
 					</div>
 					<hr className="my-5 border-t-[1px] border-solid border-[#eee]" />
-					<div className="top-donate">
+					<div className="top-donate ">
 						<h2 className="text-[#354052] text-[24px] mt-[30px] font-[700] ">Top Donate Tháng</h2>
 						<ul className="list-donate mt-8">
 							<li className="flex mb-2">
@@ -366,9 +382,11 @@ function Profile() {
 					</div>
 				</div>
 			</div>
-			<div className="info-right w-[25%] pl-[30px] pt-[30px]">
+			<div className="info-right w-[25%] pl-[30px] pt-[30px] relative">
 				<div className="w-[100%] h-auto border-[1px] border-solid border-[#e2e6ea] p-[10px] rounded-[15px]">
-					<span className="text-[#f0564a] text-[26px] font-[700] mb-[10px] block">80,000 đ/h</span>
+					<span className="text-[#f0564a] text-[26px] font-[700] mb-[10px] block">
+						{formatPrice(listPlayer.price)}/h
+					</span>
 					<div className="rate flex mb-[5px]">
 						<FontAwesomeIcon className="text-[#ff9948]" icon={faStar} />
 						<FontAwesomeIcon className="text-[#ff9948]" icon={faStar} />
@@ -378,7 +396,10 @@ function Profile() {
 						<span className="ml-2 text-[#9298a1] text-[13px] font-[400]">245 Đánh giá</span>
 					</div>
 					<div className="btn">
-						<button className="w-[100%] h-[54px] text-[16px] mt-[10px] px-[6px] bg-[#f0564a] text-[#fff] rounded-[10px] font-[700] uppercase">
+						<button
+							onClick={showModalRent}
+							className="w-[100%] h-[54px] text-[16px] mt-[10px] px-[6px] bg-[#f0564a] text-[#fff] rounded-[10px] font-[700] uppercase"
+						>
 							Thuê
 						</button>
 						<button
@@ -399,71 +420,23 @@ function Profile() {
 						width={'600px'}
 						height={'474px'}
 						footer={false}
+						title="Thuê"
+						open={isModalRent}
+						onOk={handleOkRent}
+						onCancel={handleCancelRent}
+					>
+						<RentModal name={listPlayer?.fullName} price={listPlayer?.price} />
+					</Modal>
+					<Modal
+						width={'600px'}
+						height={'474px'}
+						footer={false}
 						title="Donate"
 						open={isModalOpen}
 						onOk={handleOk}
 						onCancel={handleCancel}
 					>
-						<div className="p-[15px]">
-							<div className="w-[100%] flex">
-								<span className="w-[40%] block text-[14px] text-[#354052] font-[600] p-[10px]">
-									Người nhận:
-								</span>
-								<span className="w-[60%] block text-[14px] text-[#354052] font-[600] p-[10px]">
-									Hanny
-								</span>
-							</div>
-							<div className="w-[100%] flex">
-								<span className="w-[40%] block text-[14px] text-[#354052] font-[600] p-[10px]">
-									Số dư hiện tại:
-								</span>
-								<button className="p-[10px] flex">
-									<span className="text-[#f0564a]">0đ</span>
-									<div className="bg-[#f0564a] text-[#fff] py-[1.5px] px-[6px] text-center rounded-[50%] ml-[10px]">
-										<FontAwesomeIcon className="" icon={faPlus} />
-									</div>
-								</button>
-							</div>
-							<div className="flex items-center">
-								<span className="block w-[40%] text-[14px] text-[#354052] font-[600] p-[10px]">
-									Số tiền muốn Donate :
-								</span>
-								<div className="p-[10px] w-[60%]">
-									<input
-										className="w-[100%] h-10 bg-[#fff] py-2 px-3 text-[#354052] border-[1px] border-[#e3e3e3] border-solid rounded-[4px]"
-										type="text"
-									/>
-								</div>
-							</div>
-							<div className="flex items-center">
-								<span className="block w-[40%] text-[14px] text-[#354052] font-[600] p-[10px]">
-									Tên hiển thị: :
-								</span>
-								<div className="p-[10px] w-[60%]">
-									<input
-										defaultValue={'Name'}
-										className="w-[100%] h-10 bg-[#fff] py-2 px-3 text-[#354052] border-[1px] border-[#e3e3e3] border-solid rounded-[4px]"
-										type="text"
-									/>
-								</div>
-							</div>
-							<div className="p-[10px]">
-								<textarea
-									className="h-[100px] w-[100%] py-2 px-3 border-[1px] border-[#e3e3e3] border-solid outline-none resize-none rounded-[4px] focus:border-[#333] transition-all"
-									placeholder="Message"
-									name=""
-									id=""
-								></textarea>
-							</div>
-						</div>
-						<div className="p-[15px] border-t-[1px] border-[#e3e3e3] border-solid text-right">
-							<button className="bg-[#f0564a] text-[#fff] text-[13px] font-[600] py-2 px-4 rounded-[4px]">
-								Donate
-							</button>
-							<button className="bg-[#fff] text-[13px] ml-[5px] text-[#354052] border-[1px] border-[#e3e3e3] border-solid  py-2 px-4 rounded-[4px]">
-								Đóng
-							</button>
-						</div>
+						<Donate name={listPlayer?.fullName} user={userInfo?.fullName} />
 					</Modal>
 					<Modal
 						width={'600px'}
@@ -474,26 +447,10 @@ function Profile() {
 						onCancel={handleCancelChat}
 						footer={false}
 					>
-						<div className="">
-							<div className="p-[25px]">
-								<textarea
-									className="h-[100px] w-[100%] py-2 px-3 border-[1px] border-[#e3e3e3] border-solid outline-none resize-none rounded-[4px] focus:border-[#333] transition-all"
-									placeholder="Message"
-									name=""
-									id=""
-								></textarea>
-							</div>
-							<div className="p-[15px] border-t-[1px] border-[#e3e3e3] border-solid text-right">
-								<button className="bg-[#f0564a] text-[#fff] text-[13px] font-[600] py-2 px-4 rounded-[4px]">
-									Gửi tin nhắn
-								</button>
-								<button className="bg-[#fff] text-[13px] ml-[5px] text-[#354052] border-[1px] border-[#e3e3e3] border-solid  py-2 px-4 rounded-[4px]">
-									Đóng
-								</button>
-							</div>
-						</div>
+						<CreateChat id={id} />
 					</Modal>
 				</div>
+				<IconChat position={200} />
 			</div>
 		</div>
 	);

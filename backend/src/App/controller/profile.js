@@ -7,8 +7,7 @@ const GetPlayer = async (req, res) => {
 		const response = await prisma.customer.findMany({
 			where: {
 				detailCustomer: {
-					// Điều kiện chỉ lấy những khách hàng có DetailCustomer
-					isNot: null, // Lọc những Customer có DetailCustomer liên kết
+					isNot: null,
 				},
 			},
 			include: {
@@ -16,7 +15,7 @@ const GetPlayer = async (req, res) => {
 					include: {
 						games: {
 							include: {
-								Game: true, // Bao gồm thông tin từ bảng Games
+								Game: true,
 							},
 						},
 					},

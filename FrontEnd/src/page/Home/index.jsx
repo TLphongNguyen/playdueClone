@@ -6,13 +6,16 @@ import { faArrowsRotate } from '@fortawesome/free-solid-svg-icons';
 import { Select, Button, Slider, Popover, Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 import { SERVICE_URL } from '~/config';
-const HomeStory = lazy(() => import('./components/HomeStory'));
-const HomeMessage = lazy(() => import('./components/HomeMessage'));
+import HomeStory from './components/HomeStory';
+import HomeMessage from './components/HomeMessage';
+import IconChat from '~/components/message/iconchat';
 
 function Home() {
 	const [activeButton, setActiveButton] = useState(null);
 	const [activeButton1, setActiveButton1] = useState(null);
+	const userInfo = useSelector((state) => state.user.userInfo);
 	const [listPlayer, setListPlayer] = useState([]);
 
 	const handleClickBtn = (button) => {
@@ -54,7 +57,9 @@ function Home() {
 					...data.detailCustomer.games,
 				};
 			});
-			setListPlayer(formartData);
+			const filteredData = formartData.filter((player) => player.customerId !== userInfo?.customerId);
+
+			setListPlayer(filteredData);
 		} catch (err) {
 			console.log(err);
 		}
@@ -158,7 +163,7 @@ function Home() {
 					</button>
 				</form>
 			</div>
-			<div className="list-player">
+			<div className="list-player relative">
 				<div className="refresh flex justify-between mt-[25px] mb-[15px]">
 					<h1 className="text-[#f0564a] text-[18px] font-[700]">VIP PLAYERS</h1>
 					<button className="w-[100px] h-[32px] text-[11px] font-[600] border-[1px] border-solid border-[#e9e9e9] rounded-[25px] bg-[#fff] text-[#f0564a] hover:bg-[#f3f3f3] hover:text-[#f0564a]">
@@ -167,6 +172,7 @@ function Home() {
 					</button>
 				</div>
 				<Players data={listPlayer} />
+				<IconChat position={'200'} bottom={'120'} />
 			</div>
 			<HomeMessage />
 		</div>

@@ -102,7 +102,7 @@ function Setting() {
 					icon: <FontAwesomeIcon icon={faCreditCard} />,
 				},
 				{
-					key: '6',
+					key: 'payload',
 					label: 'Ví',
 					icon: <FontAwesomeIcon icon={faWallet} />,
 				},

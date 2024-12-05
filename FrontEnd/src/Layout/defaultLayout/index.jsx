@@ -8,34 +8,33 @@ import { AUTH_URL } from '~/config';
 
 function DefaultLayout({ children, showSidebar = true, sidebar }) {
 	const dispatch = useDispatch();
+	const fetchCustomer = async () => {
+		try {
+			const response = await axios.get(`${AUTH_URL}/customer`, {
+				headers: {
+					authorization: token,
+				},
+			});
+			dispatch(setUserInfo(response.data));
+		} catch (error) {
+			console.error('Error fetching customer:', error);
+			localStorage.removeItem('token');
+		}
+	};
 	useEffect(() => {
 		const token = localStorage.getItem('token');
 		if (token) {
-			const fetchCustomer = async () => {
-				try {
-					const response = await axios.get(`${AUTH_URL}/customer`, {
-						headers: {
-							authorization: token,
-						},
-					});
-					dispatch(setUserInfo(response.data));
-				} catch (error) {
-					console.error('Error fetching customer:', error);
-					localStorage.removeItem('token');
-				}
-			};
-
 			fetchCustomer();
 		}
 	}, [dispatch]);
 	const SideBarItem = sidebar;
 	return (
-		<div className="w-[100%] no-scrollbar ">
+		<div className="overflow-hidden no-scrollbar ">
 			<Header className="fixed" />
 			<div className="wrap-body flex h-[93vh]">
 				{showSidebar && <Sidebar content={<SideBarItem />} className="fixed" />}
 				<div
-					className={`wrap-content w-[100%] overflow-y-auto no-scrollbar ${showSidebar ? 'ml-[sidebar-width]' : ''}`}
+					className={`wrap-content  overflow-hidden overflow-y-auto no-scrollbar ${showSidebar ? 'ml-[sidebar-width] w-[1685px]' : 'w-full'}`}
 				>
 					{children}
 				</div>

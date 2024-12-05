@@ -15,6 +15,7 @@ import GoongMap from '~/components/goongmap';
 
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import dayjs from 'dayjs';
+import { formatPrice } from '~/sevices/formatPrice';
 
 function InfoPlayer() {
 	const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function InfoPlayer() {
 	const [gender, setGender] = useState(userInfo.gender ? userInfo.gender : '');
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(false);
+	const [sumAmout, setSumAmout] = useState('');
 	const { register, handleSubmit, control } = useForm({
 		defaultValues: {
 			fullName: userInfo.fullName,
@@ -62,9 +64,23 @@ function InfoPlayer() {
 			console.log(err);
 		}
 	};
+	const fetchSumAmount = async (id) => {
+		console.log(id);
+
+		try {
+			const response = await axios.get(`${SERVICE_URL}/getsumrecharge/${id}`);
+			setSumAmout(response.data.data);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+	useEffect(() => {
+		fetchSumAmount(userInfo.customerId);
+		console.log(sumAmout);
+	}, [sumAmout]);
 	useEffect(() => {
 		fetchdata();
-	}, [data]);
+	}, []);
 	const onSubmit = async (data) => {
 		setLoading(true);
 		let imageUrl = '';
@@ -113,7 +129,7 @@ function InfoPlayer() {
 				<div className="pr-[15px] w-[33.33333%]">
 					<div className="border-[1px] border-solid border-[#e6eaee]	py-[20px] rounded-[5px] text-center">
 						<p className="text-[#90959c] text-[11px] font-[700]">TỔNG TIỀN ĐÃ NẠP</p>
-						<span className="text-[#f0564a] text-[30px]">0đ</span>
+						<span className="text-[#f0564a] text-[30px]">{formatPrice(sumAmout)}</span>
 					</div>
 				</div>
 				<div className="px-[15px] w-[33.33333%]">

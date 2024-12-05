@@ -7,8 +7,8 @@ function Notification({ data, onChange }) {
 			label: 'Thông báo',
 			children: (
 				<ul className="">
-					{data?.map((item) => (
-						<div className="px-5 py-2 mb-3 cursor-pointer">
+					{data?.map((item, index) => (
+						<div key={index} className="px-5 py-2 mb-3 cursor-pointer">
 							<div className="flex items-center">
 								<img
 									src={item.avt}
