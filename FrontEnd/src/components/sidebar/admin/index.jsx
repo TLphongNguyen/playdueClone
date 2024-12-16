@@ -20,12 +20,21 @@ import {
 	PowerIcon,
 } from '@heroicons/react/24/solid';
 import { ChevronRightIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '~/redux/slice/userSlice';
+
 function Admin() {
 	const [open, setOpen] = React.useState(0);
-
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const handleOpen = (value) => {
 		setOpen(open === value ? 0 : value);
+	};
+	const handleLogout = () => {
+		dispatch(logout());
+		localStorage.removeItem('token');
+		navigate('/register');
 	};
 
 	return (
@@ -77,22 +86,22 @@ function Admin() {
 						<List className="p-0 block text-[#dee4ee] pl-[20px]">
 							<ListItem>
 								<Link Link to="/admin/games" className="flex items-center">
-									Games
+									Quản lý Games
 								</Link>
 							</ListItem>
 							<ListItem>
-								<Link Link to="/admin/products" className="flex items-center">
-									Products
+								<Link Link to="/admin/user" className="flex items-center">
+									Quản lý người dùng
 								</Link>
 							</ListItem>
 							<ListItem>
-								<Link Link to="/admin/bills" className="flex items-center">
-									Bills
+								<Link Link to="/admin/bill" className="flex items-center">
+									Quản lý đơn thuê
 								</Link>
 							</ListItem>
 							<ListItem>
-								<Link to="/admin/supplier " className="flex items-center">
-									Supplier
+								<Link to="/admin/withdraw " className="flex items-center">
+									Quản lý rút tiền
 								</Link>
 							</ListItem>
 							<ListItem>
@@ -127,7 +136,7 @@ function Admin() {
 					</ListItemPrefix>
 					Settings
 				</ListItem>
-				<ListItem className="text-[#dee4ee]">
+				<ListItem onClick={handleLogout} className="text-[#dee4ee]">
 					<ListItemPrefix className="mr-[10px]">
 						<PowerIcon className="h-5 w-5" />
 					</ListItemPrefix>

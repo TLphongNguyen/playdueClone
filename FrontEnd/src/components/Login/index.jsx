@@ -40,10 +40,10 @@ function Login({ toggleComponent }) {
 				},
 			});
 			const token = response.data;
+			// localStorage.setItem('token', token);
 			localStorage.setItem('token', token);
 			openNotificationWithIcon('success', 'Success', 'Đăng nhập thành công');
 			const userInfo = await fetchCustomer(token);
-			// console.log(userInfo);
 
 			socket.emit('registerUser', userInfo.customerId);
 			if (userInfo.account.accountTypeId !== 1) {

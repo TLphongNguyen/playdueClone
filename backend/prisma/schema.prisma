@@ -33,7 +33,6 @@ model Customer {
   status     Int
   account    Account  @relation(fields: [accountId], references: [accountId])
   detailCustomer DetailCustomer?
-  rents rent[]
   comments commentStory[]
   donates donate[]
   story story[]
@@ -43,6 +42,9 @@ model Customer {
   SentMessages     Message[]        @relation("SentMessages")
   ReceivedMessages MessageReceiver[]
   followers follower[]
+  rentsAsCustomer rent[]         @relation("CustomerRents")
+  rentsAsPlayer   rent[]         @relation("PlayerRents")
+   withdrawals withdrawal[]
 
 }
 model recharge {
@@ -53,8 +55,16 @@ model recharge {
   amount Int
   dateRecharge DateTime @default(now())
   customer Customer @relation(fields: [customerId], references: [customerId])
-
-
+}
+model withdrawal {
+  withdrawalId Int       @id @default(autoincrement())
+  customerId   Int
+  banks        String   
+  numberBank   Int      
+  amount       Int       
+  dateWithdraw DateTime  @default(now()) 
+  status       Int       
+  customer     Customer  @relation(fields: [customerId], references: [customerId])
 }
 model DetailCustomer {
   detailCustomerId Int @id @default(autoincrement())
@@ -85,28 +95,36 @@ model GamesOnCustomers {
   @@id([detailCustomerId, gameId])
 }
 model rent {
-  rentId Int @id @default(autoincrement())
-  customerId Int
-  date DateTime @default(now())
-  hour Int
-  customers Customer @relation(fields: [customerId], references: [customerId])
-  rentDetails rentDetails?
+  rentId      Int      @id @default(autoincrement())
+  customerId  Int
+  playerId    Int
+  hour        Int
+  timeRequest DateTime @default(now())
+  status      String   @default("pending") // pending, accepted, completed, canceled
+  customers   Customer @relation(fields: [customerId], references: [customerId], name: "CustomerRents")
+  player      Customer @relation(fields: [playerId], references: [customerId], name: "PlayerRents")
+  rentDetails rentDetails[] 
 }
+
 model rentDetails {
-  rentDetailsId Int
-  rentId Int @unique
-  Rating Int
-  comment String
-  rents rent @relation(fields: [rentId], references: [rentId])
+  rentDetailsId Int      @id @default(autoincrement())
+  rentId        Int
+  startTime     DateTime
+  endTime       DateTime
+  totalPrice    Float
+  Rating        Int?
+  comment       String?
+  rents         rent     @relation(fields: [rentId], references: [rentId])
 }
+
 model story {
   storyId Int @id @default(autoincrement())
   customerId Int
   urlStory String
   caption String
   hagtag String?
-  likes         Int            @default(0)
-  views         Int            @default(0)
+  likes Int @default(0)
+  views Int @default(0)
   stautusStory Boolean
   time DateTime @default(now())
   customers Customer @relation(fields: [customerId], references: [customerId])
@@ -122,11 +140,11 @@ model reactionStory {
   ReactionId    Int       @id @default(autoincrement())
   storyId       Int
   customerId    Int
-  type          ReactionType // Sử dụng enum để lưu loại tương tác
+  type          ReactionType 
   time          DateTime     @default(now())
   story         story        @relation(fields: [storyId], references: [storyId])
   customer      Customer     @relation(fields: [customerId], references: [customerId])
-  @@unique([storyId, customerId, type]) // Đảm bảo mỗi người dùng chỉ có một loại tương tác cho một câu chuyện
+  @@unique([storyId, customerId, type])
 }
 model commentStory {
   commentStoryId Int @id @default(autoincrement())
@@ -166,8 +184,7 @@ model MessageReceiver {
   readAt     DateTime?
   message    Message   @relation(fields: [messageId], references: [messageId])
   receiver   Customer  @relation(fields: [receiverId], references: [customerId])
-
-  @@unique([messageId, receiverId]) // Đảm bảo không trùng lặp
+  @@unique([messageId, receiverId])
 }
 
 model Notification {

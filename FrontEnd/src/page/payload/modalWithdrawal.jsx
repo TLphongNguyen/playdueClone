@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateUserInfo } from '~/redux/slice/userSlice';
 import { notification } from 'antd';
 
-function ModalPayLoad({ close }) {
+function ModalWithdrawal({ close, refreshData }) {
 	const dispatch = useDispatch();
 	const userInfo = useSelector((state) => state.user.userInfo);
 	const [databank, setDatabank] = useState([]);
@@ -32,17 +32,16 @@ function ModalPayLoad({ close }) {
 			numberBank: data.account,
 		};
 		try {
-			const response = await axios.post(`${SERVICE_URL}/recharge`, formatData, {
+			const response = await axios.post(`${SERVICE_URL}/withdraw`, formatData, {
 				headers: { 'Content-Type': 'application/json' },
 			});
-			console.log(response.data);
-			openNotificationWithIcon('success', 'Success', 'Nạp tiền thành công');
+			openNotificationWithIcon('success', 'Success', 'Gửi yêu cầu rút tiền thành công');
 
 			dispatch(updateUserInfo(response.data));
-
+			refreshData();
 			close();
 		} catch (e) {
-			openNotificationWithIcon('error', 'Error', 'Gửi yêu cầu nạp tiền thất bại, kiểm tra lại thông tin');
+			openNotificationWithIcon('error', 'Error', 'Gửi yêu cầu rút tiền thất bại, kiểm tra lại thông tin');
 			console.log(e);
 		} finally {
 			setLoading(false);
@@ -129,7 +128,7 @@ function ModalPayLoad({ close }) {
 									},
 								})}
 								className="px-[15px] w-full"
-								placeholder="Số tiền muốn nạp (vnd)"
+								placeholder="Số tiền muốn Rút (vnd)"
 							/>
 							{errors.amount && (
 								<p className="text-red-500 text-[12px] mt-[5px]">{errors.amount.message}</p>
@@ -141,9 +140,9 @@ function ModalPayLoad({ close }) {
 						<button
 							type="submit"
 							disabled={loading}
-							className="bg-[#449d44] py-2 px-4 w-full text-[#fff] rounded-[6px]"
+							className="bg-[#937432] py-2 px-4 w-full text-[#fff] rounded-[6px]"
 						>
-							{loading ? 'Đang xử lý...' : 'Nạp tiền'}
+							{loading ? 'Đang xử lý...' : 'Rút tiền'}
 						</button>
 					</div>
 				</form>
@@ -152,4 +151,4 @@ function ModalPayLoad({ close }) {
 	);
 }
 
-export default ModalPayLoad;
+export default ModalWithdrawal;

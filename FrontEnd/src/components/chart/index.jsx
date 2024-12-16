@@ -18,7 +18,7 @@ const data = {
 	labels: ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
 	datasets: [
 		{
-			label: 'Total Revenue',
+			label: 'Số tiền nạp',
 			data: [30, 40, 30, 50, 60, 40, 70, 80, 50, 40, 60, 70],
 			borderColor: 'rgba(0, 76, 255, 1)',
 			backgroundColor: 'rgba(0, 76, 255, 0.2)',
@@ -27,7 +27,7 @@ const data = {
 			pointBackgroundColor: 'rgba(0, 76, 255, 1)',
 		},
 		{
-			label: 'Total Sales',
+			label: 'Số tiền rút',
 			data: [20, 30, 40, 30, 50, 30, 60, 50, 40, 50, 30, 60],
 			borderColor: 'rgba(0, 173, 239, 1)',
 			backgroundColor: 'rgba(0, 173, 239, 0.2)',

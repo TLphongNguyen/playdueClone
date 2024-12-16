@@ -21,6 +21,7 @@ function IconChat({ position, bottom }) {
 	const [receiverId, setReceiverId] = useState(null);
 	const containerRef = useRef(null);
 	const userInfo = useSelector((state) => state.user.userInfo);
+	const [rentRequest, setRentRequest] = useState([]);
 
 	const {
 		register,
@@ -39,25 +40,47 @@ function IconChat({ position, bottom }) {
 			console.log('Container ref is null');
 		}
 	};
+	const handleRentRequest = async (isAccepted) => {
+		const data = {
+			customerId: rentRequest.playerId,
+			rentId: rentRequest.rentId,
+			hour: rentRequest.hour,
+		};
+		try {
+			if (isAccepted) {
+				await axios.post(`${SERVICE_URL}/acceptedrent`, data);
+				alert('Yêu cầu đã được chấp nhận!');
+			} else {
+				await axios.post(`${SERVICE_URL}/canceltedrent`, { rentId: rentRequest.rentId });
+				alert('Yêu cầu đã bị từ chối.');
+			}
+			setRentRequest(null);
+		} catch (error) {
+			console.error('Lỗi xử lý yêu cầu thuê:', error);
+			alert('Đã xảy ra lỗi, vui lòng thử lại.');
+		}
+	};
 	const onSubmit = (data) => {
 		const formatdata = {
 			...data,
 			senderId: userInfo.customerId,
 			receiverId: receiverId,
 		};
-		try {
-			const response = axios.post(`${SERVICE_URL}/chatwith`, formatdata, {
-				headers: { 'Content-Type': 'application/json' },
+		if (inputValue.trim() != 0) {
+			try {
+				const response = axios.post(`${SERVICE_URL}/chatwith`, formatdata, {
+					headers: { 'Content-Type': 'application/json' },
+				});
+				reset();
+				setInputValue('');
+			} catch (err) {
+				console.log(err);
+			}
+			socket.emit('sendMessagePrivate', {
+				content: inputValue,
+				senderId: userInfo.customerId,
 			});
-			reset();
-			setInputValue('');
-		} catch (err) {
-			console.log(err);
 		}
-		socket.emit('sendMessagePrivate', {
-			content: inputValue,
-			senderId: userInfo.customerId,
-		});
 	};
 	useEffect(() => {
 		socket.on('receiveMessagePrivate', (data) => {
@@ -84,6 +107,7 @@ function IconChat({ position, bottom }) {
 			senderId: userInfo.customerId,
 		};
 		fetchchatPrivate(formatdata);
+		checkrent(customerId);
 	};
 	const fetchchatPrivate = async (data) => {
 		try {
@@ -94,8 +118,23 @@ function IconChat({ position, bottom }) {
 			setDataChat(response.data);
 		} catch (e) {
 			console.log(e);
-		} finally {
-			console.log(datachat);
+		}
+	};
+	const checkrent = async (customerId) => {
+		const data = {
+			playerId: customerId,
+			customerId: userInfo.customerId,
+		};
+
+		try {
+			const response = await axios.get(`${SERVICE_URL}/checkrent`, {
+				params: data,
+				headers: { 'Content-Type': 'application/json' },
+			});
+			setRentRequest(response.data);
+			console.log(response.data);
+		} catch (e) {
+			console.log(e);
 		}
 	};
 	const fetchUserChat = async () => {
@@ -105,8 +144,6 @@ function IconChat({ position, bottom }) {
 			setListUserChat(response.data);
 		} catch (err) {
 			console.log(err);
-		} finally {
-			// console.log(listUserChat);
 		}
 	};
 	const reload = () => {
@@ -154,7 +191,7 @@ function IconChat({ position, bottom }) {
 					</div>
 				</header>
 				<div className="bg-[#fff] h-full flex">
-					<div className="w-[35%] h-full border-r-[1px] border-solid border-[#dcdcdc] ">
+					<div className="w-[35%] h-full border-r-[1px] border-solid border-[#dcdcdc] relative">
 						<ul className="overflow-y-auto ">
 							{listUserChat.map((item, index) => (
 								<li
@@ -176,6 +213,27 @@ function IconChat({ position, bottom }) {
 						</ul>
 					</div>
 					<div className="w-[65%] h-full relative bg-white">
+						{rentRequest ? (
+							<div className="absolute w-[60%] h-[150px] bg-[#ccc] top-10 p-4 rounded-md shadow-lg flex flex-col space-y-3">
+								<p className="text-lg font-semibold">Bạn có đồng ý với yêu cầu thuê này không?</p>
+								<div className="flex justify-between">
+									<button
+										onClick={() => handleRentRequest(true)}
+										className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+									>
+										Đồng ý
+									</button>
+									<button
+										onClick={() => handleRentRequest(false)}
+										className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+									>
+										Từ chối
+									</button>
+								</div>
+							</div>
+						) : (
+							<div></div>
+						)}
 						<div className="w-full flex flex-col justify-between h-[calc(100%-50px)]">
 							<div
 								ref={containerRef}

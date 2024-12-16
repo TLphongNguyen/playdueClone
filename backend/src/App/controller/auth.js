@@ -48,7 +48,7 @@ const signUp = async (req, res, next) => {
 		res.status(500).json({ error: 'Internal server error' });
 	}
 };
-const signIn = async (req, res) => {
+const signIn = async (req, res, next) => {
 	const { email, password } = req.body;
 
 	try {
@@ -80,30 +80,24 @@ const updatePassword = async (req, res) => {
 	console.log(req.body);
 
 	try {
-		// Tìm người dùng với email được cung cấp
 		const account = await prisma.account.findFirst({ where: { username: email } });
 		if (!account) {
-			return res.status(400).json({ error: 'User does not exist' }); // Thông báo người dùng không tồn tại
+			return res.status(400).json({ error: 'User does not exist' });
 		}
-
-		// Tạo salt và hash password
 		const Salt = await bcrypt.genSalt(10);
 		const hashPassword = await bcrypt.hash(password, Salt);
-
-		// Cập nhật password và salt cho người dùng
 		const updatedAccount = await prisma.account.update({
-			where: { accountId: accountId }, // Điều kiện tìm người dùng
+			where: { accountId: accountId },
 			data: {
 				password: hashPassword,
-				Salt: Salt, // Nếu cần lưu Salt riêng
+				Salt: Salt,
 			},
 		});
 
-		// Trả về phản hồi thành công
 		res.json(updatedAccount);
 	} catch (err) {
 		console.log(err);
-		return res.status(500).json({ error: 'Something went wrong, please try again later' }); // Trả về lỗi
+		return res.status(500).json({ error: 'Something went wrong, please try again later' });
 	}
 };
 
@@ -145,7 +139,6 @@ const CreateCutomerDetail = async (req, res) => {
 				Abum: data.img,
 				price: 0,
 				games: {
-					// Sử dụng "games" thay vì "gamesOnCustomers"
 					create: data.games.map((gameId) => ({
 						Game: {
 							connect: { gameId },

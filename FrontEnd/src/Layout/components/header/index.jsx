@@ -17,8 +17,6 @@ import Tippy from '@tippyjs/react';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
 import { Dropdown, Modal, Badge } from 'antd';
 import { HomeOutlined, TrophyOutlined, VideoCameraOutlined } from '@ant-design/icons';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 
 import Rankings from '~/components/Rankings';
 import Notification from '~/components/notification';

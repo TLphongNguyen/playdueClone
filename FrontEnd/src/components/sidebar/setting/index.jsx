@@ -75,7 +75,7 @@ function Setting() {
 					icon: <FontAwesomeIcon icon={faClockRotateLeft} />,
 					children: [
 						{
-							key: '41',
+							key: 'donate',
 							label: 'Lịch sử donate',
 						},
 						{
@@ -191,7 +191,7 @@ function Setting() {
 							label: 'Lịch sử nhận duo',
 						},
 						{
-							key: '122',
+							key: 'donate',
 							label: 'Lịch sử nhận donate',
 						},
 					],

@@ -15,6 +15,16 @@ const { createGames, getGames, updateGames } = require('../App/controller/games'
 const { GetPlayer, GetPlayerById, checkFollower, followers } = require('../App/controller/profile');
 const { ChatAll, chatDefault, getDataMessage, getchatUser, getPrivateChat } = require('../App/controller/message');
 const { createRecharge, getSumAmount } = require('../App/controller/recharge');
+const { createRent, getRent, acceptedRent, cancelRent, isPlayerRented, getBill } = require('../App/controller/rent');
+const { createDonate, getHistoryDonate } = require('../App/controller/donate');
+const { getUser } = require('../App/controller/userAdmin');
+const {
+	createBillWithDraw,
+	updateBillWithStatus,
+	getBillWithId,
+	getBillWithStatus,
+	getBillAll,
+} = require('../App/controller/withdraw');
 module.exports = serviceRouters;
 
 serviceRouters.post('/createstories', createStories);
@@ -50,3 +60,23 @@ serviceRouters.get('/getprivatechat', getPrivateChat);
 //recharge
 serviceRouters.post('/recharge', createRecharge);
 serviceRouters.get('/getsumrecharge/:id', getSumAmount);
+//rent
+serviceRouters.post('/createrent', createRent);
+serviceRouters.get('/checkrent', getRent);
+serviceRouters.post('/acceptedrent', acceptedRent);
+serviceRouters.post('/canceltedrent', cancelRent);
+serviceRouters.get('/checkrentplayer', isPlayerRented);
+serviceRouters.get('/getbill', getBill);
+
+//donate
+serviceRouters.post('/donate', createDonate);
+serviceRouters.get('/donatehistory/:id', getHistoryDonate);
+//user admin
+serviceRouters.get('/getuser', getUser);
+
+//rut tien
+serviceRouters.post('/withdraw', createBillWithDraw);
+serviceRouters.get('/getbillwithdraw/:id', getBillWithId);
+serviceRouters.post('/upadateStatus', updateBillWithStatus);
+serviceRouters.get('/getbillwithstatus', getBillWithStatus);
+serviceRouters.get('/getbillall', getBillAll);

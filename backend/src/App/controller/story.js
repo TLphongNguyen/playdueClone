@@ -30,6 +30,9 @@ const getStory = async (req, res) => {
 			include: {
 				customers: true,
 			},
+			orderBy: {
+				time: 'asc',
+			},
 		});
 
 		res.json(dataStory);

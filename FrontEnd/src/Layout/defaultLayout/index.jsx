@@ -5,10 +5,12 @@ import { useDispatch } from 'react-redux';
 import { setUserInfo } from '~/redux/slice/userSlice'; // Giả sử đây là slice của bạn
 import axios from 'axios';
 import { AUTH_URL } from '~/config';
+import Cookies from 'js-cookie';
 
 function DefaultLayout({ children, showSidebar = true, sidebar }) {
 	const dispatch = useDispatch();
-	const fetchCustomer = async () => {
+
+	const fetchCustomer = async (token) => {
 		try {
 			const response = await axios.get(`${AUTH_URL}/customer`, {
 				headers: {
@@ -24,7 +26,7 @@ function DefaultLayout({ children, showSidebar = true, sidebar }) {
 	useEffect(() => {
 		const token = localStorage.getItem('token');
 		if (token) {
-			fetchCustomer();
+			fetchCustomer(token);
 		}
 	}, [dispatch]);
 	const SideBarItem = sidebar;

@@ -36,6 +36,7 @@ function Profile() {
 	const [isActionLocked, setIsActionLocked] = useState(false);
 	const [messageApi, contextHolder] = message.useMessage();
 	const [showWarning, setShowWarning] = useState(false);
+	const [isRent, setIsRent] = useState(false);
 
 	const showModal = () => {
 		setIsModalOpen(true);
@@ -83,19 +84,28 @@ function Profile() {
 			console.error('Error fetching customer:', error);
 		}
 	};
+	const checkRentPlater = async () => {
+		try {
+			const response = await axios.get(`${SERVICE_URL}/checkrentplayer`, {
+				params: { id },
+				headers: { 'Content-Type': 'application/json' },
+			});
+			setIsRent(response.data.isRented);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	const checkFollower = async () => {
 		const data = {
 			customerId: id,
 			followerId: userInfo.customerId,
 		};
-		console.log(data);
 
 		try {
 			const response = await axios.post(`${SERVICE_URL}/checkfollow`, data, {
 				headers: { 'Content-Type': 'application/json' },
 			});
 			setStatusFollow(response.data.status);
-			console.log(statusFollow);
 
 			return response.data.status;
 		} catch (error) {
@@ -157,8 +167,9 @@ function Profile() {
 		checkFollower();
 		if (showWarning) {
 			messageApi.warning('vui lòng chờ để tiếp tục thao tác');
-			setShowWarning(false); // Reset trạng thái sau khi hiển thị
+			setShowWarning(false);
 		}
+		checkRentPlater();
 	}, [showWarning]);
 	return (
 		<div className="wrap-content flex container">
@@ -170,7 +181,11 @@ function Profile() {
 					</div>
 				</div>
 				<div className="status mt-5 text-center">
-					<p className="text-[#27ae60] text-[18px] h-[23px] font-[700]">Đang sẵn sàng</p>
+					{isRent ? (
+						<p className="text-[#e3ed55] text-[18px] h-[23px] font-[700]">Đang được thuê</p>
+					) : (
+						<p className="text-[#27ae60] text-[18px] h-[23px] font-[700]">Đang sẵn sàng</p>
+					)}
 				</div>
 				{listPlayer.Facebook ? (
 					<a
@@ -397,10 +412,13 @@ function Profile() {
 					</div>
 					<div className="btn">
 						<button
+							disabled={isRent}
 							onClick={showModalRent}
-							className="w-[100%] h-[54px] text-[16px] mt-[10px] px-[6px] bg-[#f0564a] text-[#fff] rounded-[10px] font-[700] uppercase"
+							className={`w-full h-[54px] text-[16px] mt-[10px] px-[6px] bg-[#f0564a] text-white rounded-[10px] font-bold uppercase ${
+								isRent ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#e04b42] transition-colors'
+							}`}
 						>
-							Thuê
+							{isRent ? 'Đang được thuê' : 'Thuê'}
 						</button>
 						<button
 							onClick={showModal}
@@ -436,7 +454,13 @@ function Profile() {
 						onOk={handleOk}
 						onCancel={handleCancel}
 					>
-						<Donate name={listPlayer?.fullName} user={userInfo?.fullName} />
+						<Donate
+							name={listPlayer?.fullName}
+							id={id}
+							customerId={userInfo.customerId}
+							user={userInfo?.fullName}
+							price={userInfo?.money}
+						/>
 					</Modal>
 					<Modal
 						width={'600px'}
@@ -450,7 +474,7 @@ function Profile() {
 						<CreateChat id={id} />
 					</Modal>
 				</div>
-				<IconChat position={200} />
+				<IconChat position={200} bottom={-340} />
 			</div>
 		</div>
 	);
